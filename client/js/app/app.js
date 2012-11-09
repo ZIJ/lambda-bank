@@ -2,8 +2,8 @@ define([
     "jquery",
 
     "backbone",
-    "models/app",
-    "views/app"
+    "models/appModel",
+    "views/appView"
 ],
 function ($, Backbone, AppModel, AppView) {
     return new (function () {

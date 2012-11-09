@@ -1,17 +1,17 @@
 require.config({
     deps: ["main"],
     paths: {
-        // JavaScript folders.
+        // JavaScript folders
         libs: "../libs",
         plugins: "../plugins",
 
-        // Libraries.
+        // Libraries
         jquery: "../libs/jquery-1.8.2.min",
         lodash: "../libs/lodash.min",
         backbone: "../libs/backbone-min"
     },
     shim: {
-        // Backbone library depends on lodash and jQuery.
+        // Backbone library depends on lodash and jQuery
         backbone: {
             deps: ["lodash", "jquery"],
             exports: "Backbone"
