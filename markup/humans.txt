@@ -1,0 +1,19 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+    <name> 	-- <role> 		-- <twitter>
+    TNK		-- front-end	--ThiRaBr_TNK
+    PiXel	-- back-end		--SergeHill
+    ZIJ		-- no role yet	--IgorZIJ
+    YAndrew	-- no role yet	-- YAndrew91
+
+# THANKS
+
+    <name>
+
+# TECHNOLOGY COLOPHON
+
+    HTML5, CSS3
+    jQuery, Modernizr
