@@ -11,9 +11,6 @@ define([
 
             initialize: function () {
                 var user = this;
-                user.get("app").on("loaded", function(){
-                    user.login("root", "root");
-                });
             },
 
             login: function(login, password) {
@@ -29,9 +26,9 @@ define([
                     dataType: "json",
                     cache: false,
                     contentType: "application/json",
-                    success: function(response) {
-                        user.set("token", response.AuthenticationToken);
-                        user.set("role");
+                    success: function(data) {
+                        user.set("token", data.Response.AuthenticationToken);
+                        user.set("role", data.Response.Role);
                         user.trigger("loginned");
                     },
                     error: function(xhr) {

@@ -10,7 +10,7 @@ function ($, Backbone, AppModel, AppView) {
         this.model = new AppModel();
         this.view = new AppView({
             model: this.model,
-            el: $("#main")
+            el: $(document.body)
         });
         this.start = function () {
             this.model.load();
