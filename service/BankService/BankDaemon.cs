@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.ServiceModel.Web;
 using System.Data.Entity;
+using System.Configuration;
 using System.Net;
 namespace BankService
 {
@@ -19,8 +20,19 @@ namespace BankService
 
 		public BankDaemon()
 		{
-			System.Data.Entity.Database.SetInitializer(new DefaultInitializer());
-			db = new BankDatabase();
+			string connection = null;
+			ConnectionStringSettings connectionString = ConfigurationManager.ConnectionStrings["LambdaDB"];
+			if (connectionString != null)
+			{
+				connection = connectionString.ConnectionString;
+			}
+			else
+			{
+				System.Data.Entity.Database.SetInitializer(new DefaultInitializer());
+				connection = "BankDatabase";
+			}
+			
+			db = new BankDatabase(connection);
 		}
 
 		public BankDatabase Database
@@ -54,19 +66,6 @@ namespace BankService
 			return info;
 		}
 
-		public void CreateUser(string login, string password, int userId)
-		{
-			BankUser user = db.BankUsers.Find(userId);
-			InternetBankingUser internetUser = new InternetBankingUser();
-			internetUser.Login = login;
-			internetUser.Salt = Guid.NewGuid().ToString("N");
-			internetUser.PasswordHash = PasswordDistortion(password, internetUser.Salt);
-			internetUser.BankUser = user;
-			internetUser.Role = db.Roles.FirstOrDefault((r) => r.Name == "User");
-			db.InternetBankingUsers.Add(internetUser);
-			db.SaveChanges();
-		}
-
 		private static string PasswordDistortion(string password, string salt)
 		{
 			using (var cryptoProvider = new SHA1CryptoServiceProvider())
@@ -78,13 +77,35 @@ namespace BankService
 
 		public LoginInfo GetUser(Guid securityToken)
 		{
-			LoginInfo li;
- 			if (!authenticatedUsers.TryGetValue(securityToken, out li))
+			LoginInfo info;
+ 			if (!authenticatedUsers.TryGetValue(securityToken, out info))
 			{
-				throw new WebFaultException(HttpStatusCode.Forbidden);
+				throw new WebFaultException(HttpStatusCode.Unauthorized);
 			}
-			return li;
+			return info;
 		}
+
+		public void GenerateInternetBankingUser(BankUser user, out string login, out string password)
+		{
+			if (db.InternetBankingUsers.Any(u => u.BankUser.ID == user.ID))
+			{
+				throw new WebFaultException(HttpStatusCode.Conflict);
+			}
+			password = System.Web.Security.Membership.GeneratePassword(12, 2);
+			login = System.Web.Security.Membership.GeneratePassword(9, 0).ToUpper();
+
+			InternetBankingUser internetUser = new InternetBankingUser();
+			internetUser.Login = login;
+			internetUser.Salt = Guid.NewGuid().ToString("N");
+			internetUser.PasswordHash = PasswordDistortion(password, internetUser.Salt);
+			internetUser.BankUser = user;
+			internetUser.Role = db.Roles.FirstOrDefault((r) => r.Name == "User");
+			db.InternetBankingUsers.Add(internetUser);
+			db.SaveChanges();
+		}
+
+
+
 		private class DefaultInitializer : System.Data.Entity.DropCreateDatabaseAlways<BankDatabase>// DropCreateDatabaseIfModelChanges<BankDatabase>
 		{
 			protected override void Seed(BankDatabase context)
@@ -93,6 +114,23 @@ namespace BankService
 				context.Roles.Add(new Role() { Name = "Operator" });
 				context.Roles.Add(new Role() { Name = "Admin" });
 				context.SaveChanges();
+
+				CardClass cardClass = new CardClass()
+				{
+					Name = "Visa"
+				};
+				CardType cardType = new CardType() { Name = "Electron", Class = cardClass };
+				cardClass.Types.Add(cardType);
+				cardClass.Types.Add(new CardType() { Name = "Classic", Class = cardClass });
+				cardClass.Types.Add(new CardType() { Name = "Gold", Class = cardClass });
+				cardClass.Types.Add(new CardType() { Name = "Black Card", Class = cardClass });
+				cardClass.Types.FirstOrDefault(t => { context.CardTypes.Add(t); return false; });
+
+				context.CardClasses.Add(cardClass);
+				context.CardClasses.Add(new CardClass { Name = "Master Card" });
+
+				context.SaveChanges();
+
 				InternetBankingUser admin = new InternetBankingUser();
 				admin.Login = "root";
 				admin.Salt = Guid.NewGuid().ToString("N");
@@ -103,7 +141,10 @@ namespace BankService
 				context.SaveChanges();
 
 				BankUser user = new BankUser();
-				user.Name = "Sir Charles Jr.";
+				user.FirstName = "Charles";
+				user.LastName = "Jr.";
+				user.PassportNumber = "A01245854B465C2333";
+				user.Address = "here";
 				Account account = new Account();
 				Card card = new Card();
 				user.Cards.Add(card);
@@ -114,13 +155,13 @@ namespace BankService
 				card.CardNumber = "1234567890123456";
 				card.CVV = 145;
 				card.ExpirationDate = DateTime.Now + TimeSpan.FromDays(365);
+				card.Type = cardType;
 				account.Currency = Currency.BYR;
 				account.Amount = 10000000;
 
 				context.Accounts.Add(account);
-				context.BankUsers.Add(user);
 				context.Cards.Add(card);
-
+				context.BankUsers.Add(user);
 				context.SaveChanges();
 			}
 		}

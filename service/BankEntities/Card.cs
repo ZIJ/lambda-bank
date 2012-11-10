@@ -30,6 +30,7 @@ namespace BankEntities
 
 		public DateTime ExpirationDate { get; set; }
 
+		[Required]
 		public CardType Type { get; set; }
 	}
 }

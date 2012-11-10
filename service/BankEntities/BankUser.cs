@@ -19,7 +19,16 @@ namespace BankEntities
 		public int ID { get; set; }
 
 		[Required]
-		public string Name { get; set; }
+		public string FirstName { get; set; }
+
+		[Required]
+		public string LastName { get; set; }
+
+		[Required]
+		public string PassportNumber { get; set; }
+
+		[Required]
+		public string Address { get; set; }
 
 		public virtual ICollection<Card> Cards { get; set; }
 

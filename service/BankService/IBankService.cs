@@ -21,22 +21,29 @@ namespace BankService
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/users/get")]
-		Message GetUsers(Guid securityToken);
+			UriTemplate = "/admin/users/get")]
+		Message GetUsers(Guid securityToken, bool joinCards);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/users/create")]
+			UriTemplate = "/admin/users/create")]
 		Message CreateUser(Guid securityToken, BankUser user);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/users/update")]
+			UriTemplate = "/admin/users/update")]
 		Message UpdateUser(Guid securityToken, BankUser user);
+
+		[WebInvoke(Method = "POST",
+			RequestFormat = WebMessageFormat.Json,
+			ResponseFormat = WebMessageFormat.Json,
+			BodyStyle = WebMessageBodyStyle.Wrapped,
+			UriTemplate = "/admin/users/addinternetbankingrole")]
+		Message AddIBUser(Guid securityToken, int id);
 		#endregion
 
 		#region Cards
@@ -44,21 +51,21 @@ namespace BankService
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/cards/get")]
+			UriTemplate = "/admin/cards/get")]
 		Message GetCards(Guid securityToken, int userID);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/cards/create")]
+			UriTemplate = "/admin/cards/create")]
 		Message CreateCard(Guid securityToken, Card card, int userID);
 		
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/card/attach")]
+			UriTemplate = "/admin/card/attach")]
 		Message AttachAccount2Card(Guid securityToken, int accountID, int cardID);
 		#endregion
 
@@ -84,106 +91,105 @@ namespace BankService
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/cards/list")]
+			UriTemplate = "/user/cards/list")]
 		Message GetUserCards(Guid securityToken);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/paymentslog")]
+			UriTemplate = "/user/paymentslog")]
 		Message GetLog(Guid securityToken, byte[] accountNumber, DateTime start, DateTime end);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/payment/accountdetails")]
+			UriTemplate = "/user/payment/accountdetails")]
 		Message PayAccDetails(Guid securityToken, string paymentInfo);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/payment/preinfo")]
+			UriTemplate = "/user/payment/preinfo")]
 		Message PrePaymentInfo(Guid securityToken, string paymentInfo);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/payments/proceed")]
+			UriTemplate = "/user/payments/proceed")]
 		Message Payment(Guid securityToken, string paymentInfo);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/mypayments/last")]
+			UriTemplate = "/user/mypayments/last")]
 		Message GetLastPayments(Guid securityToken);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/mypayments/saved")]
+			UriTemplate = "/user/mypayments/saved")]
 		Message GetSavedPayments(Guid securityToken);
 
 		[WebInvoke(Method = "PUT",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/mypayments/save")]
+			UriTemplate = "/user/mypayments/save")]
 		Message SavePayments(Guid securityToken, string paymentInfo);
 		
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/schedules/get")]
+			UriTemplate = "/user/schedules/get")]
 		Message GetSchedules(Guid securityToken);
 
 		[WebInvoke(Method = "PUT",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/schedules/calendar")]
+			UriTemplate = "/user/schedules/calendar")]
 		Message CreateCalendarSchedule(Guid securityToken, string paymentInfo);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/schedules/calendar")]
+			UriTemplate = "/user/schedules/calendar")]
 		Message UpdateCalendarSchedule(Guid securityToken, int id, string paymentInfo);
 
 		[WebInvoke(Method = "DELETE",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/schedules/calendar")]
+			UriTemplate = "/user/schedules/calendar")]
 		Message DeleteCalendarSchedule(Guid securityToken, int id);
 
 		[WebInvoke(Method = "PUT",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/schedules/span")]
+			UriTemplate = "/user/schedules/span")]
 		Message CreateSpanSchedule(Guid securityToken, string paymentInfo);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/schedules/span")]
+			UriTemplate = "/user/schedules/span")]
 		Message UpdateSpanSchedule(Guid securityToken, int id, string paymentInfo);
 
 		[WebInvoke(Method = "DELETE",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/schedules/span")]
+			UriTemplate = "/user/schedules/span")]
 		Message DeleteSpanSchedule(Guid securityToken, int id);
-
 	}
 }

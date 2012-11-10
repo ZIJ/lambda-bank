@@ -8,8 +8,7 @@ namespace BankEntities
 {
 	public class BankDatabase:DbContext
 	{
-
-		public BankDatabase() : base("BankDatabase") { }
+		public BankDatabase(string connection) : base(connection) { }
 
 		public DbSet<BankUser> BankUsers { get; set; }
 
@@ -30,5 +29,9 @@ namespace BankEntities
 		public DbSet<SpanSchedule> SpanSchedules { get; set; }
 
 		public DbSet<Role> Roles { get; set; }
+
+		public DbSet<CardClass> CardClasses { get; set; }
+
+		public DbSet<CardType> CardTypes { get; set; }
 	}
 }

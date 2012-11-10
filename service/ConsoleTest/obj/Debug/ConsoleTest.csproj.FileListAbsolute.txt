@@ -28,3 +28,13 @@ D:\Source Code\Bank\ConsoleTest\bin\Debug\EntityFramework.xml
 D:\Source Code\Bank\ConsoleTest\obj\Debug\ConsoleTest.csprojResolveAssemblyReference.cache
 D:\Source Code\Bank\ConsoleTest\obj\Debug\ConsoleTest.exe
 D:\Source Code\Bank\ConsoleTest\obj\Debug\ConsoleTest.pdb
+D:\Source Code\lambda-bank\service\ConsoleTest\obj\Debug\ConsoleTest.csprojResolveAssemblyReference.cache
+D:\Source Code\lambda-bank\service\ConsoleTest\obj\Debug\ConsoleTest.exe
+D:\Source Code\lambda-bank\service\ConsoleTest\bin\Debug\ConsoleTest.exe.config
+D:\Source Code\lambda-bank\service\ConsoleTest\bin\Debug\ConsoleTest.exe
+D:\Source Code\lambda-bank\service\ConsoleTest\bin\Debug\ConsoleTest.pdb
+D:\Source Code\lambda-bank\service\ConsoleTest\bin\Debug\BankEntities.dll
+D:\Source Code\lambda-bank\service\ConsoleTest\bin\Debug\EntityFramework.dll
+D:\Source Code\lambda-bank\service\ConsoleTest\bin\Debug\BankEntities.pdb
+D:\Source Code\lambda-bank\service\ConsoleTest\bin\Debug\EntityFramework.xml
+D:\Source Code\lambda-bank\service\ConsoleTest\obj\Debug\ConsoleTest.pdb

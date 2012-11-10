@@ -27,6 +27,7 @@ namespace BankEntities
 		[Required]
 		public decimal Amount { get; set; }
 
+		[IgnoreDataMember]
 		public virtual ICollection<Card> Cards { get; set; }
 	}
 }

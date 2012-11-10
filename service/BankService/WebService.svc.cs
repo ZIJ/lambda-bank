@@ -7,6 +7,8 @@ using System.ServiceModel.Web;
 using System.Text;
 using BankEntities;
 using System.ServiceModel.Channels;
+using System.Dynamic;
+using System.Net;
 
 namespace BankService
 {
@@ -14,6 +16,8 @@ namespace BankService
 	{
 		private static BankDaemon bank = new BankDaemon();
 		private static BankDatabase db = null;
+
+		private static System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
 
 		static WebService()
 		{
@@ -31,7 +35,7 @@ namespace BankService
 			}
 
 			var response = new { AuthenticationToken = info.UID, Role = info.User.Role.ToString() };
-			return CreateJsonResponse(response);
+			return Json(response);
 		}
 
 
@@ -49,7 +53,7 @@ namespace BankService
 			var card = new { Accounts = accountsStub.ToArray(), CardNumber = new byte[] { 1, 2, 5, 7, 8, 9, 0, 0, 1 } };
 			cardsStub.Add(card);
 			cardsStub.Add(card);
-			return CreateJsonResponse(cardsStub);
+			return Json(cardsStub);
 		}
 
 		public Message GetLog(Guid securityToken, byte[] accountNumber, DateTime start, DateTime end)
@@ -117,9 +121,10 @@ namespace BankService
 			throw new NotImplementedException();
 		}
 
-		private static Message CreateJsonResponse(object obj)
+		private static Message Json(object obj)
 		{
-			string response = new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(obj);
+			string response = serializer.Serialize(new { Response = obj });
+			WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin", "*");
 			return WebOperationContext.Current.CreateTextResponse(response, "application/json");
 		}
 
@@ -129,16 +134,21 @@ namespace BankService
 		}
 
 		#region Users
-		public Message GetUsers(Guid securityToken)
+		public Message GetUsers(Guid securityToken, bool joinCards)
 		{
-			return CreateJsonResponse(bank.Database.BankUsers);
+			List<object> users = new List<object>();
+			foreach (BankUser u in bank.Database.BankUsers)
+			{
+				users.Add(CreateUserResponse(u, joinCards));
+			}
+			return Json(users);
 		}
 
 		public Message CreateUser(Guid securityToken, BankUser user)
 		{
 			db.BankUsers.Add(user);
 			db.SaveChanges();
-			return CreateJsonResponse(new { Status = "OK", ID = user.ID });
+			return Json(new { Status = "OK", ID = user.ID });
 		}
 
 		public Message UpdateUser(Guid securityToken, BankUser user)
@@ -146,16 +156,42 @@ namespace BankService
 			BankUser currentUser = db.BankUsers.Find(user.ID);
 
 			//copy user info
-			currentUser.Name = user.Name;
+			currentUser.FirstName = user.FirstName;
+			currentUser.LastName = user.LastName;
+			currentUser.PassportNumber = user.PassportNumber;
+			currentUser.Address = user.Address;
+
 			db.SaveChanges();
-			return CreateJsonResponse("OK");
-		} 
+			return Json("OK");
+		}
+
+		public Message AddIBUser(Guid securityToken, int id)
+		{
+			BankUser currentUser = db.BankUsers.Find(id);
+			if (currentUser == null)
+			{
+				throw new WebFaultException(HttpStatusCode.NotFound);
+			}
+
+			string login;
+			string password;
+			bank.GenerateInternetBankingUser(currentUser, out login, out password);
+
+			var response = new
+			{
+				Login = login,
+				Password = password
+			};
+
+			return Json(response);
+		}
+
 		#endregion
 
 		#region Cards
 		public Message GetCards(Guid securityToken, int userID)
 		{
-			return CreateJsonResponse(db.BankUsers.Find(userID).Cards);
+			return Json(db.BankUsers.Find(userID).Cards);
 		}
 
 		public Message CreateCard(Guid securityToken, Card card, int userID)
@@ -163,15 +199,17 @@ namespace BankService
 			db.Cards.Add(card);
 			db.BankUsers.Find(userID).Cards.Add(card);
 			db.SaveChanges();
-			return CreateJsonResponse(new { Status = "OK", CreatedObject = card });
+			return Json(new { Status = "OK", CreatedObject = card });
 		}
 		#endregion
+
+		#region Accounts
 
 		public Message CreateAccount(Guid securityToken, Account account)
 		{
 			db.Accounts.Add(account);
 			db.SaveChanges();
-			return CreateJsonResponse(new { Status = "OK", CreatedObject = account });
+			return Json(new { Status = "OK", CreatedObject = account });
 		}
 
 		public Message AttachAccount2Card(Guid securityToken, int accountID, int cardID)
@@ -182,7 +220,47 @@ namespace BankService
 			acc.Cards.Add(card);
 			card.Accounts.Add(acc);
 			db.SaveChanges();
-			return CreateJsonResponse(new { Status = "OK" });
+			return Json(new { Status = "OK" });
+		} 
+		#endregion
+
+		private object CreateUserResponse(BankUser user, bool joinCards)
+		{
+			var response = new
+			{
+				ID = user.ID,
+				FirstName = user.FirstName,
+				LastName = user.LastName,
+				PassportNumber = user.PassportNumber,
+				Address = user.Address,
+				Cards = joinCards ? user.Cards.Select(c => CreateCardResponse(c, false)) : user.Cards.Select(c => (object)c.ID)
+			};
+			return response;
+		}
+
+		private object CreateCardResponse(Card card, bool joinUser)
+		{
+			var response = new
+			{
+				ID = card.ID,
+				Number = card.CardNumber,
+				Type = card.Type,
+				User = joinUser? card.BankUser : (object)card.BankUser.ID
+			};
+			return response;
+		}
+
+		private object CreateAccountResponse(Account acc)
+		{
+			var response = new
+			{
+				acc.ID,
+				acc.AccountNumber,
+				Cards = acc.Cards.Select(c => c.ID),
+				acc.Currency,
+				acc.Amount,
+			};
+			return response;
 		}
 	}
 }
