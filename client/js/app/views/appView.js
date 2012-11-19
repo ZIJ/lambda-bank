@@ -1,13 +1,17 @@
 define([
     "jquery",
     "backbone",
+
     "views/loginView",
-    "views/usersView"
+
+    "backbone.extended"
 ],
 function ($, Backbone, LoginView, UsersView) {
-    return Backbone.View.extend({
+    return Backbone.Extended.View.extend({
         initialize: function () {
             var view = this;
+
+            view.bindTo(view.model, "change:");
 
             view.login = new LoginView({
                 model: view.model.get("user"),
@@ -28,6 +32,7 @@ function ($, Backbone, LoginView, UsersView) {
         },
         render: function () {
             var view = this;
+
             console.log("view rendering");
         }
     });

@@ -1,15 +1,14 @@
 define([
-    "jquery",
-    "backbone"
+    "zepto",
+
+    "backbone",
+
+    "backbone.extended"
 ],
     function ($, Backbone) {
-        return Backbone.View.extend({
+        return Backbone.View.Extended.extend({
             initialize: function () {
                 var view = this;
-
-                view.model.on("loaded", function () {
-                    view.render();
-                });
 
             },
             events: {
@@ -19,7 +18,10 @@ define([
                 var view = this;
                 var login = view.$el.find("input[name=username]").val();
                 var password = view.$el.find("input[name=password]").val();
-                view.model.login(login, password);
+                view.trigger("loginRequest", {
+                    login: login,
+                    password: password
+                });
             },
             hide: function(callback){
                 this.$el.fadeOut("fast", callback);

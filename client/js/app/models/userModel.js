@@ -1,20 +1,22 @@
 define([
     "backbone",
-    "jquery"
+    "zepto",
+
+    "backbone.extended"
 ],
     function (Backbone, $) {
-        return Backbone.Model.extend({
+        return Backbone.Model.Extended.extend({
             defaults: {
                 role: "guest",
                 loginUrl: "http://lambda-bank.drs-cd.com/WebService.svc/login"
             },
 
             initialize: function () {
-                var user = this;
+                var model = this;
             },
 
             login: function(login, password) {
-                var user = this;
+                var model = this;
 
                 $.ajax({
                     type: "POST",
@@ -27,19 +29,17 @@ define([
                     cache: false,
                     contentType: "application/json",
                     success: function(data) {
-                        user.set("token", data.Response.AuthenticationToken);
-                        user.set("role", data.Response.Role);
-                        user.trigger("loginned");
+                        model.set("guid", data.Response.AuthenticationToken);
+                        model.set("role", data.Response.Role);
                     },
                     error: function(xhr) {
-                        console.log("login failed");
-                        console.log(xhr);
+                        model.trigger("error:login");
                     }
                 });
             },
 
-            getData: function() {
-                //TODO cards loading
+            fetch: function () {
+
             },
 
             load: function () {

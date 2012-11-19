@@ -1,7 +1,9 @@
 define([
     "zepto",
-
     "backbone",
+
+    "models/userModel",
+    "views/loginView",
 
     "view-models/appViewModel",
     "views/appView",
@@ -9,19 +11,30 @@ define([
 
     "backbone.extended"
 ],
-function ($, Backbone, AppViewModel, AppView, Router) {
-    var appViewModel = new AppViewModel();
+function ($, Backbone, UserModel, LoginView, AppViewModel, AppView, Router) {
+    var userModel = new UserModel(),
+        appViewModel = new AppViewModel();
 
-    return new Backbone.Extended.Application({
+    var app = new Backbone.Extended.Application({
         root: "",
+
+        userModel: userModel,
+
+        loginView: new LoginView({
+            model: userModel,
+            el: $(document.body)
+        }),
+
         viewModel: appViewModel,
         view: new AppView({
             model: appViewModel,
             el: $(document.body)
         }),
+
         router: new Router({
 
         }),
+
         start: function () {
             var app = this;
 
@@ -34,4 +47,12 @@ function ($, Backbone, AppViewModel, AppView, Router) {
             });
         }
     });
+
+    app.loginView.on("loginRequest", function (loginData) {
+        app.userModel.login(loginData.login, loginData.password);
+    });
+
+
+
+    return app;
 });
