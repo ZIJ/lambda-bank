@@ -13,19 +13,15 @@ function (Backbone, $, UserModel) {
             //usersUrl: "http://lambda-bank.drs-cd.com/WebService.svc/user/users/get",
         },
 
-        initialize: function () {
+        initialize: function() {
             var viewModel = this;
 
 
 
         },
 
-        load: function () {
+        load: function() {
             var viewModel = this;
-
-            var user = new UserModel();
-            viewModel.set("user", user);
-
 
 
         }

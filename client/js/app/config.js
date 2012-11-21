@@ -17,7 +17,7 @@ require.config({
     },
     shim: {
         jquery: {		
-			init: function () {
+			init: function() {
 				this.jQuery.noConflict();
 			}
 		},
@@ -27,7 +27,7 @@ require.config({
         backbone: {
             deps: ["lodash", "zepto"],
             exports: "Backbone",
-			init: function (_, $) {
+			init: function(_, $) {
 				this.Backbone.setDomLibrary($);
 			}
         },
