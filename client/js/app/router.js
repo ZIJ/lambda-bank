@@ -1,9 +1,14 @@
 define([
+    "app",
+
     "backbone"
 ],
-function (Backbone) {
+function (app, Backbone) {
     return Backbone.Router.extend({
+        lastAction: null,
+
         routes: {
+            "login": "login",
             "": "index"
         },
 
@@ -14,12 +19,22 @@ function (Backbone) {
         index: function() {
             var router = this;
 
-            //router.model.resetState({
-            //    mode: "channel",
-            //    data: {
-            //        channelIndex: 0
-            //    }
-            //});
+            if (app.userModel.get("role") === "guest") {
+                router.navigate("login");
+            } else {
+                router.lastAction = {
+                    name: "index"
+                };
+
+                app.viewModel.load().then(function () {
+                    router.lastAction = null;
+                });
+            }
+        },
+
+        login: function () {
+            //TODO: dispose viewModel & view
+            app.loginView.render();
         }
     });
 });

@@ -5,15 +5,12 @@ define([
     "models/userModel",
     "views/loginView",
 
-    "view-models/appViewModel",
-    "views/appView",
     "router",
 
     "backbone.extended"
 ],
-function ($, Backbone, UserModel, LoginView, AppViewModel, AppView, Router) {
-    var userModel = new UserModel(),
-        appViewModel = new AppViewModel();
+function ($, Backbone, UserModel, LoginView, Router) {
+    var userModel = new UserModel();
 
     var app = new Backbone.Extended.Application({
         root: "",
@@ -22,12 +19,6 @@ function ($, Backbone, UserModel, LoginView, AppViewModel, AppView, Router) {
 
         loginView: new LoginView({
             model: userModel,
-            el: $(document.body)
-        }),
-
-        viewModel: appViewModel,
-        view: new AppView({
-            model: appViewModel,
             el: $(document.body)
         }),
 
@@ -43,11 +34,27 @@ function ($, Backbone, UserModel, LoginView, AppViewModel, AppView, Router) {
                 root: app.rootDirectory,
                 pushState: false
             });
+        },
 
-            app.loginView.render();
+        request: function (params) {
+            var app = this,
+                guid = app.userModel.get("guid");
 
-            app.viewModel.load().then(function() {
-                
+            $.ajax({
+                type: "POST",
+                url: params.url,
+                data: $.extend(params.data, {
+                    securityToken: guid
+                }),
+                dataType: "json",
+                cache: false,
+                contentType: "application/json",
+                success: params.success,
+                error: function(xhr) {
+                    params.error.call(this, xhr);
+                    //TODO: dispose viewModel & view
+                    app.loginView.render();
+                }
             });
         }
     });
@@ -58,26 +65,27 @@ function ($, Backbone, UserModel, LoginView, AppViewModel, AppView, Router) {
 
     app.userModel.on("change:guid", function(userModel, newGuid) {
         if (!newGuid) return;
-        
-        var appViewModel,
-            appView,
-            router;
 
         switch (userModel.get("role")) {
             case "admin":
-                appViewModel = new AppViewModelAdmin();
-                appView = new AppViewAdmin({
-                    model: appViewModel,
+
+                app.viewModel = new (require("view-models/admin/appViewModelAdmin"))();
+                app.view = new (require("views/admin/appViewAdmin"))({
+                    model: app.viewModel,
                     el: $(document.body)
                 });
-                router = new RouterAdmin();
+
                 break;
             case "user":
-                
+
                 break;
             default:
                 break;
         }
+    });
+
+    app.userModel.on("error:login", function() {
+        alert("login failed");
     });
 
     return app;

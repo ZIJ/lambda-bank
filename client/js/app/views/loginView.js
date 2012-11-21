@@ -12,7 +12,8 @@ function ($, Backbone) {
 
         },
         events: {
-            "click button[type=button]": "login"
+            "click button[type=button]": "login",
+            "click": "loginTest"
         },
         login: function() {
             var view = this;
@@ -31,7 +32,19 @@ function ($, Backbone) {
             
             view.$el.empty();
 
+            view.$el.css({
+                "background-color": "blue"
+            });
+
             console.log("view rendering");
+        },
+
+        //only for testing
+        loginTest: function() {
+            this.trigger("loginRequest", {
+                login: "root",
+                password: "root"
+            });
         }
     });
 });
