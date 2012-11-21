@@ -163,3 +163,82 @@ table .check {
 	text-align: left;
 	vertical-align: middle;
 }
+
+
+/*
+	BUTTONS
+*/
+.btn {
+	color: #fff;
+	border: 0;
+	background: #09829E;
+	box-shadow: 0 5px 0 0 #075F73,
+				0 5px 10px 0 rgba(0, 0, 0, .5);
+	position: relative;
+	top: 0;
+	-webkit-transition: all ease-in-out 0.3s;
+	-moz-transition: all ease-in-out 0.3s;
+	-ms-transition: all ease-in-out 0.3s;
+	-o-transition: all ease-in-out 0.3s;
+	transition: all ease-in-out 0.3s;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, .3);
+}
+
+.btn:hover {
+	background: #0B98B8;
+	color: #fff;
+}
+
+.btn:active {
+	background: #09829E;
+	color: #fff;
+	box-shadow: 0 2px 0 0 #075F73,
+				0 2px 2px 0 rgba(0, 0, 0, .5);
+	position: relative;
+	top: 3px;
+}
+
+.btn.btn-danger {
+	background: #D22C24;
+	box-shadow: 0 5px 0 0 #9E211B,
+				0 5px 10px 0 rgba(0, 0, 0, .5);
+}
+
+.btn.btn-danger:active {
+	box-shadow: 0 2px 0 0 #9E211B,
+				0 2px 2px 0 rgba(0, 0, 0, .5);
+}
+
+.btn.btn-danger:hover {
+	background: #EB3228;
+}
+
+.btn.btn-primary {
+	background: #10609E;
+	box-shadow: 0 5px 0 0 #0B416B,
+				0 5px 10px 0 rgba(0, 0, 0, .5);
+}
+
+.btn.btn-primary:hover {
+	background: #1270B8;
+}
+
+.btn.btn-primary:active {
+	box-shadow: 0 2px 0 0 #0B416B,
+				0 2px 2px 0 rgba(0, 0, 0, .5);
+}
+
+.btn.btn-warning {
+	background: #E5AC39;
+	box-shadow: 0 5px 0 0 #B2862D,
+				0 5px 10px 0 rgba(0, 0, 0, .5);
+}
+
+.btn.btn-warning:hover {
+	background: #FFC141;
+}
+
+.btn.btn-warning:active {
+	box-shadow: 0 2px 0 0 #B2862D,
+				0 2px 2px 0 rgba(0, 0, 0, .5);
+}
