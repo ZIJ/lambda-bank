@@ -9,17 +9,17 @@ $('.cards-n-accounts .nav-tabs a').click(function(e) {
 //  CLICKABLE ROWS
 $('table tbody .expander').click(function() {
 	var row = $(this);
-	var relevant = row.next('.expandable').find('div');
+	var relevant = row.next('.expandable').find('.accounts, .cards');
 	var padding;
 	if (relevant.length === 0) {
 		return;
 	}
 	if (relevant.is(':visible')) {
 		padding = relevant.parent().css('padding');
-		relevant.parent().animate({'padding': 0}, function(){
+		relevant.parent().stop(true).animate({'padding': 0}, function(){
 			relevant.parent().css('padding', padding);
 		});
-		relevant.slideUp(function() {
+		relevant.stop(true).slideUp(function() {
 			$(this).parent().parent().hide();
 			row.prop('title', 'Expand');
 		});
@@ -28,8 +28,8 @@ $('table tbody .expander').click(function() {
 	relevant.parent().parent().show();
 	padding = relevant.parent().css('padding');
 	relevant.parent().css('padding', 0);
-	relevant.parent().animate({'padding': padding});
-	relevant.slideDown(function() {
+	relevant.parent().stop(true).animate({'padding': padding});
+	relevant.stop(true).slideDown(function() {
 		row.prop('title', 'Collapse');
 	});
 }).prop('title', 'Expand');
@@ -54,28 +54,28 @@ $('td.check input[type=checkbox]').click(function(e){
 });
 
 //  EDIT BUTTON
-$('button.edit').click(function() {
-	$('.data-fields dd').each(function() {
-		$(this).html('<input type="text" placeholder="' + $(this).html() + '">');
-	});
-	$(this).hide();
-	$('.form-actions').slideDown();
-});
+// $('button.edit').click(function() {
+// 	$('.data-fields dd').each(function() {
+// 		$(this).html('<input type="text" placeholder="' + $(this).html() + '">');
+// 	});
+// 	$(this).hide();
+// 	$('.form-actions').stop(true, true).slideDown();
+// });
 
-$('.form-actions .save').click(function(e) {
-	e.preventDefault();
-	showAlert('', 'Предупреждение!', 'Вы действительно хотите сохранить внесённые изменения?', 'Сохранить', function() {
-		showAlert('success', 'Успех!', 'Внесённые изменения сохранены!');
-	});
-});
-$('.form-actions .cancel').click(function(e) {
-	e.preventDefault();
-	$('.data-fields dd').each(function() {
-		$(this).html($(this).find('input').prop('placeholder'));
-	});
-	$(this).closest('.form-actions').slideUp();
-	$('button.edit').show();
-});
+// $('.form-actions .save').click(function(e) {
+// 	e.preventDefault();
+// 	showAlert('', 'Предупреждение!', 'Вы действительно хотите сохранить внесённые изменения?', 'Сохранить', function() {
+// 		showAlert('success', 'Успех!', 'Внесённые изменения сохранены!');
+// 	});
+// });
+// $('.form-actions .cancel').click(function(e) {
+// 	e.preventDefault();
+// 	$('.data-fields dd').each(function() {
+// 		$(this).html($(this).find('input').prop('placeholder'));
+// 	});
+// 	$(this).closest('.form-actions').stop(true, true).slideUp();
+// 	$('button.edit').show();
+// });
 
 //  ALERT
 showAlert = function(type, title, text, action, actionCallback, cancelCallback) {
