@@ -10,6 +10,7 @@ using System.ServiceModel.Web;
 using System.Data.Entity;
 using System.Configuration;
 using System.Net;
+using System.Threading;
 namespace BankService
 {
 	public class BankDaemon
@@ -33,6 +34,45 @@ namespace BankService
 			}
 			
 			db = new BankDatabase(connection);
+			FixTransactions();
+			Thread daemon = new Thread(new ThreadStart(StartProcessing));
+
+		}
+
+		public void FixTransactions()
+		{
+			foreach (Transaction t in db.Transactions.Where(i => i.State == TransactionState.Opened))
+			{
+				RollbackTransaction(t);
+			}
+		}
+
+		private void RollbackTransaction(Transaction t)
+		{
+			if (t.FromAccountID != null)
+			{
+				Account acc = db.Accounts.Find(t.FromAccountID);
+				acc.Amount = t.FromAccountBackupAmount;
+			}
+			else
+			{
+				RollbackOuterAccount(t.FromAccountNumber, t.FromAccountCurrency, t.FromAccountBackupAmount);
+			}
+
+			if (t.ToAccountID != null)
+			{
+				Account acc = db.Accounts.Find(t.ToAccountID);
+				acc.Amount = t.ToAccountBackupAmount;
+			}
+			else
+			{
+				RollbackOuterAccount(t.ToAccountNumber, t.ToAccountCurrency, t.ToAccountBackupAmount);
+			}
+		}
+
+		private void RollbackOuterAccount(byte[] accountNumber, Currency currency, decimal value)
+		{
+
 		}
 
 		public BankDatabase Database
@@ -44,8 +84,33 @@ namespace BankService
 		}
 
 		public void StartProcessing()
-		{ 
-			//start daemon
+		{
+			while (true)
+			{
+				DateTime now = DateTime.Now;
+				foreach (CalendarSchedule schedule in db.CalendarSchelules)
+				{
+					if ((schedule.DayOfMonth == null || schedule.DayOfMonth == now.Day) &&
+						(schedule.DayOfWeek == null || schedule.DayOfWeek % 7 == (int)now.DayOfWeek) &&
+						(schedule.Hour == null || schedule.Hour == now.Hour) &&
+						(schedule.Month == null || schedule.Month == now.Month)
+						)
+					{
+						//run
+					}
+				}
+				foreach (SpanSchedule schedule in db.SpanSchedules)
+				{
+					TimeSpan span = DateTime.Now - schedule.LastTime;
+					int repeatCount = (int)Math.Floor(span.TotalMinutes / schedule.Span.TotalMinutes);
+					for (int i = 0; i < repeatCount; i++)
+					{
+						//run
+						schedule.LastTime += schedule.Span;
+					}
+				}
+				Thread.Sleep(1000 * 60 * 60);
+			}
 		}
 
 		public LoginInfo Logon(string login, string password)
@@ -75,13 +140,18 @@ namespace BankService
 			}
 		}
 
-		public LoginInfo GetUser(Guid securityToken)
+		public LoginInfo GetUser(Guid securityToken, bool updateActivity = true)
 		{
 			LoginInfo info;
- 			if (!authenticatedUsers.TryGetValue(securityToken, out info))
+ 			if (!authenticatedUsers.TryGetValue(securityToken, out info) || info.TimeLeft.TotalSeconds < 0)
 			{
 				throw new WebFaultException(HttpStatusCode.Unauthorized);
 			}
+			if (updateActivity)
+			{
+				info.LastActivity = DateTime.Now;
+			}
+
 			return info;
 		}
 
@@ -104,15 +174,14 @@ namespace BankService
 			db.SaveChanges();
 		}
 
-
-
+		
 		private class DefaultInitializer : System.Data.Entity.DropCreateDatabaseAlways<BankDatabase>// DropCreateDatabaseIfModelChanges<BankDatabase>
 		{
 			protected override void Seed(BankDatabase context)
 			{
-				context.Roles.Add(new Role() { Name = "User" });
-				context.Roles.Add(new Role() { Name = "Operator" });
-				context.Roles.Add(new Role() { Name = "Admin" });
+				context.Roles.Add(new Role() { Name = "user" });
+				context.Roles.Add(new Role() { Name = "operator" });
+				context.Roles.Add(new Role() { Name = "admin" });
 				context.SaveChanges();
 
 				CardClass cardClass = new CardClass()
@@ -165,5 +234,8 @@ namespace BankService
 				context.SaveChanges();
 			}
 		}
+
+		
+
 	}
 }

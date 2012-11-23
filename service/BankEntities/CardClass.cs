@@ -12,9 +12,13 @@ namespace BankEntities
 		{
 			Types = new HashSet<CardType>();
 		}
+
 		[Key]
 		public int ID { get; set; }
+
+		[Required]
 		public string Name { get; set; }
+
 		public virtual ICollection<CardType> Types { get; private set; }
 	}
 }

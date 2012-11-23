@@ -14,5 +14,10 @@ namespace BankEntities
 
 		[Required]
 		public virtual CardClass Class { get; set; }
+
+		public override string ToString()
+		{
+			return Class.Name + " " + Name;
+		}
 	}
 }

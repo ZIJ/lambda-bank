@@ -14,6 +14,8 @@ namespace BankEntities
 		[Required]
 		public byte[] FromAccountNumber { get; set; }
 
+		public int? FromAccountID { get; set; }
+
 		public decimal FromAccountBackupAmount { get; set; }
 
 		public decimal FromAccountDelta { get; set; }
@@ -22,6 +24,8 @@ namespace BankEntities
 
 		[Required]
 		public byte[] ToAccountNumber { get; set; }
+
+		public int? ToAccountID { get; set; }
 
 		public decimal ToAccountBackupAmount { get; set; }
 

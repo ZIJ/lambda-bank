@@ -59,7 +59,7 @@ namespace BankService
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/admin/cards/create")]
-		Message CreateCard(Guid securityToken, Card card, int userID);
+		Message CreateCard(Guid securityToken, int typeID, Currency? currency, int? accountID2Attach);
 		
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
@@ -86,6 +86,13 @@ namespace BankService
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/login")]
 		Message Login(string login, string password);
+
+		[WebInvoke(Method = "POST",
+			RequestFormat = WebMessageFormat.Json,
+			ResponseFormat = WebMessageFormat.Json,
+			BodyStyle = WebMessageBodyStyle.Wrapped,
+			UriTemplate = "/verifyToken")]
+		Message VerifyToken(Guid securityToken);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,

@@ -244,7 +244,7 @@ namespace BankService
 			{
 				ID = card.ID,
 				Number = card.CardNumber,
-				Type = card.Type,
+				Type = card.Type.ToString(),
 				User = joinUser? card.BankUser : (object)card.BankUser.ID
 			};
 			return response;
@@ -261,6 +261,25 @@ namespace BankService
 				acc.Amount,
 			};
 			return response;
+		}
+
+
+		public Message CreateCard(Guid securityToken, int typeID, Currency? currency, int? accountID2Attach)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Message VerifyToken(Guid securityToken)
+		{
+			int secondsLeft = 0;
+			try
+			{
+				LoginInfo info = bank.GetUser(securityToken, false);
+				secondsLeft = (int)info.TimeLeft.TotalSeconds;
+			}
+			catch { }
+
+			return Json(secondsLeft);
 		}
 	}
 }
