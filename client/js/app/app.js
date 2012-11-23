@@ -30,7 +30,9 @@ function ($, _, Backbone, UserModel, LoginView, Router) {
 
         start: function() {
             var app = this;
-            
+
+            console.log("app start");
+
             app.loginView = new LoginView({
                 model: userModel,
                 el: app.$loginViewEl
@@ -49,6 +51,7 @@ function ($, _, Backbone, UserModel, LoginView, Router) {
                 root: app.rootDirectory,
                 pushState: false
             });
+
         },
 
         request: function(params) {
@@ -58,17 +61,16 @@ function ($, _, Backbone, UserModel, LoginView, Router) {
             $.ajax({
                 type: "POST",
                 url: params.url,
-                data: _.extend({}, params.data, {
+                data: JSON.stringify(_.extend({}, params.data, {
                     securityToken: guid
-                }),
+                })),
                 dataType: "json",
                 cache: false,
                 contentType: "application/json",
                 success: params.success,
                 error: function(xhr) {
                     params.error.call(this, xhr);
-                    //TODO: dispose viewModel & view
-                    app.loginView.render();
+                    app.router.navigate("login", { trigger: true });
                 }
             });
         }
@@ -77,13 +79,24 @@ function ($, _, Backbone, UserModel, LoginView, Router) {
     app.userModel.on("change:guid", function(userModel, newGuid) {
         if (!newGuid) return;
 
+        function anyway() {
+            if (app.router.lastActionUrl) {
+                app.router.navigate(app.router.lastActionUrl, { trigger: true });
+            } else {
+                app.router.navigate("", { trigger: true });
+            }
+        }
+
         switch (userModel.get("role")) {
             case "admin":
 
-                app.viewModel = new (require("view-models/admin/appViewModelAdmin"))();
-                app.view = new (require("views/admin/appViewAdmin"))({
-                    model: app.viewModel,
-                    el: app.$viewEl
+                require(["view-models/admin/appViewModelAdmin", "views/admin/appViewAdmin"], function(AppViewModelAdmin, AppViewAdmin) {
+                    app.viewModel = new AppViewModelAdmin();
+                    app.view = new AppViewAdmin({
+                        model: app.viewModel,
+                        el: app.$viewEl
+                    });
+                    anyway();
                 });
 
                 break;
@@ -97,6 +110,7 @@ function ($, _, Backbone, UserModel, LoginView, Router) {
 
     app.userModel.on("error:login", function() {
         alert("login failed");
+        //app.router.navigate("login", { trigger: true });
     });
 
     return app;

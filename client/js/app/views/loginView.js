@@ -29,14 +29,14 @@ function ($, Backbone) {
         //},
         render: function() {
             var view = this;
-            
+
+            console.log("loginView rendering");
+
             view.$el.empty();
 
             view.$el.css({
                 "background-color": "blue"
             });
-
-            console.log("view rendering");
         },
 
         //only for testing

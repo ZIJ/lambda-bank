@@ -26,7 +26,7 @@ function (app, Backbone, $, UserModel) {
                 viewModel = this;
 
             app.request({
-                url: "http://lambda-bank.drs-cd.com/WebService.svc/user/users/get",
+                url: "http://lambda-bank.drs-cd.com/WebService.svc/admin/users/get",
                 data: {
 
                 },

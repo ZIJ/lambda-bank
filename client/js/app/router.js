@@ -21,13 +21,13 @@ function (Backbone) {
         index: function() {
             var router = this;
 
-            if (router.app.userModel.get("role") === "guest") {
-                router.navigate("login");
-            } else {
-                router.lastAction = {
-                    name: "index"
-                };
+            //var hashStr = window.location.hash ? "#" + window.location.hash : "";
+            router.lastActionUrl = window.location.hash;
+            console.log(router.lastActionUrl);
 
+            if (router.app.userModel.get("role") === "guest") {
+                router.navigate("login", { trigger: true });
+            } else {
                 router.app.viewModel.load().then(function () {
                     router.lastAction = null;
                 });

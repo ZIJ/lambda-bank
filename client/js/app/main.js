@@ -4,8 +4,10 @@ require([
 ],
 function (app, $) {
     $(function () {
-        app.$loginViewEl = $("#login-view");
-        app.$viewEl = $("#app-view");
+        var $mainEl = $("#app-view");
+
+        app.$loginViewEl = $mainEl; //$("#login-view");
+        app.$viewEl = $mainEl; //$("#app-view");
         app.start();
     });
 });

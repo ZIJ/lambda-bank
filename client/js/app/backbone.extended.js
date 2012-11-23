@@ -309,14 +309,14 @@
         var View = Backbone.View.extend.apply(this, [protoProps, classProps]),
             render = View.prototype.render;
 
-        if (render) {
-            View.prototype.render = function () {
-                var view = this;
-                return $.when(render.call(view)).then(function () {
-                    view.$el.disableSelection();
-                });
-            };
-        }
+//        if (render) {
+//            View.prototype.render = function () {
+//                var view = this;
+//                return $.when(render.call(view)).then(function () {
+//                    view.$el.disableSelection();
+//                });
+//            };
+//        }
 
         return View;
     };

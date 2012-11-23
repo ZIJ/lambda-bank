@@ -13,6 +13,8 @@ function ($, Backbone) {
         render: function() {
             var view = this;
 
+            console.log("appViewAdmin rendering");
+
             view.$el.empty();
 
             view.$el.css({
