@@ -1,11 +1,11 @@
 define([
     "backbone",
-    "zepto",
+    "jquery",
 
     "backbone.extended"
 ],
 function (Backbone, $) {
-    return Backbone.Model.Extended.extend({
+    return Backbone.Extended.Model.extend({
         defaults: {
             guid: null,
             role: "guest",

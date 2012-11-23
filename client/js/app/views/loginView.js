@@ -6,7 +6,7 @@ define([
     "backbone.extended"
 ],
 function ($, Backbone) {
-    return Backbone.View.Extended.extend({
+    return Backbone.Extended.View.extend({
         initialize: function() {
             var view = this;
 

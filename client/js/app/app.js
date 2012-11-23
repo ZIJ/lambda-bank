@@ -1,5 +1,6 @@
 define([
-    "zepto",
+    "jquery",
+    "lodash",
     "backbone",
 
     "models/userModel",
@@ -9,26 +10,40 @@ define([
 
     "backbone.extended"
 ],
-function ($, Backbone, UserModel, LoginView, Router) {
+function ($, _, Backbone, UserModel, LoginView, Router) {
     var userModel = new UserModel();
 
     var app = new Backbone.Extended.Application({
         root: "",
 
         userModel: userModel,
+        
+        loginView: null,
+        $loginViewEl: null,
+        
+        view: null,
+        $viewEl: null,
+        
+        viewModel: null,
 
-        loginView: new LoginView({
-            model: userModel,
-            el: $(document.body)
-        }),
+        router: null,
 
-        router: new Router({
-
-        }),
-
-        start: function () {
+        start: function() {
             var app = this;
             
+            app.loginView = new LoginView({
+                model: userModel,
+                el: app.$loginViewEl
+            });
+            
+            app.loginView.on("loginRequest", function (loginData) {
+                app.userModel.login(loginData.login, loginData.password);
+            });
+            
+            app.router = new Router({
+                app: app
+            });
+
             // Trigger the initial route and enable HTML5 History API support (optionally)
             Backbone.history.start({
                 root: app.rootDirectory,
@@ -36,14 +51,14 @@ function ($, Backbone, UserModel, LoginView, Router) {
             });
         },
 
-        request: function (params) {
+        request: function(params) {
             var app = this,
                 guid = app.userModel.get("guid");
 
             $.ajax({
                 type: "POST",
                 url: params.url,
-                data: $.extend(params.data, {
+                data: _.extend({}, params.data, {
                     securityToken: guid
                 }),
                 dataType: "json",
@@ -58,11 +73,7 @@ function ($, Backbone, UserModel, LoginView, Router) {
             });
         }
     });
-
-    app.loginView.on("loginRequest", function(loginData) {
-        app.userModel.login(loginData.login, loginData.password);
-    });
-
+    
     app.userModel.on("change:guid", function(userModel, newGuid) {
         if (!newGuid) return;
 
@@ -72,7 +83,7 @@ function ($, Backbone, UserModel, LoginView, Router) {
                 app.viewModel = new (require("view-models/admin/appViewModelAdmin"))();
                 app.view = new (require("views/admin/appViewAdmin"))({
                     model: app.viewModel,
-                    el: $(document.body)
+                    el: app.$viewEl
                 });
 
                 break;

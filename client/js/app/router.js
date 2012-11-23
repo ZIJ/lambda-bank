@@ -1,9 +1,7 @@
 define([
-    "app",
-
     "backbone"
 ],
-function (app, Backbone) {
+function (Backbone) {
     return Backbone.Router.extend({
         lastAction: null,
 
@@ -13,28 +11,34 @@ function (app, Backbone) {
         },
 
         initialize: function(options) {
+            var router = this;
 
+            if (options.app) {
+                router.app = options.app;
+            }
         },
 
         index: function() {
             var router = this;
 
-            if (app.userModel.get("role") === "guest") {
+            if (router.app.userModel.get("role") === "guest") {
                 router.navigate("login");
             } else {
                 router.lastAction = {
                     name: "index"
                 };
 
-                app.viewModel.load().then(function () {
+                router.app.viewModel.load().then(function () {
                     router.lastAction = null;
                 });
             }
         },
 
         login: function () {
+            var router = this;
+
             //TODO: dispose viewModel & view
-            app.loginView.render();
+            router.app.loginView.render();
         }
     });
 });

@@ -1,11 +1,11 @@
 require([
-    "app"
-
+    "app",
+    "zepto"
 ],
-function (app) {
-
-
-    app.start();
-
-
+function (app, $) {
+    $(function () {
+        app.$loginViewEl = $("#login-view");
+        app.$viewEl = $("#app-view");
+        app.start();
+    });
 });

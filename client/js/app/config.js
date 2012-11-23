@@ -22,7 +22,8 @@ require.config({
 			}
 		},
 		zepto: {
-			deps: ["jquery"]
+		    deps: ["jquery"],
+		    exports: "Zepto"
 		},
         backbone: {
             deps: ["lodash", "zepto"],

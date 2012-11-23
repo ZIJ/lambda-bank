@@ -7,7 +7,7 @@ define([
     "backbone.extended"
 ],
 function (app, Backbone, $, UserModel) {
-    return Backbone.ViewModel.Extended.extend({
+    return Backbone.Extended.ViewModel.extend({
         disposable: [],
 
         defaults: {

@@ -10,7 +10,7 @@ function ($, Backbone) {
             var view = this;
 
         },
-        render: function () {
+        render: function() {
             var view = this;
 
             view.$el.empty();
