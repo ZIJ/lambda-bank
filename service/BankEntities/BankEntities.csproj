@@ -35,9 +35,11 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -47,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
+    <Compile Include="Bank.cs" />
     <Compile Include="BankDatabase.cs" />
     <Compile Include="BankUser.cs" />
     <Compile Include="CalendarSchedule.cs" />
@@ -54,7 +57,9 @@
     <Compile Include="CardClass.cs" />
     <Compile Include="CardType.cs" />
     <Compile Include="Currency.cs" />
+    <Compile Include="IERIP.cs" />
     <Compile Include="InternetBankingUser.cs" />
+    <Compile Include="LoginInfo.cs" />
     <Compile Include="PaymentEntry.cs" />
     <Compile Include="PaymentTemplate.cs" />
     <Compile Include="PaymentType.cs" />
@@ -63,6 +68,7 @@
     <Compile Include="SpanSchedule.cs" />
     <Compile Include="Transaction.cs" />
     <Compile Include="TransactionState.cs" />
+    <Compile Include="UserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

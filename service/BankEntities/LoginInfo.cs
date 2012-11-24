@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace BankService
+namespace BankEntities
 {
-	/*public class LoginInfo
+	public class LoginInfo
 	{
 		public InternetBankingUser User { get; set; }
 		public DateTime LogonTime { get; set; }
@@ -21,5 +21,5 @@ namespace BankService
 				return LastActivity + TimeSpan.FromMinutes(2) - DateTime.Now;
 			}
 		}
-	}*/
+	}
 }

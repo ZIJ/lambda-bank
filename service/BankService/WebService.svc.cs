@@ -14,20 +14,20 @@ namespace BankService
 {
 	public class WebService : IBankService
 	{
-		private static BankDaemon bank = new BankDaemon();
+		private static Bank bank = new Bank();
 		private static BankDatabase db = null;
 
 		private static System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
 
 		static WebService()
 		{
-			bank.StartProcessing();
+			//bank.StartProcessing();
 			db = bank.Database;
 		}
 
 		public Message Login(string login, string password)
 		{
-			LoginInfo info = bank.Logon(login, password);
+			LoginInfo info = bank.UserService.Logon(login, password);
 
 			if (info == null)
 			{
@@ -136,6 +136,7 @@ namespace BankService
 		#region Users
 		public Message GetUsers(Guid securityToken, bool joinCards)
 		{
+			LoginInfo info = GetUser(securityToken);
 			List<object> users = new List<object>();
 			foreach (BankUser u in bank.Database.BankUsers)
 			{
@@ -175,7 +176,7 @@ namespace BankService
 
 			string login;
 			string password;
-			bank.GenerateInternetBankingUser(currentUser, out login, out password);
+			bank.UserService.GenerateInternetBankingUser(currentUser, out login, out password);
 
 			var response = new
 			{
@@ -263,6 +264,26 @@ namespace BankService
 			return response;
 		}
 
+		private LoginInfo GetUser(Guid securityToken)
+		{
+			LoginInfo info = bank.UserService.GetUser(securityToken);
+			if (info == null)
+			{
+				throw new WebFaultException(HttpStatusCode.Unauthorized);
+			}
+			return info;
+		}
+
+		private LoginInfo GetAdmin(Guid securityToken)
+		{
+			LoginInfo info = bank.UserService.GetUser(securityToken);
+			if (info == null)
+			{
+				throw new WebFaultException(HttpStatusCode.Unauthorized);
+			}
+			return info;
+		}
+
 
 		public Message CreateCard(Guid securityToken, int typeID, Currency? currency, int? accountID2Attach)
 		{
@@ -274,7 +295,7 @@ namespace BankService
 			int secondsLeft = 0;
 			try
 			{
-				LoginInfo info = bank.GetUser(securityToken, false);
+				LoginInfo info = bank.UserService.GetUser(securityToken, false);
 				secondsLeft = (int)info.TimeLeft.TotalSeconds;
 			}
 			catch { }

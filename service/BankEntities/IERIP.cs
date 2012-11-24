@@ -5,16 +5,36 @@ using System.Text;
 
 namespace BankEntities
 {
-	class IERIP
+	public interface IERIP
 	{
+		void SendPayment(ERIPPaymentType type, string jsonPayment);
 
-		public void SendPayment()
-		{ }
+		object GetPaymentInfo(ERIPPaymentType type, string jsonPayment);
 
+		object GetPrerequisites(ERIPPaymentType type);
 
-		public object GetPaymentInfo()
-		{
- 
-		}
+	}
+
+	public class Prerequisite
+	{
+		public Guid BankGuid { get; set; }
+
+		public string AccountNumber { get; set; }
+
+		public Currency Currency { get; set; }
+	}
+
+	public enum ERIPPaymentType
+	{
+		Velcom,
+		Mts,
+		Life,
+		Beltelecom,
+		ElectroService,
+		AquaService,
+		BusinessNetwork,
+		AtlantTelecom,
+		AdslBy,
+		Solo
 	}
 }
