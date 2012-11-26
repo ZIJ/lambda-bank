@@ -84,6 +84,7 @@ namespace BankEntities
 				Thread.Sleep(1000 * 60 * 60);
 			}
 		}
+
 		public void FixTransactions()
 		{
 			foreach (Transaction t in db.Transactions.Where(i => i.State == TransactionState.Opened))
@@ -190,5 +191,4 @@ namespace BankEntities
 			context.SaveChanges();
 		}
 	}
-
 }

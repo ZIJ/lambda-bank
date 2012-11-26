@@ -57,6 +57,7 @@
     <Compile Include="CardClass.cs" />
     <Compile Include="CardType.cs" />
     <Compile Include="Currency.cs" />
+    <Compile Include="BankArbiter.cs" />
     <Compile Include="IERIP.cs" />
     <Compile Include="InternetBankingUser.cs" />
     <Compile Include="LoginInfo.cs" />
