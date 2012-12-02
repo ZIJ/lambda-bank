@@ -292,15 +292,34 @@ namespace BankService
 
 		public Message VerifyToken(Guid securityToken)
 		{
-			int secondsLeft = 0;
-			try
+			LoginInfo info = bank.UserService.GetUser(securityToken, false);
+			if (info == null)
 			{
-				LoginInfo info = bank.UserService.GetUser(securityToken, false);
-				secondsLeft = (int)info.TimeLeft.TotalSeconds;
+				throw new WebFaultException(HttpStatusCode.Unauthorized);
 			}
-			catch { }
 
-			return Json(secondsLeft);
+			int secondsLeft = (int)info.TimeLeft.TotalSeconds;
+
+			var response = new
+			{
+				Role = info.User.Role.Name,
+				SecondsLeft = secondsLeft,
+				AuthenticationToken = info.UID
+			};
+
+			return Json(response);
+		}
+
+
+		public Message CreateCard(Guid securityToken, Currency[] currency, int? accountID2Attach)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Message Logout(Guid securityToken)
+		{
+			bank.UserService.Logout(securityToken);
+			return Json("OK");
 		}
 	}
 }

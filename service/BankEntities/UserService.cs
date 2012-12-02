@@ -17,13 +17,14 @@ namespace BankEntities
 		public UserService(Bank bank)
 		{
 			this.bank = bank;
+			db = bank.Database;
 		}
 
 		public LoginInfo Logon(string login, string password)
 		{
 			InternetBankingUser user = db.InternetBankingUsers.ToList().Where(
 				u => u.Login == login && u.PasswordHash == PasswordDistortion(password, u.Salt)).FirstOrDefault();
-			user = db.InternetBankingUsers.Find(user.ID);
+			//user = db.InternetBankingUsers.Find(user.ID);
 			if (user == null)
 			{
 				return null;
@@ -33,8 +34,19 @@ namespace BankEntities
 			info.LogonTime = DateTime.Now;
 			info.LastActivity = DateTime.Now;
 			info.UID = Guid.NewGuid();
-			authenticatedUsers.Add(info.UID, info);
+			lock (authenticatedUsers)
+			{
+				authenticatedUsers.Add(info.UID, info);
+			}
 			return info;
+		}
+
+		public void Logout(Guid securityToken)
+		{
+			lock (authenticatedUsers)
+			{
+				authenticatedUsers.Remove(securityToken);
+			}
 		}
 
 		public LoginInfo GetUser(Guid securityToken, bool updateActivity = true)

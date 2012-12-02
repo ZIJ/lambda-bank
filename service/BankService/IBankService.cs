@@ -59,14 +59,14 @@ namespace BankService
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/admin/cards/create")]
-		Message CreateCard(Guid securityToken, int typeID, Currency? currency, int? accountID2Attach);
+		Message CreateCard(Guid securityToken, Currency[] currency, int? accountID2Attach);
 		
-		[WebInvoke(Method = "POST",
-			RequestFormat = WebMessageFormat.Json,
-			ResponseFormat = WebMessageFormat.Json,
-			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/admin/card/attach")]
-		Message AttachAccount2Card(Guid securityToken, int accountID, int cardID);
+		//[WebInvoke(Method = "POST",
+		//	RequestFormat = WebMessageFormat.Json,
+		//	ResponseFormat = WebMessageFormat.Json,
+		//	BodyStyle = WebMessageBodyStyle.Wrapped,
+		//	UriTemplate = "/admin/card/attach")]
+		//Message AttachAccount2Card(Guid securityToken, int accountID, int cardID);
 		#endregion
 
 		#region Accounts
@@ -93,6 +93,13 @@ namespace BankService
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/verifyToken")]
 		Message VerifyToken(Guid securityToken);
+
+		[WebInvoke(Method = "POST",
+			RequestFormat = WebMessageFormat.Json,
+			ResponseFormat = WebMessageFormat.Json,
+			BodyStyle = WebMessageBodyStyle.Wrapped,
+			UriTemplate = "/logout")]
+		Message Logout(Guid securityToken);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
