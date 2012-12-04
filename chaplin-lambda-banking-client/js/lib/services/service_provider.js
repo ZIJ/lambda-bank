@@ -8,11 +8,14 @@ define([
     var ServiceProvider = (function() {
 
         function ServiceProvider() {
-            _(this).extend($.Deferred());
+            var serviceProvider = this;
+
+            _(serviceProvider).extend($.Deferred());
+
             utils.deferMethods({
-                deferred: this,
+                deferred: serviceProvider,
                 methods: ['triggerLogin', 'getLoginStatus'],
-                onDeferral: this.load
+                onDeferral: serviceProvider.load
             });
         }
 
@@ -20,12 +23,16 @@ define([
             loading: false,
             disposed: false,
             dispose: function() {
-                if (this.disposed) {
+                var serviceProvider = this;
+
+                if (serviceProvider.disposed) {
                     return;
                 }
-                this.unsubscribeAllEvents();
-                this.disposed = true;
-                return typeof Object.freeze === "function" ? Object.freeze(this) : void 0;
+                serviceProvider.unsubscribeAllEvents();
+                serviceProvider.disposed = true;
+                if (typeof Object.freeze === "function") {
+                    Object.freeze(serviceProvider)
+                }
             }
         });
 

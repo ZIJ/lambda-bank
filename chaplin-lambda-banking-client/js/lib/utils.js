@@ -18,7 +18,6 @@ define([
             function ctor() {
                 this.constructor = child;
             }
-
             ctor.prototype = parent.prototype;
             child.prototype = new ctor();
             child.__super__ = parent.prototype;
@@ -47,21 +46,21 @@ define([
                 }
                 script = void 0;
                 if (success && !aborted) {
-                    return success();
+                    success();
                 }
             };
             script.onload = script.onreadystatechange = onload;
             script.onerror = function() {
                 onload(null, true);
                 if (error) {
-                    return error();
+                    error();
                 }
             };
             timeoutHandle = setTimeout(script.onerror, timeout);
-            return head.insertBefore(script, head.firstChild);
+            head.insertBefore(script, head.firstChild);
         },
         deferMethods: function(options) {
-            var deferred, func, host, methods, methodsHash, name, onDeferral, target, _i, _len, _results;
+            var deferred, func, host, methods, methodsHash, name, onDeferral, target, _i, _len;
             deferred = options.deferred;
             methods = options.methods;
             host = options.host || deferred;
@@ -82,16 +81,11 @@ define([
             } else {
                 methodsHash = methods;
             }
-            _results = [];
-            for (name in methodsHash) {
-                if (!__hasProp.call(methodsHash, name)) continue;
-                func = methodsHash[name];
-                if (typeof func !== 'function') {
-                    continue;
+            _.each(methodsHash, function (func, name) {
+                if (typeof func === 'function') {
+                    target[name] = utils.createDeferredFunction(deferred, func, target, onDeferral);
                 }
-                _results.push(target[name] = utils.createDeferredFunction(deferred, func, target, onDeferral));
-            }
-            return _results;
+            });
         },
         createDeferredFunction: function(deferred, func, context, onDeferral) {
             if (context == null) {

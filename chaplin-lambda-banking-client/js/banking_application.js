@@ -6,6 +6,8 @@ define([
 ], function(Chaplin, Layout, routes, SessionController) {
     'use strict';
 
+    var mediator = Chaplin.mediator;
+
     // The application object
     var BankingApplication = Chaplin.Application.extend({
 
@@ -13,32 +15,45 @@ define([
         // “Controller title – Site title” (see Layout#adjustTitle)
         title: 'Lambda-Banking Application',
 
+        // Links to some of persistent controllers
+        headerController: null,
+        navigationController: null,
+
         initialize: function() {
+            var app = this;
+
+            _(app).bindAll("loginHandler", "logoutHandler");
+
             // Call the parent constructor.
-            Chaplin.Application.prototype.initialize.apply(this, arguments);
+            Chaplin.Application.prototype.initialize.apply(app, arguments);
             //console.debug 'BankingApplication#initialize'
 
             // Initialize core components
-            this.initDispatcher();
-            this.initLayout();
-            this.initMediator();
+            app.initLayout();
+            app.initMediator();
 
             // Application-specific scaffold
-            this.initControllers();
+            app.initControllers();
 
             // Register all routes and start routing
-            this.initRouter(routes, { pushState: false , root: '/' });
+            //app.initRouter(routes, { pushState: false , root: '/' });
+
+            mediator.subscribe("login", app.loginHandler);
+            mediator.subscribe("logout", app.logoutHandler);
+
 
             // Freeze the application instance to prevent further changes
-            if (Object.freeze) Object.freeze(this);
+            //if (typeof Object.freeze === "function") Object.freeze(app);
         },
 
         // Override standard layout initializer
         // ------------------------------------
         initLayout: function() {
+            var app = this;
+
             // Use an application-specific Layout class. Currently this adds
             // no features to the standard Chaplin Layout, it’s an empty placeholder.
-            this.layout = new Layout({title: this.title});
+            app.layout = new Layout({title: app.title});
         },
 
         // Instantiate common controllers
@@ -50,17 +65,56 @@ define([
             // and views which are needed the whole time, for example header, footer
             // or navigation views.
             // e.g. new NavigationController()
+
             new SessionController();
+
+            //mediator.publish("!startupController", "session");
         },
 
         // Create additional mediator properties
         // -------------------------------------
         initMediator: function() {
             // Create a user property
-            Chaplin.mediator.user = null;
+            mediator.user = null;
             // Add additional application-specific properties and methods
             // Seal the mediator
-            Chaplin.mediator.seal();
+            mediator.seal();
+        },
+
+        loginHandler: function() {
+            var app = this;
+
+            switch (mediator.user.get('role')) {
+                case 'admin':
+//                    app.headerController = new AdminHeaderController();
+//                    app.navigationController = new AdminNavigationController();
+//
+//                    app.initDispatcher({
+//                        controllerPath: '/controllers/admin'
+//                    });
+//
+//                    app.initRouter(routesAdmin, { pushState: false , root: '/' });
+
+                    break;
+                case 'user':
+
+                    break;
+            }
+        },
+
+        logoutHandler: function() {
+            var app = this;
+
+//            app.dispatcher.dispose();
+//            app.router.dispose();
+//            app.dispatcher = null;
+//            app.router = null;
+//
+//            app.headerController.dispose();
+//            app.navigationController.dispose();
+//            app.headerController = null;
+//            app.navigationController = null;
+
         }
     });
 

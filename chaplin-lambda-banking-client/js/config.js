@@ -1,6 +1,6 @@
 require.config({
     deps: ["main"],
-    baseUrl: '../js/',
+    //baseUrl: '../js/',
     paths: {
         jquery: 'vendor/jquery-1.8.2',
         underscore: 'vendor/underscore-1.4.2',

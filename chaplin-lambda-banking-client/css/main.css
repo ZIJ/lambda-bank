@@ -1,0 +1,316 @@
+html, body {
+    height: 100%;
+    min-height: 100%;
+}
+
+body {
+    display: table;
+    width: 100%;
+    background: url(../img/bg.jpg) center center no-repeat;
+}
+
+h1 {
+}
+
+.login-page {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.login-page h1{
+    text-align: center;
+    color: #523215;
+    font-size: 216px;
+    line-height: 216px;
+    text-shadow:    0 2px 1px white,
+    0 1px 1px white,
+    0 -2px 1px black,
+    0 -1px 1px black;
+}
+
+.login-page .well {
+    margin: 0 auto;
+    width: 300px;
+    border: 1px solid #211d14;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5)
+}
+
+.login-page .register {
+    margin-top: 10px;
+}
+
+.main .logo img{
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+.main header h1 {
+    font-size: 50px;
+    text-shadow:    0 1px 1px white,
+    0 -1px 1px black;
+    margin: 0.5em 0;
+}
+
+
+.main .breadcrumb,
+.main .well {
+    border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.main .breadcrumb {
+    clear: both;
+}
+
+.main header .content {
+    padding-top: 20px;
+}
+
+.nav-list .active a,
+.nav-list .active a:hover {
+    background: #0B98B8;
+}
+
+.main .data-fields {
+    font-size: 18px;
+}
+
+.main .data-fields dt {
+    min-width: 140px;
+}
+
+.main .data-fields dt,
+.main .data-fields dd {
+    float: left;
+    line-height: 40px;
+}
+
+.main .data-fields dt {
+    clear: both;
+}
+
+.main .data-fields .type {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.main .data-fields button {
+    margin-bottom: 9px;
+    border: 0;
+    background: transparent;
+    padding: 0;
+}
+
+.main .data-fields .type li {
+    display: inline-block;
+    margin: 0 10px 0 0;
+}
+
+.main .data-fields .type input[type=radio] {
+    margin: 0;
+}
+
+.main .data-fields .type label {
+    margin: 0;
+    display: inline-block;
+}
+
+.user .cards-n-accounts .nav-tabs {
+    margin-bottom: 0;
+    border: none;
+}
+
+.user .cards-n-accounts .tab-content {
+    border: 1px solid #ddd;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 0 4px 4px 4px;
+}
+
+.user .cards-n-accounts .tab-content .table {
+    margin: 0;
+}
+
+table {
+    background-color: #fff;
+}
+
+table .expander td:not(.check){
+    background-color: #f5fff5;
+    cursor: pointer;
+}
+
+table .expander:hover td:not(.check){
+    background-color: #efe;
+}
+
+table .expandable {
+    display: none;
+}
+
+table .expandable td {
+    background-color: #fff;
+    padding: 0;
+}
+
+table .expandable .accounts,
+table .expandable .cards {
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+table .expandable .accounts>li,
+table .expandable .cards>li {
+    overflow: hidden;
+    border-top: 1px solid #ddd;
+}
+
+table .expandable .accounts>li:first-of-type,
+table .expandable .cards>li:first-of-type {
+    border: 0;
+}
+
+table .expandable .controls {
+    list-style: none;
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: 15px;
+    padding: 0 8px;
+    margin: 0 10px 0 0;
+    background: #eee;
+}
+
+table .expandable .controls button {
+    border: 0;
+    padding: 0;
+    background: transparent;
+}
+
+table .check {
+    width: 15px;
+}
+
+.user .form-actions {
+    display: none;
+}
+
+/*
+    HELPERS
+*/
+.fader {
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #000;
+    background-color: rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+.fader:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -0.25em; /* Adjusts for spacing */
+}
+
+.alert {
+    /*display: inline-block;*/
+    display: none;
+    text-align: left;
+    vertical-align: middle;
+}
+
+
+/*
+    BUTTONS
+*/
+.btn {
+    color: #fff;
+    border: 0;
+    background: #09829E;
+    box-shadow: 0 5px 0 0 #075F73,
+    0 5px 10px 0 rgba(0, 0, 0, .5);
+    position: relative;
+    top: 0;
+    -webkit-transition: all ease-in-out 0.3s;
+    -moz-transition: all ease-in-out 0.3s;
+    -ms-transition: all ease-in-out 0.3s;
+    -o-transition: all ease-in-out 0.3s;
+    transition: all ease-in-out 0.3s;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .3);
+    margin: -5px 0 0 0;
+}
+
+.btn:hover {
+    background: #0B98B8;
+    color: #fff;
+}
+
+.btn:active {
+    background: #09829E;
+    color: #fff;
+    box-shadow: 0 2px 0 0 #075F73,
+    0 2px 2px 0 rgba(0, 0, 0, .5);
+    position: relative;
+    top: 3px;
+}
+
+.btn.btn-danger {
+    background: #D22C24;
+    box-shadow: 0 5px 0 0 #9E211B,
+    0 5px 10px 0 rgba(0, 0, 0, .5);
+}
+
+.btn.btn-danger:active {
+    box-shadow: 0 2px 0 0 #9E211B,
+    0 2px 2px 0 rgba(0, 0, 0, .5);
+}
+
+.btn.btn-danger:hover {
+    background: #EB3228;
+}
+
+.btn.btn-primary {
+    background: #10609E;
+    box-shadow: 0 5px 0 0 #0B416B,
+    0 5px 10px 0 rgba(0, 0, 0, .5);
+}
+
+.btn.btn-primary:hover {
+    background: #1270B8;
+}
+
+.btn.btn-primary:active {
+    box-shadow: 0 2px 0 0 #0B416B,
+    0 2px 2px 0 rgba(0, 0, 0, .5);
+}
+
+.btn.btn-warning {
+    background: #E5AC39;
+    box-shadow: 0 5px 0 0 #B2862D,
+    0 5px 10px 0 rgba(0, 0, 0, .5);
+}
+
+.btn.btn-warning:hover {
+    background: #FFC141;
+}
+
+.btn.btn-warning:active {
+    box-shadow: 0 2px 0 0 #B2862D,
+    0 2px 2px 0 rgba(0, 0, 0, .5);
+}
+
+/*
+    BADGES
+*/
+
+.badge-info {
+    background: #075F73;
+}
