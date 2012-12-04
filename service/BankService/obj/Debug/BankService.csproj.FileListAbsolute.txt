@@ -34,3 +34,12 @@ D:\Source Code\lambda-bank\service\BankService\bin\EntityFramework.xml
 D:\Source Code\lambda-bank\service\BankService\obj\Debug\BankService.csprojResolveAssemblyReference.cache
 D:\Source Code\lambda-bank\service\BankService\obj\Debug\BankService.dll
 D:\Source Code\lambda-bank\service\BankService\obj\Debug\BankService.pdb
+F:\Source Code\lambda-bank\service\BankService\obj\Debug\BankService.csprojResolveAssemblyReference.cache
+F:\Source Code\lambda-bank\service\BankService\bin\BankService.dll
+F:\Source Code\lambda-bank\service\BankService\bin\BankService.pdb
+F:\Source Code\lambda-bank\service\BankService\bin\BankEntities.dll
+F:\Source Code\lambda-bank\service\BankService\bin\EntityFramework.dll
+F:\Source Code\lambda-bank\service\BankService\bin\BankEntities.pdb
+F:\Source Code\lambda-bank\service\BankService\bin\EntityFramework.xml
+F:\Source Code\lambda-bank\service\BankService\obj\Debug\BankService.dll
+F:\Source Code\lambda-bank\service\BankService\obj\Debug\BankService.pdb

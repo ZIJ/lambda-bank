@@ -5,23 +5,17 @@ using System.Text;
 
 namespace BankEntities
 {
-	public class BankArbiter
+	public static class BankArbiter
 	{
-		private Dictionary<Guid, Bank> banks = new Dictionary<Guid, Bank>();
+		private static Dictionary<Guid, Bank> banks = new Dictionary<Guid, Bank>();
 
-		public void Transact(BankPayment payment)
+		public static void Transact(BankPayment payment)
 		{
-			try
-			{
-
-			}
-			catch
-			{
-
-			}
+			Bank incoming = banks[payment.ToBank];
+			incoming.IncomingPay(payment);
 		}
 
-		public Dictionary<Guid, Bank> Banks
+		public static Dictionary<Guid, Bank> Banks
 		{
 			get
 			{
@@ -39,5 +33,7 @@ namespace BankEntities
 		public string ToAccountNumber { get; set; }
 
 		public decimal Amount { get; set; }
+
+		public Currency Currency { get; set; }
 	}
 }

@@ -11,21 +11,27 @@ namespace BankEntities
 		[Key]
 		public int ID { get; set; }
 
+
+		//From
+
+		public Guid FromBank { get; set; }
+
 		[Required]
-		public byte[] FromAccountNumber { get; set; }
-
-		public int? FromAccountID { get; set; }
-
+		public string FromAccountNumber { get; set; }
+		
 		public decimal FromAccountBackupAmount { get; set; }
 
 		public decimal FromAccountDelta { get; set; }
 
 		public Currency FromAccountCurrency { get; set; }
 
-		[Required]
-		public byte[] ToAccountNumber { get; set; }
 
-		public int? ToAccountID { get; set; }
+		//To
+
+		public Guid ToBank { get; set; }
+
+		[Required]
+		public string ToAccountNumber { get; set; }
 
 		public decimal ToAccountBackupAmount { get; set; }
 

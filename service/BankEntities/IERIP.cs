@@ -11,8 +11,7 @@ namespace BankEntities
 
 		object GetPaymentInfo(ERIPPaymentType type, string jsonPayment);
 
-		object GetPrerequisites(ERIPPaymentType type);
-
+		Prerequisite GetPrerequisites(ERIPPaymentType type);
 	}
 
 	public class Prerequisite
