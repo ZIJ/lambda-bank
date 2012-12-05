@@ -16,6 +16,8 @@ namespace BankEntities
 
 		public Guid FromBank { get; set; }
 
+		public int? FromAccountID { get; set; }
+
 		[Required]
 		public string FromAccountNumber { get; set; }
 		
@@ -29,6 +31,8 @@ namespace BankEntities
 		//To
 
 		public Guid ToBank { get; set; }
+
+		public int? ToAccountID { get; set; }
 
 		[Required]
 		public string ToAccountNumber { get; set; }

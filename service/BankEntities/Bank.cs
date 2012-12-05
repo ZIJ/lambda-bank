@@ -154,29 +154,89 @@ namespace BankEntities
 			}
 		}
 
-		private void RollbackOuterAccount(byte[] accountNumber, Currency currency, decimal value)
+		private void RollbackOuterAccount(string accountNumber, Currency currency, decimal value)
 		{
 
 		}
 
-		private void Pay(Account account, ERIPPaymentType type, string jsonPayment)
+		private void Pay(Account account, string jsonPayment)
 		{
-			Prerequisite requisite = ERIP.GetPrerequisites(type);
-			Transaction t = new Transaction();
-			t.FromAccountBackupAmount = account.Amount;
-			t.FromAccountNumber = account.AccountNumber;
-			t.FromBank = thisBankGuid;
-			t.FromAccountDelta = BackConvertCurrency(account.Currency, requisite.Currency, 0);
-			t.FromAccountCurrency = account.Currency;
+			Transaction t = null;
+			try
+			{
+				EripPaymentType type;
+				decimal amount;
+				ParsePaymentRequest(jsonPayment, out type, out amount);
 
-			t.ToAccountCurrency = requisite.Currency;
-			t.ToBank = requisite.BankGuid;
-			t.ToAccountNumber = requisite.AccountNumber;
-			t.State = TransactionState.Opened;
-			db.Transactions.Add(t);
-			db.SaveChanges();
+				Prerequisite requisite = ERIP.GetPrerequisites(type);
+				bool internalTransaction = requisite.BankGuid == thisBankGuid;
+				Account receiver = null;
+				t = new Transaction();
+				t.FromAccountBackupAmount = account.Amount;
+				t.FromAccountNumber = account.AccountNumber;
+				t.FromBank = thisBankGuid;
+				t.FromAccountID = account.ID;
+				t.FromAccountDelta = BackConvertCurrency(account.Currency, requisite.Currency, amount);
+				t.FromAccountCurrency = account.Currency;
 
-			ERIP.SendPayment(type, jsonPayment);
+				t.ToBank = requisite.BankGuid;
+				t.ToAccountNumber = requisite.AccountNumber;
+
+				if (internalTransaction)
+				{
+					receiver = db.Accounts.Where(a => a.AccountNumber == requisite.AccountNumber).FirstOrDefault();
+					if (receiver == null)
+					{
+						throw new ArgumentOutOfRangeException("receive account was not found");
+					}
+					t.ToAccountID = receiver.ID;
+					t.ToAccountBackupAmount = receiver.Amount;
+					t.ToAccountCurrency = receiver.Currency;
+					t.ToAccountDelta = -ConvertCurrency(requisite.Currency, receiver.Currency, t.FromAccountDelta);
+				}
+				else
+				{
+					t.ToAccountCurrency = requisite.Currency;
+				}
+				t.State = TransactionState.Opened;
+				db.Transactions.Add(t);
+				db.SaveChanges();
+
+
+				if (internalTransaction)
+				{
+					account.Amount += t.FromAccountDelta;
+					receiver.Amount += t.ToAccountDelta;
+				}
+				else
+				{
+					BankPayment bp = new BankPayment();
+					bp.Amount = amount;
+					bp.FromBank = thisBankGuid;
+					bp.ToBank = requisite.BankGuid;
+					bp.FromAccountNumber = account.AccountNumber;
+					bp.ToAccountNumber = requisite.AccountNumber;
+					bp.Currency = requisite.Currency;
+					BankArbiter.Transact(bp);
+				}
+				t.State = TransactionState.Closed;
+				db.SaveChanges();
+				ERIP.SendPayment(type, jsonPayment);
+			}
+			catch 
+			{
+				if (t != null && t.ID != 0)
+				{
+					RollbackTransaction(t);
+				}
+			}
+		}
+
+
+		private static void ParsePaymentRequest(string json, out EripPaymentType type, out decimal amount)
+		{
+			type = (EripPaymentType)Enum.Parse(typeof(EripPaymentType), json.GetJsonAttribute("type"), true);
+			amount = decimal.Parse(json.GetJsonAttribute("amount"));
 		}
 	}
 

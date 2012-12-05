@@ -7,11 +7,11 @@ namespace BankEntities
 {
 	public interface IERIP
 	{
-		void SendPayment(ERIPPaymentType type, string jsonPayment);
+		void SendPayment(EripPaymentType type, string jsonPayment);
 
-		object GetPaymentInfo(ERIPPaymentType type, string jsonPayment);
+		object GetPaymentInfo(EripPaymentType type, string jsonPayment);
 
-		Prerequisite GetPrerequisites(ERIPPaymentType type);
+		Prerequisite GetPrerequisites(EripPaymentType type);
 	}
 
 	public class Prerequisite
@@ -23,7 +23,7 @@ namespace BankEntities
 		public Currency Currency { get; set; }
 	}
 
-	public enum ERIPPaymentType
+	public enum EripPaymentType
 	{
 		Velcom,
 		Mts,

@@ -60,6 +60,7 @@
     <Compile Include="BankArbiter.cs" />
     <Compile Include="IERIP.cs" />
     <Compile Include="InternetBankingUser.cs" />
+    <Compile Include="JsonHelpers.cs" />
     <Compile Include="LoginInfo.cs" />
     <Compile Include="PaymentEntry.cs" />
     <Compile Include="PaymentTemplate.cs" />
