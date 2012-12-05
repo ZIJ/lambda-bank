@@ -86,15 +86,19 @@ define([
 
             switch (mediator.user.get('role')) {
                 case 'admin':
-//                    app.headerController = new AdminHeaderController();
-//                    app.navigationController = new AdminNavigationController();
-//
-//                    app.initDispatcher({
-//                        controllerPath: '/controllers/admin'
-//                    });
-//
-//                    app.initRouter(routesAdmin, { pushState: false , root: '/' });
+                    require(['controllers/admin/header_controller'], function(HeaderControllerAdmin) {
+                        app.headerController = new HeaderControllerAdmin();
 
+                        require(['controllers/admin/navigation_controller'], function(NavigationControllerAdmin) {
+                            app.navigationController = new NavigationControllerAdmin();
+
+                            app.initDispatcher({
+                                controllerPath: '/controllers/admin'
+                            });
+
+                            app.initRouter(routes, { pushState: false , root: '/' });
+                        });
+                    });
                     break;
                 case 'user':
 
@@ -105,17 +109,24 @@ define([
         logoutHandler: function() {
             var app = this;
 
-//            app.dispatcher.dispose();
-//            app.router.dispose();
-//            app.dispatcher = null;
-//            app.router = null;
-//
-//            app.headerController.dispose();
-//            app.navigationController.dispose();
-//            app.headerController = null;
-//            app.navigationController = null;
-
+            if (app.dispatcher) {
+                app.dispatcher.dispose();
+                app.dispatcher = null;
+            }
+            if (app.router) {
+                app.router.dispose();
+                app.router = null;
+            }
+            if (app.headerController) {
+                app.headerController.dispose();
+                app.headerController = null;
+            }
+            if (app.navigationController) {
+                app.navigationController.dispose();
+                app.navigationController = null;
+            }
         }
+        
     });
 
     return BankingApplication;
