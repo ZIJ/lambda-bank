@@ -56,7 +56,47 @@ namespace BankEntities
 			}
 		}
 
-		public void StartProcessing()
+		public void ProcessPayment(BankUser user, string accountNumber, string payment)
+		{
+			Account account = user.Cards.SelectMany(c => c.Accounts).Where(a => a.AccountNumber == accountNumber).FirstOrDefault()
+			if (account != null)
+			{ 
+				Pay(account, payment);
+			}
+			else
+			{
+				throw new ArgumentNullException();
+			}
+		}
+
+		public void IncomingPay(BankPayment payment)
+		{
+			Transaction transaction = new Transaction()
+			{
+				FromAccountNumber = payment.FromAccountNumber,
+				FromBank = payment.FromBank,
+				ToBank = payment.ToBank,
+				ToAccountNumber = payment.ToAccountNumber,
+				FromAccountCurrency = payment.Currency,
+				FromAccountDelta = payment.Amount
+			};
+			transaction.State = TransactionState.Opened;
+			Account receiver = db.Accounts.Where(a => a.AccountNumber == payment.ToAccountNumber).FirstOrDefault();
+			if (receiver == null)
+			{
+				throw new ArgumentOutOfRangeException("account not found");
+			}
+			transaction.ToAccountBackupAmount = receiver.Amount;
+			transaction.ToAccountCurrency = receiver.Currency;
+			transaction.ToAccountDelta = ConvertCurrency(payment.Currency, receiver.Currency, payment.Amount);
+			db.Transactions.Add(transaction);
+			db.SaveChanges();
+			receiver.Amount += transaction.ToAccountDelta;
+			transaction.State = TransactionState.Closed;
+			db.SaveChanges();
+		}
+
+		private void StartProcessing()
 		{
 			while (true)
 			{
@@ -86,39 +126,12 @@ namespace BankEntities
 			}
 		}
 
-		public void FixTransactions()
+		private void FixTransactions()
 		{
 			foreach (Transaction t in db.Transactions.Where(i => i.State == TransactionState.Opened))
 			{
 				RollbackTransaction(t);
 			}
-		}
-
-		public void IncomingPay(BankPayment payment)
-		{
-			Transaction transaction = new Transaction()
-			{
-				FromAccountNumber = payment.FromAccountNumber,
-				FromBank = payment.FromBank,
-				ToBank = payment.ToBank,
-				ToAccountNumber = payment.ToAccountNumber,
-				FromAccountCurrency = payment.Currency,
-				FromAccountDelta = payment.Amount
-			};
-			transaction.State = TransactionState.Opened;
-			Account receiver = db.Accounts.Where(a => a.AccountNumber == payment.ToAccountNumber).FirstOrDefault();
-			if (receiver == null)
-			{
-				throw new ArgumentOutOfRangeException("account not found");
-			}
-			transaction.ToAccountBackupAmount = receiver.Amount;
-			transaction.ToAccountCurrency = receiver.Currency;
-			transaction.ToAccountDelta = ConvertCurrency(payment.Currency, receiver.Currency, payment.Amount);
-			db.Transactions.Add(transaction);
-			db.SaveChanges();
-			receiver.Amount += transaction.ToAccountDelta;
-			transaction.State = TransactionState.Closed;
-			db.SaveChanges();
 		}
 
 		private decimal ConvertCurrency(Currency from, Currency to, decimal amount)
@@ -228,11 +241,11 @@ namespace BankEntities
 				if (t != null && t.ID != 0)
 				{
 					RollbackTransaction(t);
+					db.SaveChanges();
 				}
 			}
 		}
-
-
+		
 		private static void ParsePaymentRequest(string json, out EripPaymentType type, out decimal amount)
 		{
 			type = (EripPaymentType)Enum.Parse(typeof(EripPaymentType), json.GetJsonAttribute("type"), true);
