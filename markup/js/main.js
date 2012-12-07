@@ -1,4 +1,10 @@
 $(document).ready(function() {
+//	DATEPICKERS
+$('.datepicker').pikaday({
+	format: 'DD.MM.YYYY',
+	setDefaultDate : true
+});
+
 //  TABS
 $('.cards-n-accounts .nav-tabs a:first').tab('show');
 $('.cards-n-accounts .nav-tabs a').click(function(e) {
