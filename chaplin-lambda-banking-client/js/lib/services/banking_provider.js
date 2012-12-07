@@ -189,8 +189,8 @@ define([
                 lambdaBanking.off(eventType, handler);
             },
 
-            getInfo: function(id, callback) {
-//                FB.api(id, callback);
+            getInfo: function(params) {
+                lambdaBanking.api(params);
             },
 
             getUserData: function() {
