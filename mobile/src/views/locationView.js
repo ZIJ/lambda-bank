@@ -11,6 +11,7 @@ var LocationView = Backbone.View.extend({
         this.maxZoom = 18;
         this.initialZoom = 13;
         this.model.on("change", this.render, this);
+        this.render();
     },
     render: function(){
         var view = this;
