@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" name="viewport" />
+    <title>VChat</title>
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="leaflet/leaflet.css">
+
+    <script type="text/x-handlebars-template" data-template-name="tweets">
+        <ul>
+            {{#each tweets}}
+            <li class="tweet" style="background: url({{picUrl}}) no-repeat left">
+                <h1>{{userName}}</h1>
+                <p>{{{text}}}</p>
+            </li>
+            {{/each}}
+        </ul>
+    </script>
+
+    <script type="text/x-handlebars-template" data-template-name="chats">
+        <ul>
+            {{#each chats}}
+            <li class="chat">
+                <b>{{userName}}</b>: {{text}}
+            </li>
+            {{/each}}
+        </ul>
+    </script>
+
+</head>
+<body>
+
+    <!-- TODO remove prototype markup -->
+    <div id="login">
+        <input type="text" id="userName" />
+        <input type="text" id="password" />
+        <div style="width:100%"></div>
+        <button type="submit" id="enterButton" value="Enter Bank">Enter</button>
+    </div>
+    <div id="viewport">
+        <div id="content">
+                <div id="users" class="page">
+                    <div id="userList">
+                        <ul>
+                            <li>
+                                <h3>User Name</h3>
+                                <p>balance: +100$</p>
+                            </li>
+                            <li>
+                                <h3>User Name</h3>
+                                <p>balance: +100$</p>
+                            </li>
+                            <li>
+                                <h3>User Name</h3>
+                                <p>balance: +100$</p>
+                            </li>
+                            <li>
+                                <h3>User Name</h3>
+                                <p>balance: +100$</p>
+                            </li>
+                            <li>
+                                <h3>User Name</h3>
+                                <p>balance: +100$</p>
+                            </li>
+                            <li>
+                                <h3>User Name</h3>
+                                <p>balance: +100$</p>
+                            </li>
+                            <li>
+                                <h3>User Name</h3>
+                                <p>balance: +100$</p>
+                            </li>
+                            <li>
+                                <h3>User Name</h3>
+                                <p>balance: +100$</p>
+                            </li>
+                            <li>
+                                <h3>User Name</h3>
+                                <p>balance: +100$</p>
+                            </li>
+                            <li>
+                                <h3>User Name</h3>
+                                <p>balance: +100$</p>
+                            </li>
+                            <li>
+                                <h3>User Name</h3>
+                                <p>balance: +100$</p>
+                            </li>
+                            <li>
+                                <h3>User Name</h3>
+                                <p>balance: +100$</p>
+                            </li>
+                            <li>
+                                <h3>User Name</h3>
+                                <p>balance: +100$</p>
+                            </li>
+                            <li>
+                                <h3>User Name</h3>
+                                <p>balance: +100$</p>
+                            </li>
+                            <li>
+                                <h3>User Name</h3>
+                                <p>balance: +100$</p>
+                            </li>
+                            <li>
+                                <h3>User Name</h3>
+                                <p>balance: +100$</p>
+                            </li>
+                            <li>
+                                <h3>User Name</h3>
+                                <p>balance: +100$</p>
+                            </li>
+                            <li>
+                                <h3>User Name</h3>
+                                <p>balance: +100$</p>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+                <div id="cards" class="page">
+                    <ul>
+                        <li>Visa .... .... .... 1234</li>
+                        <li>Visa .... .... .... 1234</li>
+                        <li>Visa .... .... .... 1234</li>
+                        <li>Visa .... .... .... 1234</li>
+                        <li>Visa .... .... .... 1234</li>
+                    </ul>
+                </div>
+                <div id="accounts" class="page">
+                    <ul>
+                        <li>Account .... .... .... 1234</li>
+                        <li>Account .... .... .... 1234</li>
+                        <li>Account .... .... .... 1234</li>
+                        <li>Account .... .... .... 1234</li>
+                        <li>Account .... .... .... 1234</li>
+                    </ul>
+                </div>
+                <div id="location" class="page">
+                    <div id="map"></div>
+                </div>
+                <div id="settings" class="page">
+                    <ul>
+                        <li>Setting .... .... .... 1234</li>
+                        <li>Setting .... .... .... 1234</li>
+                        <li>Setting .... .... .... 1234</li>
+                        <li>Setting .... .... .... 1234</li>
+                        <li>Setting .... .... .... 1234</li>
+                    </ul>
+                </div>
+        </div>
+        <nav>
+            <a href="#users">Users</a>
+            <a href="#cards">Cards</a>
+            <a href="#payments">Payments</a>
+            <a href="#location">Map</a>
+            <a href="#settings">Settings</a>
+        </nav>
+    </div>
+    <script src="js/start.js"></script>
+</body>
+</html>
