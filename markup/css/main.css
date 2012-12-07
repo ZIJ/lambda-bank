@@ -337,20 +337,14 @@ table .check {
 
 .treeview input[type=checkbox]+label:before {
     font-family: Consolas, monaco, monospace;
-    content: '+';
+    content: '▶';
     display: inline-block;
     margin: 0 .3em 0 0;
-    background: #fff;
-    border: 1px solid #000;
-    width: 10px;
-    height: 10px;
-    vertical-align: middle;
-    line-height: 10px;
     text-align: center;
 }
 
 .treeview input[type=checkbox]:checked+label:before {
-    content: '-';
+    content: '◢';
 }
 
 .treeview input[type=checkbox]+label {
