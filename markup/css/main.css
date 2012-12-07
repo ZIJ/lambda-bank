@@ -314,7 +314,59 @@ table .check {
     background: #075F73;
 }
 
-@charset "UTF-8";
+/*
+    TREEVIEW
+*/
+
+.treeview ,
+.treeview ul{
+    list-style: none;
+}
+
+.treeview li label {
+    line-height: 2;
+}
+
+.treeview ul {
+    display: none;
+}
+
+.treeview input[type=checkbox] {
+    display: none;
+}
+
+.treeview input[type=checkbox]+label:before {
+    font-family: Consolas, monaco, monospace;
+    content: '+';
+    display: inline-block;
+    margin: 0 .3em 0 0;
+    background: #fff;
+    border: 1px solid #000;
+    width: 10px;
+    height: 10px;
+    vertical-align: middle;
+    line-height: 10px;
+    text-align: center;
+}
+
+.treeview input[type=checkbox]:checked+label:before {
+    content: '-';
+}
+
+.treeview input[type=checkbox]+label {
+    display: block;
+    margin: 0;
+    cursor: pointer;
+}
+
+.treeview input[type=checkbox]+label:hover {
+    /* background plate */
+}
+
+.treeview input[type=checkbox]:checked ~ ul {
+    display: block;
+}
+
 
 /*!
  * Pikaday
