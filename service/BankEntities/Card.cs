@@ -19,12 +19,16 @@ namespace BankEntities
 		[Required]
 		public virtual BankUser BankUser { get; set; }
 
-		[MinLength(16)]
-		[MaxLength(16)]
-		public string CardNumber { get; set; }
+		public string CardNumber
+		{
+			get
+			{
+				return string.Format("435983{0:0000000000}", ID);
+			}
+		}
 
 		[Required]
-		public int CVV { get; set; }
+		public string CVV { get; set; }
 
 		public virtual ICollection<Account> Accounts { get; set; }
 

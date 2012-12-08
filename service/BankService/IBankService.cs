@@ -59,7 +59,7 @@ namespace BankService
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/admin/cards/create")]
-		Message CreateCard(Guid securityToken, Currency[] currency, int? accountID2Attach);
+		Message CreateCard(Guid securityToken, int userId, DateTime expirationTime, Currency[] currency, int? accountID2Attach);
 		
 		//[WebInvoke(Method = "POST",
 		//	RequestFormat = WebMessageFormat.Json,

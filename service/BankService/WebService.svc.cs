@@ -34,26 +34,27 @@ namespace BankService
 				throw new WebFaultException(System.Net.HttpStatusCode.Forbidden);
 			}
 
-			var response = new { AuthenticationToken = info.UID, Role = info.User.Role.ToString() };
+			string role = info.User.Role.ToString();
+			BankUser user = info.User.BankUser;
+			var response = new
+			{
+				AuthenticationToken = info.UID,
+				Role = role,
+				UserInfo = info.User.BankUser == null? null:
+				new 
+				{
+					Id = user.ID,
+					FirstName = user.FirstName,
+					LastName = user.LastName
+				}
+			};
 			return Json(response);
 		}
 
-
 		public Message GetUserCards(Guid securityToken)
 		{
-			List<object> cardsStub = new List<object>();
-
-			List<object> accountsStub = new List<object>();
-
-
-			var acc = new { AccNumber = new byte[] { 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 9, 4 }, Amount = "100", Currency = Currency.USD };
-			accountsStub.Add(acc);
-			accountsStub.Add(acc);
-
-			var card = new { Accounts = accountsStub.ToArray(), CardNumber = new byte[] { 1, 2, 5, 7, 8, 9, 0, 0, 1 } };
-			cardsStub.Add(card);
-			cardsStub.Add(card);
-			return Json(cardsStub);
+			BankUser info = GetUser(securityToken);
+			return Json(info.Cards.Select(c => CreateCardResponse(c, false)));
 		}
 
 		public Message GetLog(Guid securityToken, byte[] accountNumber, DateTime start, DateTime end)
@@ -73,7 +74,20 @@ namespace BankService
 
 		public Message Payment(Guid securityToken, string paymentInfo)
 		{
-			throw new NotImplementedException();
+			try
+			{
+				BankUser user = GetUser(securityToken);
+				bank.ProcessPayment(user, paymentInfo);
+			}
+			catch (ArgumentOutOfRangeException)
+			{
+				throw new WebFaultException(HttpStatusCode.Conflict);
+			}
+			catch
+			{
+				throw new WebFaultException(HttpStatusCode.BadRequest);
+			}
+			return Json("OK");
 		}
 
 		public Message GetSavedPayments(Guid securityToken)
@@ -136,7 +150,7 @@ namespace BankService
 		#region Users
 		public Message GetUsers(Guid securityToken, bool joinCards)
 		{
-			LoginInfo info = GetUser(securityToken);
+			LoginInfo info = GetAdmin(securityToken);
 			List<object> users = new List<object>();
 			foreach (BankUser u in bank.Database.BankUsers)
 			{
@@ -264,14 +278,14 @@ namespace BankService
 			return response;
 		}
 
-		private LoginInfo GetUser(Guid securityToken)
+		private BankUser GetUser(Guid securityToken)
 		{
 			LoginInfo info = bank.UserService.GetUser(securityToken);
-			if (info == null)
+			if (info == null || info.User.Role.ToString() != "user")
 			{
 				throw new WebFaultException(HttpStatusCode.Unauthorized);
 			}
-			return info;
+			return info.User.BankUser;
 		}
 
 		private LoginInfo GetAdmin(Guid securityToken)
@@ -282,12 +296,6 @@ namespace BankService
 				throw new WebFaultException(HttpStatusCode.Unauthorized);
 			}
 			return info;
-		}
-
-
-		public Message CreateCard(Guid securityToken, int typeID, Currency? currency, int? accountID2Attach)
-		{
-			throw new NotImplementedException();
 		}
 
 		public Message VerifyToken(Guid securityToken)
@@ -310,10 +318,16 @@ namespace BankService
 			return Json(response);
 		}
 
-
-		public Message CreateCard(Guid securityToken, Currency[] currency, int? accountID2Attach)
+		public Message CreateCard(Guid securityToken, int userId, DateTime expirationTime, Currency[] currency, int? accountID2Attach)
 		{
-			throw new NotImplementedException();
+			GetAdmin(securityToken); 
+			BankUser user = db.BankUsers.Find(userId);
+			if (user == null)
+			{
+				throw new WebFaultException(HttpStatusCode.BadRequest);
+			}
+			int id = bank.CreateCard(user, currency, accountID2Attach);
+			return Json(new { ID = id });
 		}
 
 		public Message Logout(Guid securityToken)

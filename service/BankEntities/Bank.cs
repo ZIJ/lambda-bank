@@ -56,11 +56,46 @@ namespace BankEntities
 			}
 		}
 
-		public void ProcessPayment(BankUser user, string accountNumber, string payment)
+		public object GetPaymentInfo(string payment)
 		{
-			Account account = user.Cards.SelectMany(c => c.Accounts).Where(a => a.AccountNumber == accountNumber).FirstOrDefault()
+			EripPaymentType type = ParsePaymentEripType(payment);
+			return ERIP.GetPaymentInfo(type, payment);
+		}
+
+		public object GetPrepaymentInfo(BankUser user, string payment)
+		{
+			int accountId = int.Parse(payment.GetJsonAttribute("accountId"));
+			Account account = user.Cards.SelectMany(c => c.Accounts).Where(a => a.ID == accountId).FirstOrDefault();
 			if (account != null)
-			{ 
+			{
+				EripPaymentType type;
+				decimal amount;
+				ParsePaymentRequest(payment, out type, out amount);
+				Prerequisite requisite = ERIP.GetPrerequisites(type);
+				var info = new
+				{
+					AmountCharged = BackConvertCurrency(account.Currency, requisite.Currency, amount),
+					ChangeId = UserService.PasswordDistortion(account.Amount.ToString(), "res")
+				};
+				return info;
+			}
+			else
+			{
+				throw new ArgumentNullException();
+			}
+		}
+
+		public void ProcessPayment(BankUser user, string payment)
+		{
+			int accountId = int.Parse(payment.GetJsonAttribute("accountId"));
+			Account account = user.Cards.SelectMany(c => c.Accounts).Where(a => a.ID == accountId).FirstOrDefault();
+			if (account != null)
+			{
+				string changeid = payment.GetJsonAttribute("changeId");
+				if (changeid != UserService.PasswordDistortion(account.Amount.ToString(), "res"))
+				{
+					throw new ArgumentOutOfRangeException();
+				}
 				Pay(account, payment);
 			}
 			else
@@ -96,6 +131,36 @@ namespace BankEntities
 			db.SaveChanges();
 		}
 
+		public int CreateCard(BankUser user, Currency[] currencies, int? accountId)
+		{
+			Card newCard = new Card();
+			if (currencies != null)
+			{
+				foreach (Currency c in currencies)
+				{
+					Account newAccount = new Account();
+					newAccount.Amount = 0;
+					newAccount.Cards.Add(newCard);
+					newAccount.Currency = c;
+					db.Accounts.Add(newAccount);
+					newCard.Accounts.Add(newAccount);
+				}
+			}
+			else if (accountId.HasValue)
+			{
+				Account existingAccount = user.Cards.SelectMany(c => c.Accounts).Where(a => a.ID == accountId.Value).FirstOrDefault();
+				newCard.Accounts.Add(existingAccount);
+			}
+			else
+			{
+				throw new ArgumentNullException("Both arguments is null");
+			}
+			newCard.BankUser = user;
+			user.Cards.Add(newCard);
+			db.SaveChanges();
+			return newCard.ID;
+		}
+
 		private void StartProcessing()
 		{
 			while (true)
@@ -125,7 +190,7 @@ namespace BankEntities
 				Thread.Sleep(1000 * 60 * 60);
 			}
 		}
-
+		
 		private void FixTransactions()
 		{
 			foreach (Transaction t in db.Transactions.Where(i => i.State == TransactionState.Opened))
@@ -251,6 +316,11 @@ namespace BankEntities
 			type = (EripPaymentType)Enum.Parse(typeof(EripPaymentType), json.GetJsonAttribute("type"), true);
 			amount = decimal.Parse(json.GetJsonAttribute("amount"));
 		}
+
+		private static EripPaymentType ParsePaymentEripType(string json)
+		{
+			return (EripPaymentType)Enum.Parse(typeof(EripPaymentType), json.GetJsonAttribute("type"), true);
+		}
 	}
 
 	class DefaultInitializer : System.Data.Entity.DropCreateDatabaseAlways<BankDatabase>// DropCreateDatabaseIfModelChanges<BankDatabase>
@@ -298,9 +368,7 @@ namespace BankEntities
 			card.BankUser = user;
 			card.Accounts.Add(account);
 			account.Cards.Add(card);
-			account.AccountNumber = "1234567890123";
-			card.CardNumber = "1234567890123456";
-			card.CVV = 145;
+			card.CVV = "234";
 			card.ExpirationDate = DateTime.Now + TimeSpan.FromDays(365);
 			card.Type = cardType;
 			account.Currency = Currency.BYR;

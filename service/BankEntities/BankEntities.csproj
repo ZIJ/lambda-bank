@@ -58,6 +58,7 @@
     <Compile Include="CardType.cs" />
     <Compile Include="Currency.cs" />
     <Compile Include="BankArbiter.cs" />
+    <Compile Include="EripImlemetation.cs" />
     <Compile Include="IERIP.cs" />
     <Compile Include="InternetBankingUser.cs" />
     <Compile Include="JsonHelpers.cs" />

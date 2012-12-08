@@ -17,9 +17,13 @@ namespace BankEntities
 		[Key]
 		public int ID { get; set; }
 
-		[MinLength(13)]
-		[MaxLength(13)]
-		public string AccountNumber { get; set; }
+		public string AccountNumber
+		{
+			get
+			{
+				return string.Format("435983{0:0000000}", ID);
+			}
+		}
 
 		[Required]
 		public Currency Currency { get; set; }
