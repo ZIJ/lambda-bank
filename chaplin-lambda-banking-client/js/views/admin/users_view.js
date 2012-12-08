@@ -1,43 +1,43 @@
 define([
     'underscore',
     'chaplin',
-    'lib/utils',
     'views/base/collection_view',
-    'views/base/user_item_view'
-], function(_, Chaplin, utils, CollectionView, UserItemView) {
+    'views/admin/user_item_view',
+    'text!templates/admin/users.hbs'
+], function(_, Chaplin, CollectionView, UserItemView, template) {
     'use strict';
 
     var mediator = Chaplin.mediator;
 
-    var UsersView = (function(_super) {
+    var UsersView = CollectionView.extend({
+        title: 'Users',
 
-        utils.extends(UsersView, _super);
+        template: template,
 
-        function UsersView() {
-            UsersView.__super__.constructor.apply(this, arguments);
+        className: 'span10',
+        container: 'div.row-fluid',
+        itemView: UserItemView,
+        listSelector: 'tbody',
+        autoRender: true,
+
+        // Expects the serviceProviders in the options.
+        initialize: function(options) {
+            var view = this;
+
+            _.bindAll(view, 'onAddNewUserClick');
+
+            UsersView.__super__.initialize.apply(view, arguments);
+
+            view.delegate('click', 'section > button', view.onAddNewUserClick);
+        },
+
+        onAddNewUserClick: function() {
+            var view = this;
+
+            // TODO: ??? maybe simply redirect or publish mediator event here
         }
+    });
 
-        _.extend(UsersView.prototype, {
-            title: 'Users'
-
-            className: 'row-fluid',
-            container: 'div.row-fluid',
-            itemView: UserItemView,
-            listSelector: 'tbody',            
-            autoRender: true,
-
-            // Expects the serviceProviders in the options.
-            initialize: function(options) {
-                var view = this;
-
-                UsersView.__super__.initialize.apply(view, arguments);
-            }
-
-        });
-
-        return UsersView;
-
-    })(CollectionView);
 
     return UsersView;
 });

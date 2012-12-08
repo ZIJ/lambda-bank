@@ -1,21 +1,24 @@
 define([
     'chaplin',
-    'models/base/collection'
-], function(Chaplin, Collection) {
+    'models/base/collection',
+    'models/admin/user'
+], function(Chaplin, Collection, User) {
     'use strict';
 
-    var mediator = Chaplin.Mediator;
+    var mediator = Chaplin.mediator;
 
-    var User = Collection.extend({
+    var Users = Collection.extend({
 
-        defaults: {
-            message: 'Hello World!'
-        },
+        model: User,
+
+        idAttribute: 'id',
 
         initialize: function(attributes, options) {
             var collection = this;
 
-            Collection.apply(collection, arguments);
+            _.bindAll(collection, 'fetchHandler');
+
+            Users.__super__.initialize.apply(collection, arguments);
             
             collection.fetch();
         },
@@ -23,11 +26,23 @@ define([
         fetch: function() {
             var collection = this;
 
-            mediator.user.get("banking");
+            mediator.user.get("provider").apiRequest({
+                url: 'admin/users/get',
+                data: {
+                    joinCards: false
+                },
+                success: collection.fetchHandler
+            });
 
+        },
+
+        fetchHandler: function(response) {
+            var collection = this;
+
+            collection.reset(response, { parse: true });
         }
 
     });
 
-    return User;
+    return Users;
 });

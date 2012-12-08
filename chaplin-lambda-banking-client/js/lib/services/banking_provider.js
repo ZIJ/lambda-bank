@@ -15,7 +15,7 @@ define([
         function BankingProvider() {
             var serviceProvider = this;
 
-            _.bindAll(serviceProvider, "loadHandler", "processUserData", "bankingLogout"
+            _.bindAll(serviceProvider, "loadHandler", "bankingLogout"
                 , "loginHandler", "loginStatusAfterAbort", "triggerLogin"
                 , "loginStatusHandler", "getLoginStatus", "saveAuthResponse"
                 , "logoutHandler", "triggerLogout");
@@ -125,7 +125,6 @@ define([
                 if (authResponse) {
                     mediator.publish('loginSuccessful', eventPayload);
                     serviceProvider.publishSession(authResponse);
-//                    serviceProvider.getUserData();
                 } else {
                     mediator.publish('loginAbort', eventPayload);
                     var loginStatusHandler = serviceProvider.loginStatusAfterAbort;
@@ -189,18 +188,8 @@ define([
                 lambdaBanking.off(eventType, handler);
             },
 
-            getInfo: function(params) {
+            apiRequest: function(params) {
                 lambdaBanking.api(params);
-            },
-
-            getUserData: function() {
-                var serviceProvider = this;
-
-//                serviceProvider.getInfo('/me', serviceProvider.processUserData);
-            },
-
-            processUserData: function(response) {
-                mediator.publish('userData', response);
             },
 
             dispose: function() {

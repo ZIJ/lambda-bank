@@ -93,7 +93,7 @@ define([
                             app.navigationController = new NavigationControllerAdmin();
 
                             app.initDispatcher({
-                                controllerPath: '/controllers/admin'
+                                controllerPath: 'controllers/admin/'
                             });
 
                             app.initRouter(routes, { pushState: false , root: '/' });

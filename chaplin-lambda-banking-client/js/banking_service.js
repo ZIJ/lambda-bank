@@ -6,12 +6,12 @@
         function Banking() {
             var service = this;
 
-            _.bindAll(service, "loginStatusDaemonHandler");
+            _.bindAll(service, 'loginStatusDaemonHandler');
         }
 
         _(Banking.prototype).extend(Backbone.Events, {
 
-            baseUrl: "http://lambda-bank.drs-cd.com/WebService.svc/",
+            baseUrl: 'http://lambda-bank.drs-cd.com/WebService.svc/',
 
             accessToken: null,
 
@@ -50,7 +50,7 @@
                 service.getLoginStatus(function(response) {
                     var authResponse = response.authResponse;
                     if (!authResponse) {
-                        service.trigger("auth.logout");
+                        service.trigger('auth.logout');
                     }
                 });
             },
@@ -59,7 +59,7 @@
                 var service = this;
 
                 $.ajax({
-                    type: "POST",
+                    type: 'POST',
                     url: service.baseUrl + params.url,
                     data: (function () {
                         if (!service.accessToken) return JSON.stringify(params.data);
@@ -67,9 +67,9 @@
                             securityToken: service.accessToken
                         }));
                     })(),
-                    dataType: "json",
+                    dataType: 'json',
                     cache: false,
-                    contentType: "application/json",
+                    contentType: 'application/json',
                     success: function(response) {
                         params.success.call(this, response.Response);
                     },
@@ -83,7 +83,7 @@
                 var service = this;
 
                 service.request({
-                    url: "login",
+                    url: 'login',
                     data: {
                         login: loginData.login,
                         password: loginData.password
@@ -96,7 +96,7 @@
                         service.startLoginStatusDaemon();
                     },
                     error: function(jqXHR) {
-                        service.accessToken = "";
+                        service.accessToken = '';
                         callback(jqXHR);
                     }
                 });
@@ -106,16 +106,16 @@
                 var service = this;
 
                 service.request({
-                    url: "logout",
+                    url: 'logout',
                     success: function(response) {
-                        service.accessToken = "";
+                        service.accessToken = '';
                         service.stopLoginStatusDaemon();
                         callback();
                     },
                     error: function(jqXHR) {
-                        service.accessToken = "";
+                        service.accessToken = '';
                         service.stopLoginStatusDaemon();
-                        alert("Error during logging out request");
+                        alert('Error during logging out request');
                         callback();
                     }
                 });
@@ -125,7 +125,7 @@
                 var service = this;
 
                 service.request({
-                    url: "verifyToken",
+                    url: 'verifyToken',
                     success: function(response) {
                         service.accessToken = response.AuthenticationToken;
                         callback({
@@ -134,7 +134,7 @@
                         service.startLoginStatusDaemon();
                     },
                     error: function(jqXHR) {
-                        service.accessToken = "";
+                        service.accessToken = '';
                         service.stopLoginStatusDaemon();
                         callback(jqXHR);
                     }
@@ -148,12 +148,12 @@
                     url: params.url,
                     data: params.data,
                     success: function(response) {
-                        params.callback.call(this, response);
+                        params.success.call(this, response);
                     },
                     error: function(jqXHR) {
-                        service.accessToken = "";
+                        service.accessToken = '';
                         service.stopLoginStatusDaemon();
-                        service.trigger("auth.logout");
+                        service.trigger('auth.logout');
                     }
                 });
             }

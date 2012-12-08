@@ -1,28 +1,37 @@
 define([
-  'controllers/base/controller',
-  'models/admin/users',
-  'views/admin/users_view'
+    'controllers/base/controller',
+    'models/admin/users',
+    'views/admin/users_view'
 ], function(Controller, UsersCollection, UsersView) {
-  'use strict';
+    'use strict';
 
-  var UsersController = Controller.extend({
-    
-    initialize: function(params) {      
-    	
-    },
+    var UsersController = Controller.extend({
 
-    index: function() {
-    	var controller = this;
+        initialize: function(params) {
+            var controller = this;
 
-    	controller.collection = new UsersCollection();
-    	
+            UsersController.__super__.initialize.apply(controller, arguments);
+        },
 
-    	controller.view = new UsersView({
-    		collection: controller.collection
-    	});
-    }
+        index: function() {
+            var controller = this;
 
-  });
+            controller.collection = new UsersCollection();
 
-  return UsersController;
+            controller.view = new UsersView({
+                collection: controller.collection
+            });
+        },
+
+        show: function() {
+
+        },
+
+        edit: function() {
+
+        }
+
+    });
+
+    return UsersController;
 });
