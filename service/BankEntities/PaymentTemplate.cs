@@ -12,9 +12,7 @@ namespace BankEntities
 
 		[Required]
 		public string JsonPayment { get; set; }
-
-		public PaymentType Type { get; set; }
-
+		
 		public int Amount { get; set; }
 
 		public Currency Currency { get; set; }

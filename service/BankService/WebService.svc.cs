@@ -64,12 +64,14 @@ namespace BankService
 
 		public Message PayAccDetails(Guid securityToken, string paymentInfo)
 		{
-			throw new NotImplementedException();
+			GetUser(securityToken);
+			return Json(bank.GetPaymentInfo(paymentInfo));
 		}
 
 		public Message PrePaymentInfo(Guid securityToken, string paymentInfo)
 		{
-			throw new NotImplementedException();
+			BankUser user = GetUser(securityToken);
+			return Json(bank.GetPrepaymentInfo(user, paymentInfo));
 		}
 
 		public Message Payment(Guid securityToken, string paymentInfo)

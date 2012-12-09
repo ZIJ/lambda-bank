@@ -35,5 +35,7 @@ namespace BankEntities
 		public virtual ICollection<SpanSchedule> SpanSchedules { get; set; }
 
 		public virtual ICollection<CalendarSchedule> CalendarSchedules { get; set; }
+
+		public virtual ICollection<PaymentTemplate> SavedPayments { get; set; }
 	}
 }
