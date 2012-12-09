@@ -52,7 +52,7 @@ namespace BankService
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/admin/cards/get")]
-		Message GetCards(Guid securityToken, int userID);
+		Message GetCards(Guid securityToken, int userId);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,

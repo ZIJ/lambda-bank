@@ -206,18 +206,11 @@ namespace BankService
 		#endregion
 
 		#region Cards
-		public Message GetCards(Guid securityToken, int userID)
+		public Message GetCards(Guid securityToken, int userId)
 		{
-			return Json(db.BankUsers.Find(userID).Cards);
+			return Json(db.BankUsers.Find(userId).Cards);
 		}
 
-		public Message CreateCard(Guid securityToken, Card card, int userID)
-		{
-			db.Cards.Add(card);
-			db.BankUsers.Find(userID).Cards.Add(card);
-			db.SaveChanges();
-			return Json(new { Status = "OK", CreatedObject = card });
-		}
 		#endregion
 
 		#region Accounts
