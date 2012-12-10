@@ -65,42 +65,37 @@
                     <dl class="data-fields clearfix">
                         <dt>Amount</dt>
                         <dd><input type="text" placeholder="100"></dd>
-                    </dl>
-                    <ul class="treeview">
-                        <li>
-                            <input type="checkbox" id="tree-11"><label for="tree-11">Сотовая связь</label>
-                            <ul>
+                        <dt>Target</dt>
+                        <dd>
+                            <ul class="treeview">
                                 <li>
-                                    <input type="checkbox" id="tree-11-1">
-                                    <label for="tree-11-1">CDMA</label>
+                                    <input type="checkbox" id="tree-11"><label for="tree-11">Сотовая связь</label>
                                     <ul>
-                                        <li><a href="#">BELCELL</a></li>
-                                        <li><a href="#">some other</a></li>
+                                        <li>
+                                            <input type="checkbox" id="tree-11-1">
+                                            <label for="tree-11-1">CDMA</label>
+                                            <ul>
+                                                <li><input type="radio" id="belcell" name="payment_target"><label for="belcell">BELCELL</label></li>
+                                                <li><input type="radio" id="other" name="payment_target"><label for="other">Other</label></li>
+                                            </ul>
+                                        </li>
+                                        <li><input type="radio" id="velcom" name="payment_target"><label for="velcom">Velcom</label></li>
+                                        <li><input type="radio" id="MTS" name="payment_target"><label for="MTS">MTS</label></li>
+                                        <li><input type="radio" id="life" name="payment_target"><label for="life">Life:)</label></li>
                                     </ul>
                                 </li>
-                                <li><a href="#">Velcom</a></li>
-                                <li><a href="#">МТС</a></li>
-                                <li><a href="#">Life:)</a></li>
+                                <li>
+                                    <input type="checkbox" id="tree-10"><label for="tree-10">Прочие республиканские платежи</label>
+                                    <ul>
+                                        <li><input type="radio" id="qwe" name="payment_target"><label for="qwe">qwe</label></li>
+                                        <li><input type="radio" id="asd" name="payment_target"><label for="asd">asd</label></li>
+                                        <li><input type="radio" id="zxc" name="payment_target"><label for="zxc">zxc</label></li>
+                                    </ul>
+                                </li>
+                                <li><input type="radio" id="fghjd" name="payment_target"><label for="fghjd">fghjd</label></li>
                             </ul>
-                        </li>
-                        <li>
-                            <input type="checkbox" id="tree-10"><label for="tree-10">Прочие республиканские платежи</label>
-                            <ul>
-                                <li><a href="#">some</a></li>
-                                <li><a href="#">some other</a></li>
-                                <li><a href="#">and one more</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Водоснабжение</a></li>
-                        <li><a href="#">Газоснабжение</a></li>
-                        <li><a href="#">Дошкольные учреждения</a></li>
-                        <li><a href="#">Интернет</a></li>
-                        <li><a href="#">Кабельное телевидение</a></li>
-                        <li><a href="#">Коммунальные платежи</a></li>
-                        <li><a href="#">Обслуживание домофонов</a></li>
-                        <li><a href="#">Оплата билетов</a></li>
-                        <li><a href="#">Охрана</a></li>
-                    </ul>
+                        </dd>
+                    </dl>
                 </section>
             </div>
         </div>

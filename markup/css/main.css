@@ -364,6 +364,10 @@ table .check {
     TREEVIEW
 */
 
+.treeview {
+    margin: 0;
+}
+
 .treeview,
 .treeview ul{
     list-style: none;
@@ -400,14 +404,28 @@ table .check {
     cursor: pointer;
 }
 
-.treeview input[type=checkbox]+label:hover {
-    background: rgb(11, 152, 184);
+.treeview label:hover {
+    background: #eee;
     border-radius: 4px;
-    color: #fff;
+    color: #005580;
 }
 
 .treeview input[type=checkbox]:checked ~ ul {
     display: block;
+}
+
+.treeview input[type=radio] {
+    display: none;
+}
+
+.treeview input[type=radio]+label {
+    padding: 0 .3em;
+}
+
+.treeview input[type=radio]:checked+label {
+    background: #0B98B8;
+    color: #fff;
+    border-radius: 4px;
 }
 
 
