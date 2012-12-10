@@ -14,6 +14,11 @@ h1 {
     height: 100%;
 }
 
+.row-fluid {
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
 .login-page {
     display: table;
     width: 100%;
@@ -34,6 +39,7 @@ h1 {
     0 1px 1px white,
     0 -2px 1px black,
     0 -1px 1px black;
+    white-space: nowrap;
 }
 
 .login-page .well {
