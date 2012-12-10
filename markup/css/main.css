@@ -328,7 +328,7 @@ table .check {
     TREEVIEW
 */
 
-.treeview ,
+.treeview,
 .treeview ul{
     list-style: none;
 }
