@@ -78,49 +78,53 @@ h1 {
     background: #0B98B8;
 }
 
-.main .data-fields {
+.data-fields {
     font-size: 18px;
 }
 
-.main .data-fields dt {
+.data-fields dt {
     min-width: 140px;
 }
 
-.main .data-fields dt,
-.main .data-fields dd {
+.data-fields dt,
+.data-fields dd {
     float: left;
     line-height: 40px;
 }
 
-.main .data-fields dt {
+.data-fields dt {
     clear: both;
 }
 
-.main .data-fields .type {
+.data-fields .type {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.main .data-fields button {
+.data-fields button {
     margin-bottom: 9px;
     border: 0;
     background: transparent;
     padding: 0;
 }
 
-.main .data-fields .type li {
+.data-fields .type li {
     display: inline-block;
     margin: 0 10px 0 0;
 }
 
-.main .data-fields .type input[type=radio] {
+.data-fields .type input[type=radio] {
     margin: 0;
 }
 
-.main .data-fields .type label {
+.data-fields .type label {
     margin: 0;
     display: inline-block;
+}
+
+.data-fields .number {
+    width: 45px;
 }
 
 .welcome-actions {
