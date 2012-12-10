@@ -26,7 +26,7 @@ define([
         fetch: function() {
             var collection = this;
 
-            mediator.user.get("provider").apiRequest({
+            mediator.user.get('provider').apiRequest({
                 url: 'admin/users/get',
                 data: {
                     joinCards: false

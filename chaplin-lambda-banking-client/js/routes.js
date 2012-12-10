@@ -6,6 +6,10 @@ define(function() {
     var routes = function(match) {
         match('', 'users#index');
         match('index', 'users#index');
+        match('users', 'users#index');
+        match('users/:id', 'users#show');
+        match('users/add', 'users#create');
+
     };
 
     return routes;

@@ -73,8 +73,15 @@
                     success: function(response) {
                         params.success.call(this, response.Response);
                     },
-                    error: function(xhr) {
-                        params.error.call(this, xhr);
+                    error: function(jqXHR) {
+                        switch (jqXHR.status) {
+                            case 404:
+                                service.trigger('notFound', jqXHR);
+                                break;
+                            default:
+                                params.error.call(this, jqXHR);
+                                break;
+                        }
                     }
                 });
             },
@@ -151,9 +158,19 @@
                         params.success.call(this, response);
                     },
                     error: function(jqXHR) {
-                        service.accessToken = '';
-                        service.stopLoginStatusDaemon();
-                        service.trigger('auth.logout');
+                        switch (jqXHR.status) {
+                            case 401:
+                                service.accessToken = '';
+                                service.stopLoginStatusDaemon();
+                                service.trigger('auth.logout');
+                                break;
+                            case 403:
+                                service.trigger('forbidden', jqXHR);
+                                break;
+                            default:
+                                params.error.call(this, jqXHR);
+                                break;
+                        }
                     }
                 });
             }
