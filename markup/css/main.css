@@ -123,6 +123,38 @@ h1 {
     display: inline-block;
 }
 
+.welcome-actions {
+    list-style: none;
+    text-align: center;
+}
+
+.welcome-actions figure {
+    margin: 0;
+}
+
+.welcome-actions figure figcaption {
+    margin: .8em 0 0 0;
+}
+
+.welcome-actions li {
+    display: inline-block;
+    padding: 1em 3em;
+}
+
+.welcome-actions a img {
+    border-radius: 20%;
+    box-shadow: 0 0 0 2px #075F73;
+    -webkit-transition: all ease-in-out .3s;
+    -moz-transition: all ease-in-out .3s;
+    -ms-transition: all ease-in-out .3s;
+    -o-transition: all ease-in-out .3s;
+    transition: all ease-in-out .3s;
+}
+
+.welcome-actions a:hover img {
+    border-radius: 3%;
+}
+
 .user .cards-n-accounts .nav-tabs {
     margin-bottom: 0;
     border: none;
