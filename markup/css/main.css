@@ -360,11 +360,14 @@ table .check {
 .treeview input[type=checkbox]+label {
     display: block;
     margin: 0;
+    padding: 0 .3em;
     cursor: pointer;
 }
 
 .treeview input[type=checkbox]+label:hover {
-    /* background plate */
+    background: rgb(11, 152, 184);
+    border-radius: 4px;
+    color: #fff;
 }
 
 .treeview input[type=checkbox]:checked ~ ul {
