@@ -158,6 +158,7 @@ h1 {
 
 .welcome-actions a:hover img {
     border-radius: 3%;
+    box-shadow: 0 0 0 2px #0B98B8;
 }
 
 .user .cards-n-accounts .nav-tabs {
