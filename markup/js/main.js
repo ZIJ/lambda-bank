@@ -15,7 +15,7 @@ $('.cards-n-accounts .nav-tabs a').click(function(e) {
 //  CLICKABLE ROWS
 $('table tbody .expander').click(function() {
 	var row = $(this);
-	var relevant = row.next('.expandable').find('.accounts, .cards');
+	var relevant = row.next('.expandable').find('td').children(":first");
 	var padding;
 	if (relevant.length === 0) {
 		return;
@@ -42,7 +42,7 @@ $('table tbody .expander').click(function() {
 
 $('table .check').click(function(e){
 	e.stopPropagation();
-})
+});
 
 $('th.check input[type=checkbox]').click(function(e){
 	var checked = $(this).prop('checked');
