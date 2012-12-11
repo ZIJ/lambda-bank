@@ -80,6 +80,7 @@ h1 {
 
 .data-fields {
     font-size: 18px;
+    margin: 0 0 20px 0;
 }
 
 .data-fields dt {
@@ -244,7 +245,7 @@ table .check {
 }
 
 .user .form-actions {
-    display: none;
+    /*display: none;*/
 }
 
 /*
@@ -272,9 +273,9 @@ table .check {
 
 .alert {
     /*display: inline-block;*/
-    display: none;
     text-align: left;
     vertical-align: middle;
+    display: inline-block;
 }
 
 
