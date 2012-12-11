@@ -392,15 +392,20 @@ table .check {
 }
 
 .treeview input[type=checkbox]+label:before {
-    font-family: Consolas, monaco, monospace;
-    content: '▶';
+    content: '';
     display: inline-block;
-    margin: 0 .3em 0 0;
-    text-align: center;
+    border: 4px solid transparent;
+    border-left-color: #000;
 }
 
 .treeview input[type=checkbox]:checked+label:before {
-    content: '◢';
+    border: 3px solid transparent;
+    
+    border-right-color: #000;
+    border-bottom-color: #000;
+    position: relative;
+    top: -2px;
+    margin: 0 2px 0 0;
 }
 
 .treeview input[type=checkbox]+label {
