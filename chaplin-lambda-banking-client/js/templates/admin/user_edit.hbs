@@ -1,0 +1,110 @@
+<section class="content well">
+    <h1>
+        {{#if this.id}}
+            {{this.firstName}} {{this.lastName}}
+        {{else}}
+            New User
+        {{/if}}
+        <button class="btn btn-danger delete"><i class="icon-trash icon-white"></i> Delete</button>
+    </h1>
+    <dl class="data-fields clearfix">
+        <dt>First Name</dt>
+        <dd><input type="text" placeholder="first name" value="{{this.firstName}}" class="firstName"></dd>
+        <dt>Last Name</dt>
+        <dd><input type="text" placeholder="last name" value="{{this.lastName}}" class="lastName"></dd>
+        <dt>Passport ID</dt>
+        <dd><input type="text" placeholder="passport id" value="{{this.passportNumber}}" class="passportNumber"></dd>
+        <dt>Address</dt>
+        <dd><input type="text" placeholder="address" value="{{this.address}}" class="address"></dd>
+    </dl>
+    <div class="form-actions">
+        <button type="submit" class="btn btn-primary save">Save changes</button>
+        <button type="button" class="btn cancel">Cancel</button>
+    </div>
+    <button class="btn-link">Add account</button>
+    <!--<table class="table table-bordered">-->
+        <!--<thead>-->
+        <!--<tr>-->
+            <!--<th class="check"><input type="checkbox" title="toggle all"></th>-->
+            <!--<th>Number</th>-->
+            <!--<th>Currency</th>-->
+            <!--<th>Amount</th>-->
+        <!--</tr>-->
+        <!--</thead>-->
+        <!--<tbody>-->
+        <!--<tr class="expander" title="Expand">-->
+            <!--<td class="check"><input type="checkbox"></td>-->
+            <!--<td>...</td>-->
+            <!--<td>...</td>-->
+            <!--<td>...</td>-->
+        <!--</tr>-->
+        <!--<tr class="expandable">-->
+            <!--<td colspan="4">-->
+                <!--<ul class="accounts">-->
+                    <!--<li>-->
+                        <!--<ul class="controls">-->
+                            <!--<li><button class="delete" title="Delete"><i class="icon-remove-sign"></i></button></li>-->
+                            <!--<li><button class="edit" title="Edit"><i class="icon-edit"></i></button></li>-->
+                        <!--</ul>-->
+                        <!--some test info-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<ul class="controls">-->
+                            <!--<li><button class="delete" title="Delete"><i class="icon-remove-sign"></i></button></li>-->
+                            <!--<li><button class="edit" title="Edit"><i class="icon-edit"></i></button></li>-->
+                        <!--</ul>-->
+                        <!--some test info-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<ul class="controls">-->
+                            <!--<li><button class="delete" title="Delete"><i class="icon-remove-sign"></i></button></li>-->
+                            <!--<li><button class="edit" title="Edit"><i class="icon-edit"></i></button></li>-->
+                        <!--</ul>-->
+                        <!--some test info-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--<tr>-->
+            <!--<td class="check"><input type="checkbox"></td>-->
+            <!--<td>...</td>-->
+            <!--<td>...</td>-->
+            <!--<td>...</td>-->
+        <!--</tr>-->
+        <!--<tr class="expander" title="Expand">-->
+            <!--<td class="check"><input type="checkbox"></td>-->
+            <!--<td>...</td>-->
+            <!--<td>...</td>-->
+            <!--<td>...</td>-->
+        <!--</tr>-->
+        <!--<tr class="expandable">-->
+            <!--<td colspan="4">-->
+                <!--<ul class="accounts">-->
+                    <!--<li>-->
+                        <!--<ul class="controls">-->
+                            <!--<li><button class="delete" title="Delete"><i class="icon-remove-sign"></i></button></li>-->
+                            <!--<li><button class="edit" title="Edit"><i class="icon-edit"></i></button></li>-->
+                        <!--</ul>-->
+                        <!--some test info-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<ul class="controls">-->
+                            <!--<li><button class="delete" title="Delete"><i class="icon-remove-sign"></i></button></li>-->
+                            <!--<li><button class="edit" title="Edit"><i class="icon-edit"></i></button></li>-->
+                        <!--</ul>-->
+                        <!--some test info-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<ul class="controls">-->
+                            <!--<li><button class="delete" title="Delete"><i class="icon-remove-sign"></i></button></li>-->
+                            <!--<li><button class="edit" title="Edit"><i class="icon-edit"></i></button></li>-->
+                        <!--</ul>-->
+                        <!--some test info-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</td>-->
+        <!--</tr>-->
+        <!--</tbody>-->
+    <!--</table>-->
+
+</section>

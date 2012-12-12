@@ -17,7 +17,7 @@ define([
         function SessionController() {
             var controller = this;
 
-            _.bindAll(controller, "logout", "serviceProviderSession", "triggerLogin");
+            _.bindAll(controller, 'logout', 'serviceProviderSession', 'triggerLogin');
 
             SessionController.__super__.constructor.apply(controller, arguments);
         }

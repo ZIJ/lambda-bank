@@ -35,6 +35,7 @@ define([
             var view = this;
 
             // TODO: ??? maybe simply redirect or publish mediator event here
+            mediator.publish('!router:route', 'users/create');
         }
     });
 

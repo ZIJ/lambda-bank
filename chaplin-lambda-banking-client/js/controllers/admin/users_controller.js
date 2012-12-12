@@ -1,19 +1,28 @@
 define([
+    'underscore',
+    'chaplin',
     'controllers/base/controller',
     // TODO: load when needed
     'models/admin/users',
     'views/admin/users_view',
     'models/admin/user',
-    'views/admin/user_view'
-], function(Controller, UsersCollection, UsersView, UserModel, UserView) {
+    'views/admin/user_view',
+    'views/admin/user_edit_view'
+], function(_, Chaplin, Controller, UsersCollection, UsersView, UserModel, UserView, UserEditView) {
     'use strict';
+
+    var mediator = Chaplin.mediator;
 
     var UsersController = Controller.extend({
 
         initialize: function(params) {
             var controller = this;
 
+            _.bindAll(controller, 'triggerSaveUser');
+
             UsersController.__super__.initialize.apply(controller, arguments);
+
+            controller.subscribeEvent('!saveUser', controller.triggerSaveUser);
         },
 
         index: function() {
@@ -45,11 +54,41 @@ define([
         create: function() {
             var controller = this;
 
+            controller.model = new UserModel();
 
+            controller.view = new UserEditView({
+                model: controller.model
+            });
         },
 
-        edit: function() {
+        edit: function(params) {
+            var controller = this;
 
+            controller.model = new UserModel({
+                id: params.id
+            });
+
+            controller.model.fetch({
+                success: function() {
+                    controller.view = new UserEditView({
+                        model: controller.model
+                    });
+                }
+            });
+        },
+
+        triggerSaveUser: function(options) {
+            var controller = this;
+
+            controller.model.save({
+                attributesToSave: options.attributesToSave,
+                success: function() {
+                    mediator.publish('!router:route', 'users/' + controller.model.id);
+                },
+                error: function() {
+                    // TODO: implementation needed
+                }
+            });
         }
 
 

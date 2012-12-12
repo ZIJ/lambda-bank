@@ -48,7 +48,7 @@ define([
                 },
                 success: function(response) {
                     model.fetchSuccessfulHandler(response);
-                    options.success.apply(this, response);
+                    options.success.call(this, response);
                 },
                 error: function(jqXHR) {
                     // TODO: implementation needed
@@ -59,25 +59,41 @@ define([
         save: function(options) {
             var model = this,
                 attributesToSave = {
-                    FirstName: model.get('firstName'),
-                    LastName: model.get('lastName'),
-                    PassportNumber: model.get('passportNumber'),
-                    Address: model.get('address')
+                    FirstName: options.attributesToSave.firstName,
+                    LastName: options.attributesToSave.lastName,
+                    PassportNumber: options.attributesToSave.passportNumber,
+                    Address: options.attributesToSave.address
                 };
 
             if (model.id && model.id !== 0) {
                 mediator.user.get('provider').apiRequest({
                     url: 'admin/users/update',
-                    data: _.extend({ ID: model.id }, attributesToSave),
-                    success: model.saveSuccessfulHandler,
-                    error: model.saveErrorHandler
+                    data: {
+                        user: _.extend({ ID: model.id }, attributesToSave)
+                    },
+                    success: function(response) {
+                        model.saveSuccessfulHandler.call(this, response);
+                        options.success.call(this, response);
+                    },
+                    error: function(jqXHR) {
+                        model.saveErrorHandler.call(this, jqXHR);
+                        options.error.call(this, jqXHR);
+                    }
                 });
             } else {
                 mediator.user.get('provider').apiRequest({
                     url: 'admin/users/create',
-                    data: attributesToSave,
-                    success: model.saveSuccessfulHandler,
-                    error: model.saveErrorHandler
+                    data: {
+                        user: attributesToSave
+                    },
+                    success: function(response) {
+                        model.saveSuccessfulHandler.call(this, response);
+                        options.success.call(this, response);
+                    },
+                    error: function(jqXHR) {
+                        model.saveErrorHandler.call(this, jqXHR);
+                        options.error.call(this, jqXHR);
+                    }
                 });
             }
         },
@@ -92,7 +108,7 @@ define([
                 },
                 success: function() {
                     model.destroySuccessfulHandler();
-                    options.success.apply(this);
+                    options.success.call(this);
                 },
                 error: function(jqXHR) {
                     // TODO: implementation needed
@@ -107,7 +123,10 @@ define([
         },
 
         saveSuccessfulHandler: function(response) {
+            var model = this;
 
+            // For setting id, got from server (and all other auto-generated attributes)
+            model.set(model.parse(response));
         },
 
         saveErrorHandler: function() {

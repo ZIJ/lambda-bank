@@ -8,7 +8,8 @@ define(function() {
         match('index', 'users#index');
         match('users', 'users#index');
         match('users/:id', 'users#show');
-        match('users/add', 'users#create');
+        match('users/create', 'users#create');
+        match('users/:id/edit', 'users#edit');
 
     };
 

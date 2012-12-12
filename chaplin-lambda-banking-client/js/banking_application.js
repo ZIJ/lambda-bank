@@ -86,18 +86,16 @@ define([
 
             switch (mediator.user.get('role')) {
                 case 'admin':
-                    require(['controllers/admin/header_controller'], function(HeaderControllerAdmin) {
+                    require(['controllers/admin/header_controller', 'controllers/admin/navigation_controller'], function(HeaderControllerAdmin, NavigationControllerAdmin) {
                         app.headerController = new HeaderControllerAdmin();
 
-                        require(['controllers/admin/navigation_controller'], function(NavigationControllerAdmin) {
-                            app.navigationController = new NavigationControllerAdmin();
+                        app.navigationController = new NavigationControllerAdmin();
 
-                            app.initDispatcher({
-                                controllerPath: 'controllers/admin/'
-                            });
-
-                            app.initRouter(routes, { pushState: false , root: '/' });
+                        app.initDispatcher({
+                            controllerPath: 'controllers/admin/'
                         });
+
+                        app.initRouter(routes, { pushState: false , root: '/' });
                     });
                     break;
                 case 'user':
