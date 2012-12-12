@@ -31,7 +31,7 @@ namespace BankService
 
 			if (info == null)
 			{
-				throw new WebFaultException(System.Net.HttpStatusCode.Forbidden);
+				throw new WebFaultException(System.Net.HttpStatusCode.Unauthorized);
 			}
 
 			string role = info.User.Role.ToString();
@@ -150,15 +150,27 @@ namespace BankService
 		}
 
 		#region Users
-		public Message GetUsers(Guid securityToken, bool joinCards)
+		public Message GetUsers(Guid securityToken, bool joinCards, int? userId)
 		{
 			LoginInfo info = GetAdmin(securityToken);
-			List<object> users = new List<object>();
-			foreach (BankUser u in bank.Database.BankUsers)
+			if (userId != null)
 			{
-				users.Add(CreateUserResponse(u, joinCards));
+				BankUser user = db.BankUsers.Find(userId.Value);
+				if (user == null)
+				{
+					throw new WebFaultException(HttpStatusCode.NotFound);
+				}
+				return Json(CreateUserResponse(user, joinCards));
 			}
-			return Json(users);
+			else
+			{
+				List<object> users = new List<object>();
+				foreach (BankUser u in bank.Database.BankUsers)
+				{
+					users.Add(CreateUserResponse(u, joinCards));
+				}
+				return Json(users);
+			}
 		}
 
 		public Message CreateUser(Guid securityToken, BankUser user)
@@ -276,9 +288,13 @@ namespace BankService
 		private BankUser GetUser(Guid securityToken)
 		{
 			LoginInfo info = bank.UserService.GetUser(securityToken);
-			if (info == null || info.User.Role.ToString() != "user")
+			if (info == null)
 			{
 				throw new WebFaultException(HttpStatusCode.Unauthorized);
+			}
+			else if (info.User.Role.ToString() != "user")
+			{
+				throw new WebFaultException(HttpStatusCode.Forbidden);
 			}
 			return info.User.BankUser;
 		}
@@ -289,6 +305,10 @@ namespace BankService
 			if (info == null)
 			{
 				throw new WebFaultException(HttpStatusCode.Unauthorized);
+			}
+			else if (info.User.Role.ToString() != "admin")
+			{
+				throw new WebFaultException(HttpStatusCode.Forbidden);
 			}
 			return info;
 		}

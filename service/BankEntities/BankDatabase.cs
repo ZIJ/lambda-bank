@@ -26,7 +26,7 @@ namespace BankEntities
 
 		public DbSet<CalendarSchedule> CalendarSchelules { get; set; }
 
-		public DbSet<SpanSchedule> SpanSchedules { get; set; }
+		public DbSet<Schedule> Schedules { get; set; }
 
 		public DbSet<Role> Roles { get; set; }
 

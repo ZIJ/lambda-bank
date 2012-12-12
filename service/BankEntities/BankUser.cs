@@ -12,7 +12,7 @@ namespace BankEntities
 		public BankUser()
 		{
 			Cards = new HashSet<Card>();
-			SpanSchedules = new HashSet<SpanSchedule>();
+			SpanSchedules = new HashSet<Schedule>();
 			CalendarSchedules = new HashSet<CalendarSchedule>();
 		}
 		[Key]
@@ -32,7 +32,7 @@ namespace BankEntities
 
 		public virtual ICollection<Card> Cards { get; set; }
 
-		public virtual ICollection<SpanSchedule> SpanSchedules { get; set; }
+		public virtual ICollection<Schedule> SpanSchedules { get; set; }
 
 		public virtual ICollection<CalendarSchedule> CalendarSchedules { get; set; }
 

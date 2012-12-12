@@ -165,26 +165,31 @@ namespace BankEntities
 		{
 			while (true)
 			{
-				DateTime now = DateTime.Now;
-				foreach (CalendarSchedule schedule in db.CalendarSchelules)
+				DateTime now = DateTime.Now.Date;
+
+				foreach (Schedule schedule in db.Schedules)
 				{
-					if ((schedule.DayOfMonth == null || schedule.DayOfMonth == now.Day) &&
-						(schedule.DayOfWeek == null || schedule.DayOfWeek % 7 == (int)now.DayOfWeek) &&
-						(schedule.Hour == null || schedule.Hour == now.Hour) &&
-						(schedule.Month == null || schedule.Month == now.Month)
-						)
+					DateTime nextPay = DateTime.Now;
+					bool payNow = false;
+					switch (schedule.ScheduleBit)
 					{
-						//run
+ 						case ScheduleBit.Year:
+							nextPay = schedule.LastTime.AddYears(schedule.BitQuantity);
+							break;
+						case ScheduleBit.Month:
+							nextPay = schedule.LastTime.AddMonths(schedule.BitQuantity);
+							break;
+						case ScheduleBit.Week:
+							nextPay = schedule.LastTime.AddDays(7 * schedule.BitQuantity);
+							break;
+						case ScheduleBit.Day:
+							nextPay = schedule.LastTime.AddDays(7 * schedule.BitQuantity);
+							break;
 					}
-				}
-				foreach (SpanSchedule schedule in db.SpanSchedules)
-				{
-					TimeSpan span = DateTime.Now - schedule.LastTime;
-					int repeatCount = (int)Math.Floor(span.TotalMinutes / schedule.Span.TotalMinutes);
-					for (int i = 0; i < repeatCount; i++)
+					if (nextPay <= now)
 					{
-						//run
-						schedule.LastTime += schedule.Span;
+						ProcessPayment(schedule.User, schedule.Template.JsonPayment);
+						schedule.LastTime = now;
 					}
 				}
 				Thread.Sleep(1000 * 60 * 60);

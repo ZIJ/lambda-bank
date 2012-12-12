@@ -22,7 +22,7 @@ namespace BankService
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/admin/users/get")]
-		Message GetUsers(Guid securityToken, bool joinCards);
+		Message GetUsers(Guid securityToken, bool joinCards, int? userId);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
