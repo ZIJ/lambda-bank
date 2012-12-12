@@ -4,3 +4,9 @@ F:\Source Code\lambda-bank\service\ExRatesBy\bin\Debug\ExRatesBy.dll
 F:\Source Code\lambda-bank\service\ExRatesBy\bin\Debug\ExRatesBy.pdb
 F:\Source Code\lambda-bank\service\ExRatesBy\obj\Debug\ExRatesBy.dll
 F:\Source Code\lambda-bank\service\ExRatesBy\obj\Debug\ExRatesBy.pdb
+D:\Source Code\lambda-bank\service\ExRatesBy\bin\Debug\ExRatesBy.dll.config
+D:\Source Code\lambda-bank\service\ExRatesBy\bin\Debug\ExRatesBy.dll
+D:\Source Code\lambda-bank\service\ExRatesBy\bin\Debug\ExRatesBy.pdb
+D:\Source Code\lambda-bank\service\ExRatesBy\obj\Debug\ExRatesBy.csprojResolveAssemblyReference.cache
+D:\Source Code\lambda-bank\service\ExRatesBy\obj\Debug\ExRatesBy.dll
+D:\Source Code\lambda-bank\service\ExRatesBy\obj\Debug\ExRatesBy.pdb

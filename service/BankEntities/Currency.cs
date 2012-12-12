@@ -3,11 +3,32 @@
 	public enum Currency
 	{
 		BYR,
-		RUS,
+		AUD,
+		BGN,
+		UAH,
+		DKK,
 		USD,
 		EUR,
-		CHD,
-		JPN,
-		///???
+		PLN,
+		ISK,
+		CAD,
+		CNY,
+		KWD,
+		LVL,
+		LTL,
+		MDL,
+		NOK,
+		RUB,
+		XDR,
+		SGD,
+		KGS,
+		KZT,
+		TRY,
+		GBP,
+		CZK,
+		SEK,
+		CHF,
+		JPY,
+		IRR
 	}
 }

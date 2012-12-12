@@ -40,6 +40,11 @@ namespace BankEntities
 			//Thread daemon = new Thread(new ThreadStart(StartProcessing));
 		}
 
+		public void LoadCurrencies()
+		{
+ 
+		}
+
 		public BankDatabase Database
 		{
 			get

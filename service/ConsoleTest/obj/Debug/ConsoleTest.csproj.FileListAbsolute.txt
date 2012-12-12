@@ -48,3 +48,5 @@ F:\Source Code\lambda-bank\service\ConsoleTest\bin\Debug\BankEntities.pdb
 F:\Source Code\lambda-bank\service\ConsoleTest\bin\Debug\EntityFramework.xml
 F:\Source Code\lambda-bank\service\ConsoleTest\obj\Debug\ConsoleTest.exe
 F:\Source Code\lambda-bank\service\ConsoleTest\obj\Debug\ConsoleTest.pdb
+D:\Source Code\lambda-bank\service\ConsoleTest\bin\Debug\ExRatesBy.dll
+D:\Source Code\lambda-bank\service\ConsoleTest\bin\Debug\ExRatesBy.pdb

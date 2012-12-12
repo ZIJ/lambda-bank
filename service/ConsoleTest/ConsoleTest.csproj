@@ -39,6 +39,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,6 +54,10 @@
     <ProjectReference Include="..\BankEntities\BankEntities.csproj">
       <Project>{c764dd38-cf7c-47e7-b847-2534607f8a9a}</Project>
       <Name>BankEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExRatesBy\ExRatesBy.csproj">
+      <Project>{3086fce8-4775-41cc-aa2e-58cbf709d4b6}</Project>
+      <Name>ExRatesBy</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -10,7 +10,7 @@ namespace ConsoleTest
 	{
 		static void Main(string[] args)
 		{
-			System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
+			/*System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
 			message.To.Add("sergehill@gmail.com");
 			message.Subject = "This is the Subject line";
 			message.From = new System.Net.Mail.MailAddress("thereisnohuman@drs-cd.com", "Lambda Bank Robo");
@@ -24,7 +24,22 @@ namespace ConsoleTest
 			smtp.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
 			
 			smtp.EnableSsl = true;
-			smtp.Send(message);
+			smtp.Send(message);*/
+
+			var x = new ExRatesBy.Rates.ExRatesSoapClient();
+			var st = x.ExRatesDaily(DateTime.Now);
+	
+			var tables = st.Tables;
+			var x3 = tables[0];
+
+			for (int i = 0; i < x3.Rows.Count; i++)
+			{ 
+				System.Data.DataRow row = x3.Rows[i];
+				Console.WriteLine(row.ItemArray[4]);
+			}
+
+
+				Console.ReadKey();
 		}
 	}
 }
