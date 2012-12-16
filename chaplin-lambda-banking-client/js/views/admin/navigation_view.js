@@ -24,13 +24,31 @@ define([
             container: 'div.row-fluid',
             autoRender: true,
 
-            // Expects the serviceProviders in the options.
             initialize: function(options) {
                 var view = this;
 
-                // _.bindAll(view, "onLogoutClick");
+                _.bindAll(view, 'matchRouteHandler');
 
                 NavigationView.__super__.initialize.apply(view, arguments);
+
+                view.subscribeEvent('matchRoute', view.matchRouteHandler);
+            },
+
+            matchRouteHandler: function(route) {
+                var view = this,
+                    targetSelector,
+                    pattern = route.pattern;
+
+                view.$('li.active').removeClass('active');
+
+                if (pattern === '') {
+                    targetSelector = '.icon-home';
+                } else if (pattern === 'users' || pattern === 'users/create'
+                || pattern === 'users/:id' || pattern === 'users/:id/edit') {
+                    targetSelector = '.icon-user';
+                }
+
+                view.$(targetSelector).parent().parent().addClass('active');
             }
 
         });
