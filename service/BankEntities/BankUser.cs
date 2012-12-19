@@ -12,8 +12,8 @@ namespace BankEntities
 		public BankUser()
 		{
 			Cards = new HashSet<Card>();
-			SpanSchedules = new HashSet<Schedule>();
-			CalendarSchedules = new HashSet<CalendarSchedule>();
+			Schedules = new HashSet<Schedule>();
+			Payments = new HashSet<PaymentTemplate>();
 		}
 		[Key]
 		public int ID { get; set; }
@@ -30,12 +30,20 @@ namespace BankEntities
 		[Required]
 		public string Address { get; set; }
 
+		public bool IsDisabled { get; set; }
+
 		public virtual ICollection<Card> Cards { get; set; }
 
-		public virtual ICollection<Schedule> SpanSchedules { get; set; }
+		public virtual ICollection<Schedule> Schedules { get; set; }
 
-		public virtual ICollection<CalendarSchedule> CalendarSchedules { get; set; }
+		public virtual ICollection<PaymentTemplate> Payments { get; set; }
 
-		public virtual ICollection<PaymentTemplate> SavedPayments { get; set; }
+		public ICollection<PaymentTemplate> SavedPayments
+		{
+			get
+			{
+				return Payments.Where(t => t.Type == TemplateType.Saved).ToList();
+			}
+		}
 	}
 }

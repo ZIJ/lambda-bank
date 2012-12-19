@@ -15,6 +15,7 @@ namespace BankService
 	public class WebService : IBankService
 	{
 		private static Bank bank = new Bank();
+
 		private static BankDatabase db = null;
 
 		private static System.Web.Script.Serialization.JavaScriptSerializer serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
@@ -57,7 +58,7 @@ namespace BankService
 			return Json(info.Cards.Select(c => CreateCardResponse(c, false)));
 		}
 
-		public Message GetLog(Guid securityToken, byte[] accountNumber, DateTime start, DateTime end)
+		public Message GetLog(Guid securityToken, int cardId, DateTime start, DateTime end)
 		{
 			throw new NotImplementedException();
 		}
@@ -65,21 +66,24 @@ namespace BankService
 		public Message PayAccDetails(Guid securityToken, string paymentInfo)
 		{
 			GetUser(securityToken);
-			return Json(bank.GetPaymentInfo(paymentInfo));
+			throw new NotImplementedException();
+			//return Json(bank.GetPaymentInfo(paymentInfo));
 		}
 
 		public Message PrePaymentInfo(Guid securityToken, string paymentInfo)
 		{
 			BankUser user = GetUser(securityToken);
-			return Json(bank.GetPrepaymentInfo(user, paymentInfo));
+			throw new NotImplementedException();
+			//return Json(bank.GetPrepaymentInfo(user, paymentInfo));
 		}
 
 		public Message Payment(Guid securityToken, string paymentInfo)
 		{
+			throw new NotImplementedException();
 			try
 			{
 				BankUser user = GetUser(securityToken);
-				bank.ProcessPayment(user, paymentInfo);
+				//bank.ProcessPayment(user, paymentInfo);
 			}
 			catch (ArgumentOutOfRangeException)
 			{
@@ -218,9 +222,28 @@ namespace BankService
 		#endregion
 
 		#region Cards
-		public Message GetCards(Guid securityToken, int userId)
+		public Message GetCards(Guid securityToken, int? userId, int? cardId)
 		{
-			return Json(db.BankUsers.Find(userId).Cards);
+			GetAdmin(securityToken);
+			if (cardId != null)
+			{
+				Card card = db.Cards.Find(cardId.Value);
+				if (card == null)
+				{
+					throw new WebFaultException(HttpStatusCode.NotFound);
+				}
+				return Json(CreateCardResponse(card, false));
+			}
+			if (userId != null)
+			{
+				BankUser user = db.BankUsers.Find(userId.Value);
+				if (user == null)
+				{
+					throw new WebFaultException(HttpStatusCode.NotFound);
+				}
+				return Json(user.Cards.Select(c => CreateCardResponse(c, false)));
+			}
+			return Json(db.Cards.Select(c => CreateCardResponse(c, true)));
 		}
 
 		#endregion
@@ -267,6 +290,7 @@ namespace BankService
 				ID = card.ID,
 				Number = card.CardNumber,
 				Type = card.Type.ToString(),
+				Accounts =  card.Accounts,
 				User = joinUser? card.BankUser : (object)card.BankUser.ID
 			};
 			return response;

@@ -11,6 +11,7 @@ namespace BankEntities
 		[Key]
 		public int ID { get; set; }
 
+		[Required]
 		public PaymentTemplate Template { get; set; }
 
 		public DateTime StartTime { get; set; }

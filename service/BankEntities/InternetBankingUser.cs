@@ -10,7 +10,7 @@ namespace BankEntities
 		[Key]
 		public int ID { get; set; }
 
-		public BankUser BankUser { get; set; }
+		public virtual BankUser BankUser { get; set; }
 
 		[Required]
 		public string Login { get; set; }
