@@ -43,3 +43,5 @@ F:\Source Code\lambda-bank\service\BankService\bin\BankEntities.pdb
 F:\Source Code\lambda-bank\service\BankService\bin\EntityFramework.xml
 F:\Source Code\lambda-bank\service\BankService\obj\Debug\BankService.dll
 F:\Source Code\lambda-bank\service\BankService\obj\Debug\BankService.pdb
+D:\Source Code\lambda-bank\service\BankService\bin\ExRatesBy.dll
+D:\Source Code\lambda-bank\service\BankService\bin\ExRatesBy.pdb

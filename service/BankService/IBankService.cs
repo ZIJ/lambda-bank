@@ -52,7 +52,7 @@ namespace BankService
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/admin/cards/get")]
-		Message GetCards(Guid securityToken, int userId);
+		Message GetCards(Guid securityToken, int? userId, int? cardId);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
@@ -113,7 +113,7 @@ namespace BankService
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/user/paymentslog")]
-		Message GetLog(Guid securityToken, byte[] accountNumber, DateTime start, DateTime end);
+		Message GetLog(Guid securityToken, int cardID, DateTime start, DateTime end);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
@@ -155,7 +155,7 @@ namespace BankService
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/user/mypayments/save")]
-		Message SavePayments(Guid securityToken, string paymentInfo);
+		Message SavePayment(Guid securityToken, string paymentInfo);
 		
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
@@ -164,46 +164,25 @@ namespace BankService
 			UriTemplate = "/user/schedules/get")]
 		Message GetSchedules(Guid securityToken);
 
-		[WebInvoke(Method = "PUT",
+		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/user/schedules/calendar")]
-		Message CreateCalendarSchedule(Guid securityToken, string paymentInfo);
+			UriTemplate = "/user/schedules/create")]
+		Message CreateSchedule(Guid securityToken, string paymentInfo);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/user/schedules/calendar")]
-		Message UpdateCalendarSchedule(Guid securityToken, int id, string paymentInfo);
-
-		[WebInvoke(Method = "DELETE",
-			RequestFormat = WebMessageFormat.Json,
-			ResponseFormat = WebMessageFormat.Json,
-			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/user/schedules/calendar")]
-		Message DeleteCalendarSchedule(Guid securityToken, int id);
-
-		[WebInvoke(Method = "PUT",
-			RequestFormat = WebMessageFormat.Json,
-			ResponseFormat = WebMessageFormat.Json,
-			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/user/schedules/span")]
-		Message CreateSpanSchedule(Guid securityToken, string paymentInfo);
+			UriTemplate = "/user/schedules/update")]
+		Message UpdateSchedule(Guid securityToken, int id, string paymentInfo);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/user/schedules/span")]
-		Message UpdateSpanSchedule(Guid securityToken, int id, string paymentInfo);
-
-		[WebInvoke(Method = "DELETE",
-			RequestFormat = WebMessageFormat.Json,
-			ResponseFormat = WebMessageFormat.Json,
-			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/user/schedules/span")]
-		Message DeleteSpanSchedule(Guid securityToken, int id);
+			UriTemplate = "/user/schedules/delete")]
+		Message DeleteSchedule(Guid securityToken, int id);
 	}
 }

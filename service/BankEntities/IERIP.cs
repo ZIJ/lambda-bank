@@ -7,7 +7,7 @@ namespace BankEntities
 {
 	public interface IERIP
 	{
-		void SendPayment(EripPaymentType type, string jsonPayment);
+		void SendPayment(EripPaymentType type, string jsonPayment, decimal amount);
 
 		object GetPaymentInfo(EripPaymentType type, string jsonPayment);
 
@@ -35,5 +35,12 @@ namespace BankEntities
 		AtlantTelecom,
 		AdslBy,
 		Solo
+	}
+
+	public class PaymentCheck
+	{
+		public string Agent { get; set; }
+
+		public string CheckNumber { get; set; }
 	}
 }

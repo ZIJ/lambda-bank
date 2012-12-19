@@ -30,6 +30,14 @@ namespace BankEntities
 		[Required]
 		public string CVV { get; set; }
 
+		public bool IsExpired
+		{
+			get
+			{
+				return DateTime.Now < ExpirationDate;
+			}
+		}
+
 		public virtual ICollection<Account> Accounts { get; set; }
 
 		public DateTime ExpirationDate { get; set; }

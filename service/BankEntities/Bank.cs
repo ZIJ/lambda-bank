@@ -15,11 +15,15 @@ namespace BankEntities
 
 		private IERIP ERIP = null;
 
-		private Guid thisBankGuid = Guid.NewGuid();
+		private Guid thisBankGuid;
+
+		private Dictionary<Currency, decimal> currencyRates = null;
 
 		public Bank()
 		{
-			BankArbiter.Banks.Add(thisBankGuid, this);
+			Guid bankId = Guid.NewGuid();
+			thisBankGuid = bankId;
+			//BankArbiter.Banks.Add(thisBankGuid, this);
 			string connection = null;
 			ConnectionStringSettings connectionString = ConfigurationManager.ConnectionStrings["LambdaDB"];
 			if (connectionString != null)
@@ -40,10 +44,21 @@ namespace BankEntities
 			//Thread daemon = new Thread(new ThreadStart(StartProcessing));
 		}
 
-		public void LoadCurrencies()
+		public Dictionary<Currency, decimal> Currencies
 		{
- 
+			get
+			{
+				if (currencyRates == null)
+				{
+					LoadCurrencies();
+				}
+				return currencyRates;
+			}
 		}
+
+		public static readonly Guid FirstBankGuid = new Guid("{79928B2B-641A-42B2-B790-9B02BF50D30C}");
+
+		public static readonly Guid SecondBankGuid = new Guid("{D8C62C10-0FDA-421F-ACA6-CF17CA8D6961}");
 
 		public BankDatabase Database
 		{
@@ -61,26 +76,40 @@ namespace BankEntities
 			}
 		}
 
-		public object GetPaymentInfo(string payment)
+		public object GetPaymentInfo(EripPaymentType type, string payment)
 		{
-			EripPaymentType type = ParsePaymentEripType(payment);
 			return ERIP.GetPaymentInfo(type, payment);
 		}
 
-		public object GetPrepaymentInfo(BankUser user, string payment)
+		public void LoadCurrencies()
 		{
-			int accountId = int.Parse(payment.GetJsonAttribute("accountId"));
+			Dictionary<Currency, decimal> newRates = new Dictionary<Currency, decimal>();
+			Dictionary<string, decimal> rates = ExRatesBy.NbRates.GetCurrencies();
+			foreach (KeyValuePair<string, decimal> kvp in rates)
+			{
+				Currency currency;
+				if (Enum.TryParse(kvp.Key, out currency))
+				{
+					newRates.Add(currency, kvp.Value);
+				}
+			}
+			newRates.Add(Currency.BYR, 1);
+			currencyRates = newRates;
+		}
+
+		public object GetPrepaymentInfo(BankUser user, int accountId, decimal amount, EripPaymentType type, string payment)
+		{
 			Account account = user.Cards.SelectMany(c => c.Accounts).Where(a => a.ID == accountId).FirstOrDefault();
 			if (account != null)
 			{
-				EripPaymentType type;
-				decimal amount;
-				ParsePaymentRequest(payment, out type, out amount);
 				Prerequisite requisite = ERIP.GetPrerequisites(type);
+				decimal amountCharged = BackConvertCurrency(account.Currency, requisite.Currency, amount);
+
 				var info = new
 				{
-					AmountCharged = BackConvertCurrency(account.Currency, requisite.Currency, amount),
-					ChangeId = UserService.PasswordDistortion(account.Amount.ToString(), "res")
+					AmountCharged = amount,
+					ChangeId = UserService.PasswordDistortion(account.Amount.ToString(), "res"),
+					EnoughMoney = amountCharged >= account.Amount
 				};
 				return info;
 			}
@@ -90,18 +119,35 @@ namespace BankEntities
 			}
 		}
 
-		public void ProcessPayment(BankUser user, string payment)
+		public object ProcessPayment(BankUser user, int accountId, decimal amount, EripPaymentType type, string changeId, string payment)
 		{
-			int accountId = int.Parse(payment.GetJsonAttribute("accountId"));
 			Account account = user.Cards.SelectMany(c => c.Accounts).Where(a => a.ID == accountId).FirstOrDefault();
+			PaymentTemplate template = new PaymentTemplate();
+			template.Owner = user;
+			template.Account = account;
+			template.Amount = amount;
+			template.EripType = type;
+			template.JsonPayment = payment;
 			if (account != null)
 			{
-				string changeid = payment.GetJsonAttribute("changeId");
-				if (changeid != UserService.PasswordDistortion(account.Amount.ToString(), "res"))
+				lock (this)
 				{
-					throw new ArgumentOutOfRangeException();
+					if (changeId != UserService.PasswordDistortion(account.Amount.ToString(), "res"))
+					{
+						Prerequisite requisite = ERIP.GetPrerequisites(type);
+						decimal amountCharged = BackConvertCurrency(account.Currency, requisite.Currency, amount);
+						var info = new
+						{
+							Status = "AccountChanged",
+							AmountCharged = amount,
+							ChangeId = UserService.PasswordDistortion(account.Amount.ToString(), "res"),
+							EnoughMoney = amountCharged >= account.Amount
+						};
+						return info;
+					}
+					Pay(template);
+					return new { Status = "OK" };
 				}
-				Pay(account, payment);
 			}
 			else
 			{
@@ -135,7 +181,7 @@ namespace BankEntities
 			transaction.State = TransactionState.Closed;
 			db.SaveChanges();
 		}
-
+		
 		public int CreateCard(BankUser user, Currency[] currencies, int? accountId)
 		{
 			Card newCard = new Card();
@@ -193,7 +239,7 @@ namespace BankEntities
 					}
 					if (nextPay <= now)
 					{
-						ProcessPayment(schedule.User, schedule.Template.JsonPayment);
+						Pay(schedule.Template);
 						schedule.LastTime = now;
 					}
 				}
@@ -211,12 +257,16 @@ namespace BankEntities
 
 		private decimal ConvertCurrency(Currency from, Currency to, decimal amount)
 		{
-			return amount; //temp;
+			decimal fromRate = Currencies[from];
+			decimal toRate = Currencies[to];
+			return fromRate / toRate;
 		}
 
 		private decimal BackConvertCurrency(Currency from, Currency to, decimal converted)
 		{
-			return converted; //temp;
+			decimal fromRate = Currencies[from];
+			decimal toRate = Currencies[to];
+			return toRate/fromRate;
 		}
 
 		private void RollbackTransaction(Transaction t)
@@ -247,16 +297,17 @@ namespace BankEntities
 
 		}
 
-		private void Pay(Account account, string jsonPayment)
+		private void Pay(PaymentTemplate template)
 		{
 			Transaction t = null;
+			PaymentEntry entry = new PaymentEntry();
+			entry.Template = template;
+			entry.StartTime = DateTime.Now;
+			
+			Account account = template.Account;
 			try
 			{
-				EripPaymentType type;
-				decimal amount;
-				ParsePaymentRequest(jsonPayment, out type, out amount);
-
-				Prerequisite requisite = ERIP.GetPrerequisites(type);
+				Prerequisite requisite = ERIP.GetPrerequisites(template.EripType);
 				bool internalTransaction = requisite.BankGuid == thisBankGuid;
 				Account receiver = null;
 				t = new Transaction();
@@ -264,7 +315,7 @@ namespace BankEntities
 				t.FromAccountNumber = account.AccountNumber;
 				t.FromBank = thisBankGuid;
 				t.FromAccountID = account.ID;
-				t.FromAccountDelta = BackConvertCurrency(account.Currency, requisite.Currency, amount);
+				t.FromAccountDelta = BackConvertCurrency(account.Currency, requisite.Currency, template.Amount);
 				t.FromAccountCurrency = account.Currency;
 
 				t.ToBank = requisite.BankGuid;
@@ -299,7 +350,7 @@ namespace BankEntities
 				else
 				{
 					BankPayment bp = new BankPayment();
-					bp.Amount = amount;
+					bp.Amount = template.Amount;
 					bp.FromBank = thisBankGuid;
 					bp.ToBank = requisite.BankGuid;
 					bp.FromAccountNumber = account.AccountNumber;
@@ -308,8 +359,10 @@ namespace BankEntities
 					BankArbiter.Transact(bp);
 				}
 				t.State = TransactionState.Closed;
+				t.Payment = entry;
+				db.Payments.Add(entry);
 				db.SaveChanges();
-				ERIP.SendPayment(type, jsonPayment);
+				ERIP.SendPayment(template.EripType, template.JsonPayment, template.Amount);
 			}
 			catch 
 			{
@@ -319,17 +372,6 @@ namespace BankEntities
 					db.SaveChanges();
 				}
 			}
-		}
-		
-		private static void ParsePaymentRequest(string json, out EripPaymentType type, out decimal amount)
-		{
-			type = (EripPaymentType)Enum.Parse(typeof(EripPaymentType), json.GetJsonAttribute("type"), true);
-			amount = decimal.Parse(json.GetJsonAttribute("amount"));
-		}
-
-		private static EripPaymentType ParsePaymentEripType(string json)
-		{
-			return (EripPaymentType)Enum.Parse(typeof(EripPaymentType), json.GetJsonAttribute("type"), true);
 		}
 	}
 
@@ -362,7 +404,7 @@ namespace BankEntities
 			admin.Login = "root";
 			admin.Salt = Guid.NewGuid().ToString("N");
 			admin.PasswordHash = UserService.PasswordDistortion("root", admin.Salt);
-			admin.Role = context.Roles.FirstOrDefault((r) => r.Name == "Admin");
+			admin.Role = context.Roles.FirstOrDefault((r) => r.Name == "admin");
 			context.InternetBankingUsers.Add(admin);
 
 			context.SaveChanges();
@@ -384,6 +426,13 @@ namespace BankEntities
 			account.Currency = Currency.BYR;
 			account.Amount = 10000000;
 
+			InternetBankingUser ibu = new InternetBankingUser();
+			ibu.BankUser = user;
+			ibu.Login = "user";
+			ibu.Salt = Guid.NewGuid().ToString("N");
+			ibu.PasswordHash = UserService.PasswordDistortion("user", ibu.Salt);
+			ibu.Role = context.Roles.FirstOrDefault((r) => r.Name == "user");
+			context.InternetBankingUsers.Add(ibu);
 			context.Accounts.Add(account);
 			context.Cards.Add(card);
 			context.BankUsers.Add(user);

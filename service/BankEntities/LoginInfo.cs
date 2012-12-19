@@ -18,7 +18,7 @@ namespace BankEntities
 		{
 			get
 			{
-				return LastActivity + TimeSpan.FromMinutes(2) - DateTime.Now;
+				return LastActivity + TimeSpan.FromMinutes(10) - DateTime.Now;
 			}
 		}
 	}

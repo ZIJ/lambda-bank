@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Win32;
 using BankEntities;
 using System.Data.Entity;
+using System.Threading;
 namespace ConsoleTest
 {
 	class Program
@@ -25,21 +27,14 @@ namespace ConsoleTest
 			
 			smtp.EnableSsl = true;
 			smtp.Send(message);*/
+			Timer t = new Timer(new TimerCallback(print), null, TimeSpan.FromDays(1), TimeSpan.FromDays(1));
+			Thread.Sleep(10000);
+			Console.ReadKey();
+		}
 
-			var x = new ExRatesBy.Rates.ExRatesSoapClient();
-			var st = x.ExRatesDaily(DateTime.Now);
-	
-			var tables = st.Tables;
-			var x3 = tables[0];
-
-			for (int i = 0; i < x3.Rows.Count; i++)
-			{ 
-				System.Data.DataRow row = x3.Rows[i];
-				Console.WriteLine(row.ItemArray[4]);
-			}
-
-
-				Console.ReadKey();
+		static void print(object state)
+		{
+			Console.WriteLine("111");
 		}
 	}
 }

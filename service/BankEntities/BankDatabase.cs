@@ -23,9 +23,7 @@ namespace BankEntities
 		public DbSet<PaymentEntry> Payments { get; set; }
 
 		public DbSet<PaymentTemplate> PaymentTemplates { get; set; }
-
-		public DbSet<CalendarSchedule> CalendarSchelules { get; set; }
-
+		
 		public DbSet<Schedule> Schedules { get; set; }
 
 		public DbSet<Role> Roles { get; set; }
@@ -33,5 +31,17 @@ namespace BankEntities
 		public DbSet<CardClass> CardClasses { get; set; }
 
 		public DbSet<CardType> CardTypes { get; set; }
+
+		protected override void OnModelCreating(DbModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<Account>().Property(a => a.Amount).HasPrecision(16, 6);
+
+			modelBuilder.Entity<PaymentTemplate>().Property(t => t.Amount).HasPrecision(16, 6);
+
+			modelBuilder.Entity<Transaction>().Property(t => t.FromAccountBackupAmount).HasPrecision(16, 6);
+			modelBuilder.Entity<Transaction>().Property(t => t.FromAccountDelta).HasPrecision(16, 6);
+			modelBuilder.Entity<Transaction>().Property(t => t.ToAccountBackupAmount).HasPrecision(16, 6);
+			modelBuilder.Entity<Transaction>().Property(t => t.ToAccountDelta).HasPrecision(16, 6);
+		}
 	}
 }
