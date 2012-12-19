@@ -22,7 +22,6 @@ namespace BankService
 
 		static WebService()
 		{
-			//bank.StartProcessing();
 			db = bank.Database;
 		}
 
@@ -63,27 +62,24 @@ namespace BankService
 			throw new NotImplementedException();
 		}
 
-		public Message PayAccDetails(Guid securityToken, string paymentInfo)
+		public Message PayAccDetails(Guid securityToken, PaymentRequisites requisite)
 		{
 			GetUser(securityToken);
-			throw new NotImplementedException();
-			//return Json(bank.GetPaymentInfo(paymentInfo));
+			return Json(bank.GetPaymentInfo(requisite.Type, requisite.JsonPayment));
 		}
 
-		public Message PrePaymentInfo(Guid securityToken, string paymentInfo)
+		public Message PrePaymentInfo(Guid securityToken, PaymentRequisites requisite)
 		{
 			BankUser user = GetUser(securityToken);
-			throw new NotImplementedException();
-			//return Json(bank.GetPrepaymentInfo(user, paymentInfo));
+			return Json(bank.GetPrepaymentInfo(user, requisite.AccountId, requisite.Amount, requisite.Type, requisite.JsonPayment));
 		}
 
-		public Message Payment(Guid securityToken, string paymentInfo)
+		public Message Payment(Guid securityToken, PaymentRequisites requisite)
 		{
-			throw new NotImplementedException();
 			try
 			{
 				BankUser user = GetUser(securityToken);
-				//bank.ProcessPayment(user, paymentInfo);
+				return Json(bank.ProcessPayment(user, requisite.AccountId, requisite.Amount, requisite.Type, requisite.ChangeId, requisite.JsonPayment));
 			}
 			catch (ArgumentOutOfRangeException)
 			{
@@ -101,42 +97,7 @@ namespace BankService
 			throw new NotImplementedException();
 		}
 
-		public Message SavePayments(Guid securityToken, string paymentInfo)
-		{
-			throw new NotImplementedException();
-		}
-
 		public Message GetSchedules(Guid securityToken)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Message CreateCalendarSchedule(Guid securityToken, string paymentInfo)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Message UpdateCalendarSchedule(Guid securityToken, int id, string paymentInfo)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Message DeleteCalendarSchedule(Guid securityToken, int id)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Message CreateSpanSchedule(Guid securityToken, string paymentInfo)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Message UpdateSpanSchedule(Guid securityToken, int id, string paymentInfo)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Message DeleteSpanSchedule(Guid securityToken, int id)
 		{
 			throw new NotImplementedException();
 		}
@@ -144,7 +105,7 @@ namespace BankService
 		private static Message Json(object obj)
 		{
 			string response = serializer.Serialize(new { Response = obj });
-			WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin", "*");
+			//WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin", "*");
 			return WebOperationContext.Current.CreateTextResponse(response, "application/json");
 		}
 
@@ -290,7 +251,7 @@ namespace BankService
 				ID = card.ID,
 				Number = card.CardNumber,
 				Type = card.Type.ToString(),
-				Accounts =  card.Accounts,
+				Accounts =  card.Accounts.Select( a => CreateAccountResponse(a)),
 				User = joinUser? card.BankUser : (object)card.BankUser.ID
 			};
 			return response;
@@ -373,6 +334,26 @@ namespace BankService
 		{
 			bank.UserService.Logout(securityToken);
 			return Json("OK");
+		}
+
+		public Message SavePayment(Guid securityToken, string paymentInfo)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Message CreateSchedule(Guid securityToken, string paymentInfo)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Message UpdateSchedule(Guid securityToken, int id, string paymentInfo)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Message DeleteSchedule(Guid securityToken, int id)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

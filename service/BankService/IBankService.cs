@@ -120,21 +120,21 @@ namespace BankService
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/user/payment/accountdetails")]
-		Message PayAccDetails(Guid securityToken, string paymentInfo);
+		Message PayAccDetails(Guid securityToken, PaymentRequisites requisite);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/user/payment/preinfo")]
-		Message PrePaymentInfo(Guid securityToken, string paymentInfo);
+		Message PrePaymentInfo(Guid securityToken, PaymentRequisites requisite);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/user/payments/proceed")]
-		Message Payment(Guid securityToken, string paymentInfo);
+		Message Payment(Guid securityToken, PaymentRequisites requisite);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,

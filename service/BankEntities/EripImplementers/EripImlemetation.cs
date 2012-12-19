@@ -5,13 +5,12 @@ using System.Text;
 
 namespace BankEntities.EripImplementers
 {
-	class EripImlemetation:IERIP
+	class EripImlemetation: IERIP
 	{
 		//private Dictionary<EripPaymentType, Operator> operators = new Dictionary<EripPaymentType, Operator>();
 
 		public EripImlemetation()
 		{
- 
 		}
 
 		public object GetPaymentInfo(EripPaymentType type, string jsonPayment)
@@ -29,7 +28,4 @@ namespace BankEntities.EripImplementers
 			throw new NotImplementedException();
 		}
 	}
-
-	
-
 }

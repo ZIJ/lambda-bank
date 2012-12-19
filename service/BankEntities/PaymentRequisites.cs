@@ -5,7 +5,16 @@ using System.Text;
 
 namespace BankEntities
 {
-	class PaymentRequisites
+	public class PaymentRequisites
 	{
+		public int AccountId { get; set; }
+
+		public decimal Amount { get; set; }
+
+		public EripPaymentType Type { get; set; }
+
+		public string JsonPayment { get; set; }
+
+		public string ChangeId { get; set; }
 	}
 }
