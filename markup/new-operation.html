@@ -109,53 +109,27 @@
                     <!-- DONT USE SUCH A METHOD IN PRODUCTION!!! -->
                     
                     <dl class="data-fields clearfix">
-                        <dt>Card</dt>
-                        <dd>
-                            <ul class="type">
-                                <li>
-                                    <input type="radio" name="card_radio" id="123456" checked>
-                                    <label for="type_existing">#123456</label>
-                                </li>
-                                <li>
-                                    <input type="radio" name="card_radio" id="987645">
-                                    <label for="type_single">#987645</label>
-                                </li>
-                                <li>
-                                    <input type="radio" name="card_radio" id="562345">
-                                    <label for="type_multi">#562345</label>
-                                </li>
-                            </ul>
-                        </dd>
-                    </dl>
-                    <div class="form-actions">
-                        <button type="button" class="btn cancel">Cancel</button>
-                        <button type="button" class="btn btn-primary back">Back</button>
-                        <button type="submit" class="btn btn-primary next">Next</button>
-                    </div>
-                    
-                    <!-- DONT USE SUCH A METHOD IN PRODUCTION!!! -->
-                    <br>
-                    <br>
-                    <br>
-                    <!-- DONT USE SUCH A METHOD IN PRODUCTION!!! -->
-                    
-                    <dl class="data-fields clearfix">
                         <dt>Account</dt>
-                        <dd>
-                            <ul class="type">
-                                <li>
-                                    <input type="radio" name="account_radio" id="123456458965" checked>
-                                    <label for="type_existing">#123456458965</label>
-                                </li>
-                                <li>
-                                    <input type="radio" name="account_radio" id="98764545268">
-                                    <label for="type_single">#98764545268</label>
-                                </li>
-                                <li>
-                                    <input type="radio" name="account_radio" id="562345526354">
-                                    <label for="type_multi">#562345526354</label>
-                                </li>
-                            </ul>
+                        <dd class="card">
+                            <dl>
+                                <dt>card #133513</dt>
+                                <dd><input type="radio" name="account" id="1" checked><label for="1">account #123123124</label></dd>
+                                <dd><input type="radio" name="account" id="2"><label for="2">account #513435454</label></dd>
+                            </dl>
+                        </dd>
+                        <dd class="card error">
+                            <dl>
+                                <dt>card #133513 <span class="label label-important">Expired!</span></dt>
+                                <dd><input type="radio" name="account" id="3" disabled><label for="3">account #123123124</label></dd>
+                                <dd><input type="radio" name="account" id="4" disabled><label for="4">account #513435454</label></dd>
+                            </dl>
+                        </dd>
+                        <dd class="card">
+                            <dl>
+                                <dt>card #133513</dt>
+                                <dd><input type="radio" name="account" id="5"><label for="5">account #123123124</label></dd>
+                                <dd><input type="radio" name="account" id="6"><label for="6">account #513435454</label></dd>
+                            </dl>
                         </dd>
                     </dl>
                     <div class="form-actions">
@@ -164,7 +138,7 @@
                         <button type="submit" class="btn btn-primary next">Next</button>
                     </div>
                     
-                    <!-- DONT USE SUCH A METHOD IN PRODUCTION!!! MARKUP DEMONSTRATION PURPOSE ONLY -->
+                    <!-- DONT USE SUCH A METHOD IN PRODUCTION!!! -->
                     <br>
                     <br>
                     <br>
