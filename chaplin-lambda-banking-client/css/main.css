@@ -267,14 +267,24 @@ table .check {
     color: #fff;
 }
 
-/*.btn:active {*/
-    /*background: #09829E;*/
-    /*color: #fff;*/
-    /*box-shadow: 0 2px 0 0 #075F73,*/
-    /*0 2px 2px 0 rgba(0, 0, 0, .5);*/
-    /*position: relative;*/
-    /*top: 3px;*/
-/*}*/
+.btn:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.btn:active {
+    background: #09829E;
+    color: #fff;
+    box-shadow: 0 2px 0 0 #075F73,
+    0 2px 2px 0 rgba(0, 0, 0, .5);
+    position: relative;
+    top: 3px;
+}
 
 .btn.btn-danger {
     background: #D22C24;
@@ -282,10 +292,10 @@ table .check {
     0 5px 10px 0 rgba(0, 0, 0, .5);
 }
 
-/*.btn.btn-danger:active {*/
-    /*box-shadow: 0 2px 0 0 #9E211B,*/
-    /*0 2px 2px 0 rgba(0, 0, 0, .5);*/
-/*}*/
+.btn.btn-danger:active {
+    box-shadow: 0 2px 0 0 #9E211B,
+    0 2px 2px 0 rgba(0, 0, 0, .5);
+}
 
 .btn.btn-danger:hover {
     background: #EB3228;
@@ -301,10 +311,10 @@ table .check {
     background: #1270B8;
 }
 
-/*.btn.btn-primary:active {*/
-    /*box-shadow: 0 2px 0 0 #0B416B,*/
-    /*0 2px 2px 0 rgba(0, 0, 0, .5);*/
-/*}*/
+.btn.btn-primary:active {
+    box-shadow: 0 2px 0 0 #0B416B,
+    0 2px 2px 0 rgba(0, 0, 0, .5);
+}
 
 .btn.btn-warning {
     background: #E5AC39;
