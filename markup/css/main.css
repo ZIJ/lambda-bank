@@ -119,6 +119,14 @@ input[disabled]+label {
     background: rgba(255, 255, 255, .9)
 }
 
+.data-fields .balance {
+    font-size: 12px;
+    font-weight: bold;
+    background: #efefdd;
+    padding: 0 .3em;
+    border-radius: 5px;
+}
+
 .data-fields button {
     margin-bottom: 9px;
     border: 0;

@@ -65,6 +65,42 @@
                     <div class="alert alert-error">
                         <a class="close" data-dismiss="alert" href="#">×</a>One should select target first!
                     </div>
+                              
+                    <dl class="data-fields clearfix">
+                        <dt>Account</dt>
+                        <dd class="card">
+                            <dl>
+                                <dt>card #133513</dt>
+                                <dd><input type="radio" name="account" id="1" checked><label for="1">account #123123124</label> <span class="balance">$100</span></dd>
+                                <dd><input type="radio" name="account" id="2"><label for="2">account #513435454</label> <span class="balance">€200</span></dd>
+                            </dl>
+                        </dd>
+                        <dd class="card error">
+                            <dl>
+                                <dt>card #133513 <span class="label label-important">Expired!</span></dt>
+                                <dd><input type="radio" name="account" id="3" disabled><label for="3">account #123123124</label></dd>
+                                <dd><input type="radio" name="account" id="4" disabled><label for="4">account #513435454</label></dd>
+                            </dl>
+                        </dd>
+                        <dd class="card error">
+                            <dl>
+                                <dt>card #133513 <span class="label label-important">Frozen!</span></dt>
+                                <dd><input type="radio" name="account" id="5"><label for="5">account #123123124</label></dd>
+                                <dd><input type="radio" name="account" id="6"><label for="6">account #513435454</label></dd>
+                            </dl>
+                        </dd>
+                    </dl>
+                    <div class="form-actions">
+                        <button type="button" class="btn cancel">Cancel</button>
+                        <button type="submit" class="btn btn-primary next">Next</button>
+                    </div>
+                    
+                    <!-- DONT USE SUCH A METHOD IN PRODUCTION!!! -->
+                    <br>
+                    <br>
+                    <br>
+                    <!-- DONT USE SUCH A METHOD IN PRODUCTION!!! -->
+                    
                     <dl class="data-fields clearfix">
                         <dt>Target</dt>
                         <dd>
@@ -99,6 +135,7 @@
                     </dl>
                     <div class="form-actions">
                         <button type="button" class="btn cancel">Cancel</button>
+                        <button type="button" class="btn btn-primary back">Back</button>
                         <button type="submit" class="btn btn-primary next">Next</button>
                     </div>
                     
@@ -107,29 +144,11 @@
                     <br>
                     <br>
                     <!-- DONT USE SUCH A METHOD IN PRODUCTION!!! -->
-                    
+
                     <dl class="data-fields clearfix">
                         <dt>Account</dt>
-                        <dd class="card">
-                            <dl>
-                                <dt>card #133513</dt>
-                                <dd><input type="radio" name="account" id="1" checked><label for="1">account #123123124</label></dd>
-                                <dd><input type="radio" name="account" id="2"><label for="2">account #513435454</label></dd>
-                            </dl>
-                        </dd>
-                        <dd class="card error">
-                            <dl>
-                                <dt>card #133513 <span class="label label-important">Expired!</span></dt>
-                                <dd><input type="radio" name="account" id="3" disabled><label for="3">account #123123124</label></dd>
-                                <dd><input type="radio" name="account" id="4" disabled><label for="4">account #513435454</label></dd>
-                            </dl>
-                        </dd>
-                        <dd class="card">
-                            <dl>
-                                <dt>card #133513</dt>
-                                <dd><input type="radio" name="account" id="5"><label for="5">account #123123124</label></dd>
-                                <dd><input type="radio" name="account" id="6"><label for="6">account #513435454</label></dd>
-                            </dl>
+                        <dd>
+                            <input type="text" placeholder="35698745">
                         </dd>
                     </dl>
                     <div class="form-actions">
@@ -143,6 +162,7 @@
                     <br>
                     <br>
                     <!-- DONT USE SUCH A METHOD IN PRODUCTION!!! -->
+
                                                   
                     <dl class="data-fields clearfix">
                         <dt>Account holder</dt>
