@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BankEntities
+namespace BankEntities.EripImplementers
 {
-	class EripImlemetation:IERIP
+	class EripImlemetation: IERIP
 	{
-		public void SendPayment(EripPaymentType type, string jsonPayment)
+		//private Dictionary<EripPaymentType, Operator> operators = new Dictionary<EripPaymentType, Operator>();
+
+		public EripImlemetation()
 		{
-			throw new NotImplementedException();
 		}
 
 		public object GetPaymentInfo(EripPaymentType type, string jsonPayment)
@@ -18,6 +19,11 @@ namespace BankEntities
 		}
 
 		public Prerequisite GetPrerequisites(EripPaymentType type)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void SendPayment(EripPaymentType type, string jsonPayment, decimal amount)
 		{
 			throw new NotImplementedException();
 		}

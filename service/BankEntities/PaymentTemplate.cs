@@ -7,14 +7,36 @@ namespace BankEntities
 {
 	public class PaymentTemplate
 	{
+		public PaymentTemplate()
+		{
+			Entries = new HashSet<PaymentEntry>();
+		}
+
 		[Key]
 		public int ID { get; set; }
 
 		[Required]
 		public string JsonPayment { get; set; }
 		
-		public int Amount { get; set; }
+		public decimal Amount { get; set; }
 
-		public Currency Currency { get; set; }
+		[Required]
+		public BankUser Owner { get; set; }
+
+		[Required]
+		public Account Account { get; set; }
+
+		public ICollection<PaymentEntry> Entries { get; set; }
+
+		public TemplateType Type { get; set; }
+
+		public EripPaymentType EripType { get; set; }
+	}
+
+	public enum TemplateType
+	{
+		OneTime,
+		Sheduled,
+		Saved
 	}
 }

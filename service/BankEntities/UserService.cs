@@ -24,7 +24,6 @@ namespace BankEntities
 		{
 			InternetBankingUser user = db.InternetBankingUsers.ToList().Where(
 				u => u.Login == login && u.PasswordHash == PasswordDistortion(password, u.Salt)).FirstOrDefault();
-			//user = db.InternetBankingUsers.Find(user.ID);
 			if (user == null)
 			{
 				return null;
