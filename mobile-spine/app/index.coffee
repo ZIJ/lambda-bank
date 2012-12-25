@@ -9,9 +9,9 @@ class App extends Spine.Controller
   constructor: ->
     super
 
+    Spine.Model.host = "http://lambda-bank.drs-cd.com/WebService.svc"
+
     @login = new Login({el: $('#login')})
-    @login.bind 'loginSuccess', (response) =>
-      localStorage.setItem('lambda-bank.token', response.AuthenticationToken)
 
     @menu = new Menu({el: $('#menu')})
 

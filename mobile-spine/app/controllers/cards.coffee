@@ -18,7 +18,7 @@ class Cards extends Spine.Controller
       cache: false
       contentType: "application/json"
       success: (response) =>
-        console.log(response)
+        console.log response
     )
 
 

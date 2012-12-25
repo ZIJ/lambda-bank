@@ -30,7 +30,8 @@ class Login extends Spine.Controller
       cache: false
       contentType: "application/json"
       success: (response) =>
-        @trigger 'loginSuccess', response.Response
+        localStorage.setItem('lambda-bank.token', response.Response.AuthenticationToken)
+        @trigger('loginSucces')
         @navigate '/menu'
     )
 
