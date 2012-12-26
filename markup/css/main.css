@@ -7,6 +7,11 @@ body {
     background: url(../img/bg.jpg) center center no-repeat;
 }
 
+input[type=text],
+select {
+    margin: 0;
+}
+
 input[disabled]+label {
     color: rgba(0, 0, 0, .5);
 }
@@ -127,8 +132,11 @@ input[disabled]+label {
     border-radius: 5px;
 }
 
+.data-fields .code {
+    width: auto;
+}
+
 .data-fields button {
-    margin-bottom: 9px;
     border: 0;
     background: transparent;
     padding: 0;

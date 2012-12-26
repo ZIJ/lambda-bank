@@ -145,10 +145,31 @@
                     <br>
                     <!-- DONT USE SUCH A METHOD IN PRODUCTION!!! -->
 
+                    <p>Please, enter 10-digits account number.</p>
                     <dl class="data-fields clearfix">
                         <dt>Account</dt>
                         <dd>
-                            <input type="text" placeholder="35698745">
+                            <input type="text" placeholder="3569874549" autofocus required>
+                        </dd>
+                    </dl>
+                    <p>Please, enter 7-digits phone number.</p>
+                    <dl class="data-fields clearfix">
+                        <dt>Phone</dt>
+                        <dd>+375 17
+                            <input type="text" placeholder="3987454" autofocus required>
+                        </dd>
+                    </dl>
+                    <p>Please, enter 7-digits phone number.</p>
+                    <dl class="data-fields clearfix">
+                        <dt>Phone</dt>
+                        <dd>+375
+                            <select name="" id="code" class="code">
+                                <option value="29">29</option>
+                                <option value="44">44</option>
+                                <option value="33">33</option>
+                                <option value="25">25</option>
+                            </select>
+                            <input type="text" placeholder="3569874" autofocus required>
                         </dd>
                     </dl>
                     <div class="form-actions">
@@ -186,7 +207,7 @@
                     
                     <dl class="data-fields clearfix">
                         <dt>Amount</dt>
-                        <dd><input type="text" placeholder="100"></dd>
+                        <dd><input type="text" placeholder="100" autofocus required></dd>
                     </dl>
                     <div class="form-actions">
                         <button type="button" class="btn cancel">Cancel</button>
