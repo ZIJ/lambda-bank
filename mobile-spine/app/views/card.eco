@@ -1,0 +1,4 @@
+<div>
+    <span><%= @type %></span>
+    <span><%= @number %></span>
+</div>

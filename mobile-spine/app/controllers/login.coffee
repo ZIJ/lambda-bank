@@ -1,20 +1,22 @@
 Spine = require('spine')
-$ = Spine.$
+Card = require('models/card')
 
 class Login extends Spine.Controller
   constructor: ->
     super
-    console.log('login controller created')
+    @render()
 
   url: 'http://lambda-bank.drs-cd.com/WebService.svc/login'
 
   elements:
-    'form': 'form'
     'form input[name=username]': 'usernameInput'
     'form input[name=password]': 'passwordInput'
 
   events:
     'submit form': 'submit'
+
+  render: ->
+    @html require('views/login')()
 
   submit: (event) ->
     event.preventDefault()
@@ -32,6 +34,7 @@ class Login extends Spine.Controller
       success: (response) =>
         localStorage.setItem('lambda-bank.token', response.Response.AuthenticationToken)
         @trigger('loginSucces')
+        Card.loadAll()
         @navigate '/menu'
     )
 

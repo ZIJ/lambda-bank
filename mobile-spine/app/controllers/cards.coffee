@@ -1,25 +1,22 @@
 Spine = require('spine')
+Card = require('models/card')
+Login = require('controllers/login')
 
 class Cards extends Spine.Controller
   constructor: ->
     super
+    console.log('cards controller created')
 
-  url: 'http://lambda-bank.drs-cd.com/WebService.svc/user/cards/list'
+    Card.bind 'loaded', =>
+      @render()
 
-  load: ->
-    token = localStorage.getItem('lambda-bank.token')
-    data = JSON.stringify
-      securityToken: token
-    $.ajax(
-      type: 'POST'
-      url: @url
-      data: data
-      dataType: 'json'
-      cache: false
-      contentType: "application/json"
-      success: (response) =>
-        console.log response
-    )
+
+  render: ->
+    console.log('cards rendering')
+    cards = Card.all()
+    @html ''
+    for card in cards
+      @append require('views/card')(card)
 
 
 module.exports = Cards

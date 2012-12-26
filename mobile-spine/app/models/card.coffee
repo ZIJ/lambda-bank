@@ -3,25 +3,34 @@ Spine = require('spine')
 class Card extends Spine.Model
   @configure 'Card', 'id', 'accounts', 'number', 'type', 'user'
 
-  constructor: (descriptor) ->
-    super
-    console.log(descriptor)
+  @listUrl: 'http://lambda-bank.drs-cd.com/WebService.svc/user/cards/list'
 
-  @queryAll: ->
-    url = Spine.Model.host + 'user/cards/list'
-    data =
-      securityToken: localStorage.getItem 'lambda-bank.token'
+  @loadAll: ->
+    console.log('loadAll called')
+    data = JSON.stringify
+      securityToken: localStorage.getItem('lambda-bank.token')
     $.ajax
       type: 'POST'
-      url: url
+      url: @listUrl
       data: data
       dataType: 'json'
       cache: false
       contentType: "application/json"
       success: (response) =>
-        cards = response.Response
-        for card in cards
-          new @(card).save()
-        console.log(@)
+        console.log('cards loaded')
+        @saveAll(response.Response)
 
-module.exports = User
+  @saveAll: (cards) ->
+    for info in cards
+      @create
+        id: info.ID
+        number: info.Number
+        type: info.Type
+        user: info.User
+        accounts: info.Accounts
+    @trigger('loaded')
+
+
+
+
+module.exports = Card
