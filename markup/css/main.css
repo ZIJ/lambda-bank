@@ -450,7 +450,8 @@ table .check {
     margin: 0 2px 0 0;
 }
 
-.treeview input[type=checkbox]+label {
+.treeview input[type=checkbox]+label,
+.treeview input[type=radio]+label {
     display: block;
     margin: 0;
     padding: 0 .3em;
@@ -469,10 +470,6 @@ table .check {
 
 .treeview input[type=radio] {
     display: none;
-}
-
-.treeview input[type=radio]+label {
-    padding: 0 .3em;
 }
 
 .treeview input[type=radio]:checked+label {
