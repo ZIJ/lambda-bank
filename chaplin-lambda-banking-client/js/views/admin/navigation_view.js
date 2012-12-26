@@ -46,6 +46,9 @@ define([
                 } else if (pattern === 'users' || pattern === 'users/create'
                 || pattern === 'users/:id' || pattern === 'users/:id/edit') {
                     targetSelector = '.icon-user';
+                } else if (pattern === 'cards' || pattern === 'cards/create'
+                    || pattern === 'cards/:id' || pattern === 'cards/:id/edit') {
+                    targetSelector = '.glyphicon-credit-card';
                 }
 
                 view.$(targetSelector).parent().parent().addClass('active');

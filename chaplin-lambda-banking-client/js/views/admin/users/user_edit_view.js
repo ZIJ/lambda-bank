@@ -2,7 +2,7 @@ define([
     'underscore',
     'chaplin',
     'views/base/view',
-    'text!templates/admin/user_edit.hbs'
+    'text!templates/admin/users/user_edit.hbs'
 ], function(_, Chaplin, View, template) {
     'use strict';
 

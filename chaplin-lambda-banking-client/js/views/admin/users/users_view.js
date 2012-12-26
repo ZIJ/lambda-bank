@@ -2,8 +2,8 @@ define([
     'underscore',
     'chaplin',
     'views/base/collection_view',
-    'views/admin/user_item_view',
-    'text!templates/admin/users.hbs'
+    'views/admin/users/user_item_view',
+    'text!templates/admin/users/users.hbs'
 ], function(_, Chaplin, CollectionView, UserItemView, template) {
     'use strict';
 
@@ -34,7 +34,6 @@ define([
         onAddNewUserClick: function() {
             var view = this;
 
-            // TODO: ??? maybe simply redirect or publish mediator event here
             mediator.publish('!router:route', 'users/create');
         }
     });

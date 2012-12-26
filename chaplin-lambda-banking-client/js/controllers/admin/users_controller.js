@@ -4,10 +4,10 @@ define([
     'controllers/base/controller',
     // TODO: load when needed
     'models/admin/users',
-    'views/admin/users_view',
+    'views/admin/users/users_view',
     'models/admin/user',
-    'views/admin/user_view',
-    'views/admin/user_edit_view'
+    'views/admin/users/user_view',
+    'views/admin/users/user_edit_view'
 ], function(_, Chaplin, Controller, UsersCollection, UsersView, UserModel, UserView, UserEditView) {
     'use strict';
 
