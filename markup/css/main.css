@@ -286,6 +286,10 @@ table .expandable .controls button {
     background: transparent;
 }
 
+table .expandable dl {
+    float: left;
+}
+
 table .check {
     width: 15px;
 }
