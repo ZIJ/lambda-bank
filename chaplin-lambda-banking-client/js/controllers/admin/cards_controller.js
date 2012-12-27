@@ -4,10 +4,10 @@ define([
     'controllers/base/controller',
     // TODO: load when needed
     'models/admin/cards',
-    'views/admin/cards_view',
+    'views/admin/cards/cards_view',
     'models/admin/card',
-    'views/admin/card_view',
-    'views/admin/card_edit_view'
+//    'views/admin/cards/card_view',
+//    'views/admin/cards/card_edit_view'
 ], function(_, Chaplin, Controller, CardsCollection, CardsView, CardModel, CardView, CardEditView) {
     'use strict';
 
@@ -18,11 +18,11 @@ define([
         initialize: function(params) {
             var controller = this;
 
-            _.bindAll(controller, 'triggerSaveUser');
+            _.bindAll(controller, 'triggerSaveCard');
 
             CardsController.__super__.initialize.apply(controller, arguments);
 
-            controller.subscribeEvent('!saveUser', controller.triggerSaveUser);
+            controller.subscribeEvent('!saveCard', controller.triggerSaveCard);
         },
 
         index: function() {

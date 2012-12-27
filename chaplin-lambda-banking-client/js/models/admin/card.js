@@ -20,12 +20,11 @@ define([
 
         parse: function(response) {
             var attributesHash = {
-                id: response['ID']//,
-//                firstName: response['FirstName'],
-//                lastName: response['LastName'],
-//                passportNumber: response['PassportNumber'],
-//                address: response['Address']
-//                ,cards: response['Cards']
+                id: response['ID'],
+                number: response['Number'],
+                type: response['Type']//,
+//                accounts: response['Accounts'],
+//                cards: response['Cards']
                 // TODO: add fetchable attributes parsers here
             };
 

@@ -7,6 +7,11 @@ body {
     background: url(../img/bg.jpg) center center no-repeat;
 }
 
+input[type=text],
+select {
+    margin: 0;
+}
+
 input[disabled]+label {
     color: rgba(0, 0, 0, .5);
 }
@@ -119,8 +124,19 @@ input[disabled]+label {
     background: rgba(255, 255, 255, .9)
 }
 
+.data-fields .balance {
+    font-size: 12px;
+    font-weight: bold;
+    background: #efefdd;
+    padding: 0 .3em;
+    border-radius: 5px;
+}
+
+.data-fields .code {
+    width: auto;
+}
+
 .data-fields button {
-    margin-bottom: 9px;
     border: 0;
     background: transparent;
     padding: 0;
@@ -201,6 +217,11 @@ input[disabled]+label {
     margin: 0;
 }
 
+.step {
+    display: table-cell;
+    background: rgba(255, 255, 255, .9);
+}
+
 table {
     background-color: #fff;
 }
@@ -265,6 +286,10 @@ table .expandable .controls button {
     background: transparent;
 }
 
+table .expandable dl {
+    float: left;
+}
+
 table .check {
     width: 15px;
 }
@@ -301,6 +326,11 @@ table .check {
     text-align: left;
     vertical-align: middle;
     display: inline-block;
+}
+
+.hidden {
+    display: none !important;
+    visibility: hidden;
 }
 
 
@@ -434,7 +464,8 @@ table .check {
     margin: 0 2px 0 0;
 }
 
-.treeview input[type=checkbox]+label {
+.treeview input[type=checkbox]+label,
+.treeview input[type=radio]+label {
     display: block;
     margin: 0;
     padding: 0 .3em;
@@ -453,10 +484,6 @@ table .check {
 
 .treeview input[type=radio] {
     display: none;
-}
-
-.treeview input[type=radio]+label {
-    padding: 0 .3em;
 }
 
 .treeview input[type=radio]:checked+label {

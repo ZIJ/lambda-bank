@@ -17,6 +17,8 @@ define([
 //        user: null, // NOTE: undefined by default
 
         initialize: function(attributes, options) {
+            options || (options = {});
+
             var collection = this;
 
             _.bindAll(collection, 'fetchHandler');
@@ -32,10 +34,16 @@ define([
             var collection = this;
 
             mediator.user.get('provider').apiRequest(
-                _.extend({
-                    url: 'admin/cards/get',
-                    success: collection.fetchHandler
-                }, (collection.user ? { userId: collection.user.id } : null))
+                _.extend(
+                    {
+                        url: 'admin/cards/get',
+                        success: collection.fetchHandler
+                    }, (collection.user ? {
+                        data: {
+                            userId: collection.user.id
+                        }
+                    } : null)
+                )
             );
         },
 
