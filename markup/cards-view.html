@@ -62,90 +62,102 @@
                 <section class="content well">
                     <h1>Cards</h1>
                         <button class="btn-link">Add card</button>
-                        <table class="table table-bordered">
+                        <table class="table table-bordered cards">
                             <thead>
                                 <tr>
                                     <th class="check"><input type="checkbox" title="toggle all"></th>
-                                    <th>Number</th>
-                                    <th>Holder</th>
-                                    <th>Currency</th>
-                                    <th>Amount</th>
+                                    <th class="number">Number</th>
+                                    <th class="holder">Holder</th>
+                                    <th class="currency">Currency</th>
+                                    <th class="amount">Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="expander">
-                                    <td class="check"><input type="checkbox"></td>
-                                    <td>1245-6523-6598-4578</td>
-                                    <td>Pupkin Zade</td>
-                                    <td>USD</td>
-                                    <td>1567.89</td>
-                                </tr>
-                                <tr class="expandable">
-                                    <td colspan="5">
-                                        <ul class="accounts">
-                                            <li>
-                                                <ul class="controls">
-                                                    <li><button class="delete" title="Delete"><i class="icon-remove-sign"></i></button></li>
-                                                    <li><button class="edit" title="Edit"><i class="icon-edit"></i></button></li>
-                                                </ul>
-                                                <dl>
-                                                    <dt>Number</dt>
-                                                    <dd>#1236549812</dd>
-                                                    <dt>Amount</dt>
-                                                    <dd>6548</dd>
-                                                    <dt>Currency</dt>
-                                                    <dd>CND</dd>
-                                                </dl>
-                                            </li>
-                                            <li>
-                                                <ul class="controls">
-                                                    <li><button class="delete" title="Delete"><i class="icon-remove-sign"></i></button></li>
-                                                    <li><button class="edit" title="Edit"><i class="icon-edit"></i></button></li>
-                                                </ul>
-                                                some test info
-                                            </li>
-                                            <li>
-                                                <ul class="controls">
-                                                    <li><button class="delete" title="Delete"><i class="icon-remove-sign"></i></button></li>
-                                                    <li><button class="edit" title="Edit"><i class="icon-edit"></i></button></li>
-                                                </ul>
-                                                some test info
-                                            </li>
-                                        </ul>
+                                <tr>
+                                    <td colspan="5" class="container">
+                                        <table>
+                                            <tr class="expander">
+                                                <td class="check"><input type="checkbox"></td>
+                                                <td class="number">1245-6523-6598-4578</td>
+                                                <td class="holder">Pupkin Zade</td>
+                                                <td class="currency">USD</td>
+                                                <td class="amount">1567.89</td>
+                                            </tr>
+                                            <tr class="expandable">
+                                                <td colspan="5">
+                                                    <ul class="accounts">
+                                                        <li>
+                                                            <ul class="controls">
+                                                                <li><button class="delete" title="Delete"><i class="icon-remove-sign"></i></button></li>
+                                                                <li><button class="edit" title="Edit"><i class="icon-edit"></i></button></li>
+                                                            </ul>
+                                                            <dl>
+                                                                <dt>Number</dt>
+                                                                <dd>#1236549812</dd>
+                                                                <dt>Amount</dt>
+                                                                <dd>6548</dd>
+                                                                <dt>Currency</dt>
+                                                                <dd>CND</dd>
+                                                            </dl>
+                                                        </li>
+                                                        <li>
+                                                            <ul class="controls">
+                                                                <li><button class="delete" title="Delete"><i class="icon-remove-sign"></i></button></li>
+                                                                <li><button class="edit" title="Edit"><i class="icon-edit"></i></button></li>
+                                                            </ul>
+                                                            some test info
+                                                        </li>
+                                                        <li>
+                                                            <ul class="controls">
+                                                                <li><button class="delete" title="Delete"><i class="icon-remove-sign"></i></button></li>
+                                                                <li><button class="edit" title="Edit"><i class="icon-edit"></i></button></li>
+                                                            </ul>
+                                                            some test info
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </td>
                                 </tr>
-                                <tr class="expander">
-                                    <td class="check"><input type="checkbox"></td>
-                                    <td>5648-6523-8965-4526</td>
-                                    <td>Pupkin Ivan Vasilyevich</td>
-                                    <td>BYR</td>
-                                    <td>59235854</td>
-                                </tr>
-                                <tr class="expandable">
-                                    <td colspan="5">
-                                        <ul class="accounts">
-                                            <li>
-                                                <ul class="controls">
-                                                    <li><button class="delete" title="Delete"><i class="icon-remove-sign"></i></button></li>
-                                                    <li><button class="edit" title="Edit"><i class="icon-edit"></i></button></li>
-                                                </ul>
-                                                some test info
-                                            </li>
-                                            <li>
-                                                <ul class="controls">
-                                                    <li><button class="delete" title="Delete"><i class="icon-remove-sign"></i></button></li>
-                                                    <li><button class="edit" title="Edit"><i class="icon-edit"></i></button></li>
-                                                </ul>
-                                                some test info
-                                            </li>
-                                            <li>
-                                                <ul class="controls">
-                                                    <li><button class="delete" title="Delete"><i class="icon-remove-sign"></i></button></li>
-                                                    <li><button class="edit" title="Edit"><i class="icon-edit"></i></button></li>
-                                                </ul>
-                                                some test info
-                                            </li>
-                                        </ul>
+                                <tr>
+                                    <td class="container" colspan="5">
+                                        <table>
+                                            <tr class="expander">
+                                                <td class="check"><input type="checkbox"></td>
+                                                <td class="number">5648-6523-8965-4526</td>
+                                                <td class="holder">Pupkin Ivan Vasilyevich</td>
+                                                <td class="currency">BYR</td>
+                                                <td class="amount">59235854</td>
+                                            </tr>
+                                            <tr class="expandable">
+                                                <td colspan="5">
+                                                    <ul class="accounts">
+                                                        <li>
+                                                            <ul class="controls">
+                                                                <li><button class="delete" title="Delete"><i class="icon-remove-sign"></i></button></li>
+                                                                <li><button class="edit" title="Edit"><i class="icon-edit"></i></button></li>
+                                                            </ul>
+                                                            some test info
+                                                        </li>
+                                                        <li>
+                                                            <ul class="controls">
+                                                                <li><button class="delete" title="Delete"><i class="icon-remove-sign"></i></button></li>
+                                                                <li><button class="edit" title="Edit"><i class="icon-edit"></i></button></li>
+                                                            </ul>
+                                                            some test info
+                                                        </li>
+                                                        <li>
+                                                            <ul class="controls">
+                                                                <li><button class="delete" title="Delete"><i class="icon-remove-sign"></i></button></li>
+                                                                <li><button class="edit" title="Edit"><i class="icon-edit"></i></button></li>
+                                                            </ul>
+                                                            some test info
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </td>
                                 </tr>
                             </tbody>

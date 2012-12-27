@@ -224,6 +224,7 @@ input[disabled]+label {
 
 table {
     background-color: #fff;
+    table-layout: fixed;
 }
 
 table .expander td:not(.check){
@@ -292,6 +293,38 @@ table .expandable dl {
 
 table .check {
     width: 15px;
+    text-align: center;
+}
+
+table td,
+table th {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.table td.container {
+    padding: 0;
+    border-left: 0;
+}
+
+.table table {
+    width: 100%;
+}
+
+table .number {
+    width: 30%;
+}
+
+table .holder {
+    width: 37%;
+}
+
+table .currency {
+    width: 10%;
+}
+
+table .amount {
+    width: 20%;
 }
 
 .user .form-actions {
