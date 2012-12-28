@@ -59,6 +59,7 @@
     <Compile Include="Currency.cs" />
     <Compile Include="BankArbiter.cs" />
     <Compile Include="EripImplementers\EripImlemetation.cs" />
+    <Compile Include="EripImplementers\ISupplier.cs" />
     <Compile Include="EripImplementers\OperatorBase.cs" />
     <Compile Include="IERIP.cs" />
     <Compile Include="InternetBankingUser.cs" />

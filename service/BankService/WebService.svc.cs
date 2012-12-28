@@ -204,30 +204,29 @@ namespace BankService
 				}
 				return Json(user.Cards.Select(c => CreateCardResponse(c, false)));
 			}
-			return Json(db.Cards.Select(c => CreateCardResponse(c, true)));
+			return Json(db.Cards.ToList().Select(c => CreateCardResponse(c, true)));
 		}
 
 		#endregion
 
 		#region Accounts
 
-		public Message CreateAccount(Guid securityToken, Account account)
+		public Message GetAccounts(Guid securityToken, int? accountId)
 		{
-			db.Accounts.Add(account);
-			db.SaveChanges();
-			return Json(new { Status = "OK", CreatedObject = account });
+			GetAdmin(securityToken);
+			if (accountId != null)
+			{
+				Account account = db.Accounts.Find(accountId.Value);
+				if (account == null)
+				{
+					throw new WebFaultException(HttpStatusCode.NotFound);
+				}
+				return Json(CreateAccountResponse(account));
+			}
+			return Json(db.Accounts.ToList().Select(a => CreateAccountResponse(a)));
 		}
 
-		public Message AttachAccount2Card(Guid securityToken, int accountID, int cardID)
-		{
-			Account acc = db.Accounts.Find(accountID);
-			Card card = db.Cards.Find(cardID);
 
-			acc.Cards.Add(card);
-			card.Accounts.Add(acc);
-			db.SaveChanges();
-			return Json(new { Status = "OK" });
-		} 
 		#endregion
 
 		private object CreateUserResponse(BankUser user, bool joinCards)
@@ -251,8 +250,10 @@ namespace BankService
 				ID = card.ID,
 				Number = card.CardNumber,
 				Type = card.Type.ToString(),
+				Holder = card.Holder,
+				ExpirationDate = card.ExpirationDate,
 				Accounts =  card.Accounts.Select( a => CreateAccountResponse(a)),
-				User = joinUser? card.BankUser : (object)card.BankUser.ID
+				User = joinUser? CreateUserResponse(card.BankUser, false) : (object)card.BankUser.ID
 			};
 			return response;
 		}

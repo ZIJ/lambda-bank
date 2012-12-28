@@ -7,7 +7,7 @@ namespace BankEntities
 {
 	public interface IERIP
 	{
-		void SendPayment(EripPaymentType type, string jsonPayment, decimal amount);
+		object SendPayment(EripPaymentType type, string jsonPayment, decimal amount);
 
 		object GetPaymentInfo(EripPaymentType type, string jsonPayment);
 
@@ -25,16 +25,28 @@ namespace BankEntities
 
 	public enum EripPaymentType
 	{
+		//mobile
 		Velcom,
 		Mts,
 		Life,
-		Beltelecom,
+		Diallog,
+		//mgts
+		BeltelecomMGTS,
+		//services
 		ElectroService,
 		AquaService,
+		GasService,
+		UtilityService,
+		//internet providers
 		BusinessNetwork,
 		AtlantTelecom,
 		AdslBy,
-		Solo
+		//Tikets
+		AirTikets,
+		RailwayTikets,
+		//other
+		CosmosTv,
+		PoliceFine
 	}
 
 	public class PaymentCheck

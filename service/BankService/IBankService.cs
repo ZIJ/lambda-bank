@@ -75,9 +75,9 @@ namespace BankService
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/accounts/create")]
-		Message CreateAccount(Guid securityToken, Account account);
-
+			UriTemplate = "/accounts/get")]
+		Message GetAccounts(Guid securityToken, int? accountId);
+		
 		#endregion
 
 		[WebInvoke(Method = "POST",

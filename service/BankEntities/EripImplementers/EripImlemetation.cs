@@ -7,7 +7,7 @@ namespace BankEntities.EripImplementers
 {
 	class EripImlemetation: IERIP
 	{
-		//private Dictionary<EripPaymentType, Operator> operators = new Dictionary<EripPaymentType, Operator>();
+		private Dictionary<EripPaymentType, ISupplier> operators = new Dictionary<EripPaymentType, ISupplier>();
 
 		public EripImlemetation()
 		{
@@ -15,17 +15,17 @@ namespace BankEntities.EripImplementers
 
 		public object GetPaymentInfo(EripPaymentType type, string jsonPayment)
 		{
-			throw new NotImplementedException();
+			return operators[type].GetPaymentInfo(jsonPayment);
 		}
 
 		public Prerequisite GetPrerequisites(EripPaymentType type)
 		{
-			throw new NotImplementedException();
+			return operators[type].Requisite;
 		}
 
-		public void SendPayment(EripPaymentType type, string jsonPayment, decimal amount)
+		public object SendPayment(EripPaymentType type, string jsonPayment, decimal amount)
 		{
-			throw new NotImplementedException();
+			return operators[type].SendPayment(jsonPayment, amount);
 		}
 	}
 }

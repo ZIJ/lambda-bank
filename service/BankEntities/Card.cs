@@ -27,6 +27,8 @@ namespace BankEntities
 			}
 		}
 
+		public string Holder { get; set; }
+
 		[Required]
 		public string CVV { get; set; }
 
