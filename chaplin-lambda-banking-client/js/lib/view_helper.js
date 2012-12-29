@@ -1,16 +1,27 @@
 define([
-  'handlebars',
-  'chaplin',
-  'lib/utils'
-], function(Handlebars, Chaplin, utils) {
-  'use strict';
+    'handlebars',
+    'underscore',
+    'chaplin',
+    'lib/utils'
+], function(Handlebars, _, Chaplin, utils) {
+    'use strict';
 
-  // Application-specific Handlebars helpers
-  // -------------------------------------------
+    // Application-specific Handlebars helpers
+    // -------------------------------------------
 
-  // Handlebars.registerHelper('helper_name', function(options) {
-  //   return 'foo';
-  // });
+    Handlebars.registerHelper('iter', function(context, options) {
+        var fn = options.fn, inverse = options.inverse;
+        var ret = '';
 
-  return null;
+        if(context && context.length > 0) {
+            for(var i=0, j=context.length; i<j; i++) {
+                ret = ret + fn(_.extend({}, context[i], { i: i, iPlus1: i + 1 }));
+            }
+        } else {
+            ret = inverse(this);
+        }
+        return ret;
+    });
+
+    return null;
 });

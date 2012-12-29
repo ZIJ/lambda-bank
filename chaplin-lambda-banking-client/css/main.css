@@ -66,13 +66,18 @@ h1 {
 }
 
 
-.main .breadcrumb,
 .main .well {
     border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
-.main .breadcrumb {
+.breadcrumb-section {
     clear: both;
+    padding: 0;
+    min-height: 36px;
+}
+
+.breadcrumb-section > .breadcrumb {
+    margin: 0;
 }
 
 .main header .content {

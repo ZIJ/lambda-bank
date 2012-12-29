@@ -15,7 +15,7 @@ define(function() {
         match('cards', 'cards#index');
         match('cards/create', 'cards#create');
         match('cards/:id', 'cards#show');
-        match('cards/:id/edit', 'users#edit');
+        match('cards/:id/edit', 'cards#edit');
 
     };
 

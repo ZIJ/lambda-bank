@@ -6,9 +6,9 @@ define([
 
     var NavigationController = Controller.extend({
 
-    initialize: function(params) {
-        this.view = new NavigationView();
-    }
+        initialize: function(params) {
+            this.view = new NavigationView();
+        }
 
     });
 

@@ -1,9 +1,8 @@
 define([
     'chaplin',
     'views/layout',
-    'routes',
     'controllers/session_controller'
-], function(Chaplin, Layout, routes, SessionController) {
+], function(Chaplin, Layout, SessionController) {
     'use strict';
 
     var mediator = Chaplin.mediator;
@@ -86,7 +85,7 @@ define([
 
             switch (mediator.user.get('role')) {
                 case 'admin':
-                    require(['controllers/admin/header_controller', 'controllers/admin/navigation_controller'], function(HeaderControllerAdmin, NavigationControllerAdmin) {
+                    require(['admin/routes', 'controllers/admin/header_controller', 'controllers/admin/navigation_controller'], function(routesAdmin, HeaderControllerAdmin, NavigationControllerAdmin) {
                         app.headerController = new HeaderControllerAdmin();
 
                         app.navigationController = new NavigationControllerAdmin();
@@ -95,10 +94,11 @@ define([
                             controllerPath: 'controllers/admin/'
                         });
 
-                        app.initRouter(routes, { pushState: false , root: '/' });
+                        app.initRouter(routesAdmin, { pushState: false , root: '/' });
                     });
                     break;
                 case 'user':
+                    // TODO: implementation needed
 
                     break;
             }

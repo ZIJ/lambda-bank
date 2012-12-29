@@ -34,7 +34,7 @@ define([
                 view.subscribeEvent('matchRoute', view.matchRouteHandler);
             },
 
-            matchRouteHandler: function(route) {
+            matchRouteHandler: function(route, params) {
                 var view = this,
                     targetSelector,
                     pattern = route.pattern;
@@ -43,11 +43,9 @@ define([
 
                 if (pattern === '') {
                     targetSelector = '.icon-home';
-                } else if (pattern === 'users' || pattern === 'users/create'
-                || pattern === 'users/:id' || pattern === 'users/:id/edit') {
+                } else if ((/^users/).test(pattern) === true) {
                     targetSelector = '.icon-user';
-                } else if (pattern === 'cards' || pattern === 'cards/create'
-                    || pattern === 'cards/:id' || pattern === 'cards/:id/edit') {
+                } else if ((/^cards/).test(pattern) === true) {
                     targetSelector = '.glyphicon-credit-card';
                 }
 
