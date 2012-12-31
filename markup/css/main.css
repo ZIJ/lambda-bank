@@ -274,11 +274,10 @@ table .expandable .payment {
 table .expandable .controls {
     list-style: none;
     float: left;
-    margin: 0;
     padding: 0;
     width: 15px;
     padding: 0 8px;
-    margin: 0 10px 0 0;
+    margin: 0 0px 0 0;
     background: #eee;
 }
 
@@ -326,6 +325,25 @@ table .currency {
 
 table .amount {
     width: 20%;
+}
+
+table .expandable table {
+    table-layout: auto;
+}
+
+table .expandable table th,
+table .expandable table td {
+    padding: 0 10px;
+}
+
+
+table.table-bordered .expandable table:not(:first-of-type) th {
+    border-top: 1px solid #bbb;
+}
+
+table .expandable table .controls-container {
+    padding: 0;
+    width: 1%;
 }
 
 .user .form-actions {
