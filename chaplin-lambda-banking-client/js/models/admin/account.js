@@ -1,15 +1,12 @@
 define([
     'chaplin',
-    'moment',
-    'models/base/model',
-    'models/admin/user',
-    'models/admin/accounts'
-], function(Chaplin, moment, Model, UserModel, AccountsCollection) {
+    'models/base/model'
+], function(Chaplin, Model) {
     'use strict';
 
     var mediator = Chaplin.mediator;
 
-    var Card = Model.extend({
+    var Account = Model.extend({
 
         initialize: function(attributes, options) {
             var model = this;
@@ -17,23 +14,17 @@ define([
             _.bindAll(model, 'fetchSuccessfulHandler', 'saveSuccessfulHandler'
                 , 'saveErrorHandler', 'destroySuccessfulHandler');
 
-            Card.__super__.initialize.apply(model, arguments);
+            Account.__super__.initialize.apply(model, arguments);
 
         },
 
         parse: function(response) {
             var attributesHash = {
                 id: response['ID'],
-                number: response['Number'],
-                type: response['Type'],
-                holder: new UserModel(UserModel.prototype.parse(response['User'])),
-                expirationDate: moment(response['ExpirationDate']).format('YYYY-MM-DD'),
-                state: response['CardState'],
-                accounts: (function() {
-                    var retVal = new AccountsCollection();
-                    retVal.fetchHandler(response['Accounts']);
-                    return retVal;
-                })()
+                number: response['AccountNumber'],
+                currency: response['Currency'],
+                amount: response['Amount']
+//                accounts: response['Accounts']
                 // TODO: add fetchable attributes parsers here
             };
 
@@ -50,9 +41,9 @@ define([
             var model = this;
 
             mediator.user.get('provider').apiRequest({
-                url: 'admin/cards/get',
+                url: 'admin/accounts/get',
                 data: {
-                    cardId: model.id
+                    accountId: model.id
                 },
                 success: function(response) {
                     model.fetchSuccessfulHandler(response);
@@ -110,9 +101,9 @@ define([
             var model = this;
 
             mediator.user.get('provider').apiRequest({
-                url: 'admin/cards/delete',  // TODO: verify this
+                url: 'admin/accounts/delete',  // TODO: verify this
                 data: {
-                    cardId: model.id
+                    accountId: model.id
                 },
                 success: function() {
                     model.destroySuccessfulHandler();
@@ -147,5 +138,5 @@ define([
 
     });
 
-    return Card;
+    return Account;
 });

@@ -7,7 +7,8 @@ body {
     background: url(../img/bg.jpg) center center no-repeat;
 }
 
-h1 {
+input[disabled]+label {
+    color: rgba(0, 0, 0, .5);
 }
 
 #page-container {
@@ -89,49 +90,121 @@ h1 {
     background: #0B98B8;
 }
 
-.main .data-fields {
+.data-fields {
     font-size: 18px;
+    margin: 0 0 20px 0;
 }
 
-.main .data-fields dt {
-    min-width: 140px;
+.data-fields>dt {
+    min-width: 160px;
 }
 
-.main .data-fields dt,
-.main .data-fields dd {
+.data-fields>dt,
+.data-fields>dd {
     float: left;
     line-height: 40px;
 }
 
-.main .data-fields dt {
+.data-fields>dt {
     clear: both;
 }
 
-.main .data-fields .type {
+.data-fields .type {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
-.main .data-fields button {
-    margin-bottom: 9px;
+.data-fields .card {
+    float: none;
+    margin: 0 0 10px 160px;
+    padding: 0 1em;
+    display: table;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+}
+
+.data-fields .error {
+    color: #b94a48;
+    background: rgba(255, 255, 255, .9)
+}
+
+.data-fields .balance {
+    font-size: 12px;
+    font-weight: bold;
+    background: #efefdd;
+    padding: 0 .3em;
+    border-radius: 5px;
+}
+
+.data-fields .code {
+    width: auto;
+}
+
+.data-fields button {
     border: 0;
     background: transparent;
     padding: 0;
 }
 
-.main .data-fields .type li {
+.data-fields .type li {
     display: inline-block;
     margin: 0 10px 0 0;
 }
 
-.main .data-fields .type input[type=radio] {
+.data-fields input[type=radio] {
+    margin: 0 .5em 0 0;
+}
+
+.data-fields label {
+    margin: 0;
+    display: inline-block;
+}
+
+.data-fields .number {
+    width: 45px;
+}
+
+.data-fields .label {
+    vertical-align: middle;
+}
+
+.data-fields ul {
+    list-style: none;
+}
+
+.welcome-actions {
+    list-style: none;
+    text-align: center;
+}
+
+.welcome-actions figure {
     margin: 0;
 }
 
-.main .data-fields .type label {
-    margin: 0;
+.welcome-actions figure figcaption {
+    margin: .8em 0 0 0;
+}
+
+.welcome-actions li {
     display: inline-block;
+    padding: 1em 3em;
+}
+
+.welcome-actions a img {
+    border-radius: 20%;
+    box-shadow: 0 0 0 2px #075F73;
+    -webkit-transition: all ease-in-out .3s;
+    -moz-transition: all ease-in-out .3s;
+    -ms-transition: all ease-in-out .3s;
+    -o-transition: all ease-in-out .3s;
+    transition: all ease-in-out .3s;
+}
+
+.welcome-actions a:hover img {
+    border-radius: 3%;
+    box-shadow: 0 0 0 2px #0B98B8;
 }
 
 .user .cards-n-accounts .nav-tabs {
@@ -150,8 +223,15 @@ h1 {
     margin: 0;
 }
 
+.step {
+    display: table-cell;
+    background: rgba(255, 255, 255, .9);
+    border: 1px solid #e5e5e5;
+}
+
 table {
     background-color: #fff;
+	table-layout: fixed;
 }
 
 table .expander td:not(.check){
@@ -173,11 +253,13 @@ table .expandable td {
 }
 
 table .expandable .accounts,
-table .expandable .cards {
+table .expandable .cards,
+table .expandable .payment {
     display: none;
     list-style: none;
     margin: 0;
     padding: 0;
+    border-bottom: 1px solid #ddd;
 }
 
 table .expandable .accounts>li,
@@ -189,6 +271,10 @@ table .expandable .cards>li {
 table .expandable .accounts>li:first-of-type,
 table .expandable .cards>li:first-of-type {
     border: 0;
+}
+
+table .expandable .payment {
+    padding: 0 0 0 2em;
 }
 
 table .expandable .controls {
@@ -208,8 +294,44 @@ table .expandable .controls button {
     background: transparent;
 }
 
+table .expandable dl {
+    float: left;
+}
+
 table .check {
     width: 15px;
+    text-align: center;
+}
+
+table td,
+table th {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.table td.container {
+    padding: 0;
+    border-left: 0;
+}
+
+.table table {
+    width: 100%;
+}
+
+table .number {
+    width: 30%;
+}
+
+table .holder {
+    width: 37%;
+}
+
+table .expirationDate {
+    width: 20%;
+}
+
+table .type {
+    width: 10%;
 }
 
 .user .form-actions {
@@ -246,6 +368,11 @@ table .check {
     vertical-align: middle;
 }
 
+.hidden {
+    display: none !important;
+    visibility: hidden;
+}
+
 
 /*
     BUTTONS
@@ -270,16 +397,6 @@ table .check {
 .btn:hover {
     background: #0B98B8;
     color: #fff;
-}
-
-.btn:after {
-    content: '';
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
 }
 
 .btn:active {
@@ -349,7 +466,11 @@ table .check {
     TREEVIEW
 */
 
-.treeview ,
+.treeview {
+    margin: 0;
+}
+
+.treeview,
 .treeview ul{
     list-style: none;
 }
@@ -367,29 +488,48 @@ table .check {
 }
 
 .treeview input[type=checkbox]+label:before {
-    font-family: Consolas, monaco, monospace;
-    content: '▶';
+    content: '';
     display: inline-block;
-    margin: 0 .3em 0 0;
-    text-align: center;
+    border: 4px solid transparent;
+    border-left-color: #000;
 }
 
 .treeview input[type=checkbox]:checked+label:before {
-    content: '◢';
+    border: 3px solid transparent;
+    
+    border-right-color: #000;
+    border-bottom-color: #000;
+    position: relative;
+    top: -2px;
+    margin: 0 2px 0 0;
 }
 
-.treeview input[type=checkbox]+label {
+.treeview input[type=checkbox]+label,
+.treeview input[type=radio]+label {
     display: block;
     margin: 0;
+    padding: 0 .3em;
     cursor: pointer;
 }
 
-.treeview input[type=checkbox]+label:hover {
-    /* background plate */
+.treeview label:hover {
+    background: #eee;
+    border-radius: 4px;
+    color: #005580;
 }
 
 .treeview input[type=checkbox]:checked ~ ul {
     display: block;
+}
+
+.treeview input[type=radio] {
+    display: none;
+}
+
+.treeview input[type=radio]:checked+label {
+    background: #0B98B8;
+    color: #fff;
+    border-radius: 4px;
 }
 
 

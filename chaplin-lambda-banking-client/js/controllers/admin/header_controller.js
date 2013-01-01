@@ -30,7 +30,6 @@ define([
                 model: new BreadcrumbModel()
             });
             controller.view.subview('breadcrumb', nestedView);
-//            nestedView.render();  // TODO: ??? is it needed
 
             // TODO: redesign it
             controller.middleView = new MiddleView();
