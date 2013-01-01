@@ -10,7 +10,6 @@ define([
     var mediator = Chaplin.mediator;
 
     var UsersView = CollectionView.extend({
-        title: 'Users',
 
         template: template,
 

@@ -9,54 +9,45 @@ define([
 
     var mediator = Chaplin.mediator;
 
-    var NavigationView = (function(_super) {
+    var NavigationView = View.extend({
+        template: template,
+        tagName: 'aside',
+        className: 'span2',
+        container: 'div.row-fluid',
+        autoRender: true,
 
-        utils.extends(NavigationView, _super);
+        initialize: function(options) {
+            var view = this;
 
-        function NavigationView() {
-            NavigationView.__super__.constructor.apply(this, arguments);
-        }
+            _.bindAll(view, 'matchRouteHandler');
 
-        _.extend(NavigationView.prototype, {
-            template: template,
-            tagName: 'aside',
-            className: 'span2',
-            container: 'div.row-fluid',
-            autoRender: true,
+            NavigationView.__super__.initialize.apply(view, arguments);
 
-            initialize: function(options) {
-                var view = this;
+            view.subscribeEvent('matchRoute', view.matchRouteHandler);
+        },
 
-                _.bindAll(view, 'matchRouteHandler');
+        matchRouteHandler: function(route, params) {
+            var view = this,
+                targetSelector,
+                pattern = route.pattern;
 
-                NavigationView.__super__.initialize.apply(view, arguments);
+            view.$('li.active').removeClass('active');
 
-                view.subscribeEvent('matchRoute', view.matchRouteHandler);
-            },
-
-            matchRouteHandler: function(route, params) {
-                var view = this,
-                    targetSelector,
-                    pattern = route.pattern;
-
-                view.$('li.active').removeClass('active');
-
-                if (pattern === '') {
-                    targetSelector = '.icon-home';
-                } else if ((/^users/).test(pattern) === true) {
-                    targetSelector = '.icon-user';
-                } else if ((/^cards/).test(pattern) === true) {
-                    targetSelector = '.glyphicon-credit-card';
-                }
-
-                view.$(targetSelector).parent().parent().addClass('active');
+            if (pattern === '') {
+                targetSelector = '.icon-home';
+            } else if ((/^users/).test(pattern) === true) {
+                targetSelector = '.icon-user';
+            } else if ((/^cards/).test(pattern) === true) {
+                targetSelector = '.glyphicon-credit-card';
+            } else if ((/^accounts/).test(pattern) === true) {
+                targetSelector = '.icon-list';
+            } else if ((/^settings/).test(pattern) === true) {
+                targetSelector = '.icon-wrench';
             }
 
-        });
-
-        return NavigationView;
-
-    })(View);
+            view.$(targetSelector).parent().parent().addClass('active');
+        }
+    });
 
     return NavigationView;
 });

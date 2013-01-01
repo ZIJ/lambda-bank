@@ -9,43 +9,35 @@ define([
 
     var mediator = Chaplin.mediator;
 
-    var LoginView = (function(_super) {
+    var LoginView = View.extend({
+        template: template,
+        className: 'container login-page',
+        container: '#page-container',
+        autoRender: true,
 
-        utils.extends(LoginView, _super);
+        // Expects the serviceProviders in the options.
+        initialize: function(options) {
+            var view = this;
 
-        function LoginView() {
-            LoginView.__super__.constructor.apply(this, arguments);
-        }
+            _.bindAll(view, "loginFailHandler", "loginSuccessfulHandler", "onLoginErrorCloseClick");
 
-        _.extend(LoginView.prototype, {
-            template: template,
-            className: 'container login-page',
-            container: '#page-container',
-            autoRender: true,
+            LoginView.__super__.initialize.apply(view, arguments);
 
-            // Expects the serviceProviders in the options.
-            initialize: function(options) {
-                var view = this;
+            view.initButtons(options.serviceProviders);
 
-                _.bindAll(view, "loginFailHandler", "loginSuccessfulHandler", "onLoginErrorCloseClick");
+            view.subscribeEvent("loginFail", view.loginFailHandler);
+            view.subscribeEvent("loginSuccessfulHandler", view.loginSuccessfulHandler);
 
-                LoginView.__super__.initialize.apply(view, arguments);
+            view.delegate('click', ".alert-error > .close", view.onLoginErrorCloseClick);
+        },
 
-                view.initButtons(options.serviceProviders);
+        initButtons: function(serviceProviders) {
+            var view = this,
+                buttonSelector = '.btn[type="submit"]';
 
-                view.subscribeEvent("loginFail", view.loginFailHandler);
-                view.subscribeEvent("loginSuccessfulHandler", view.loginSuccessfulHandler);
-
-                view.delegate('click', ".alert-error > .close", view.onLoginErrorCloseClick);
-            },
-
-            initButtons: function(serviceProviders) {
-                var view = this,
-                    buttonSelector = '.btn[type="submit"]';
-
-                _.each(serviceProviders, function (serviceProvider, serviceProviderName) {
-                    var loginHandler = _(view.loginWith).bind(view, serviceProviderName, serviceProvider);
-                    view.delegate('click', buttonSelector, loginHandler);
+            _.each(serviceProviders, function (serviceProvider, serviceProviderName) {
+                var loginHandler = _(view.loginWith).bind(view, serviceProviderName, serviceProvider);
+                view.delegate('click', buttonSelector, loginHandler);
 
 //                    // TODO: we possibly need to manually clear handlers from deferred on view disposal
 //                    var loaded = _(view.serviceProviderLoaded).bind(view, serviceProviderName, serviceProvider);
@@ -53,63 +45,58 @@ define([
 //                    var failed = _(view.serviceProviderFailed).bind(view, serviceProviderName, serviceProvider);
 //                    serviceProvider.fail(failed);
 
-                    // NOTE: hard-coded only iteration
-                    return false;
-                });
-            },
+                // NOTE: hard-coded only iteration
+                return false;
+            });
+        },
 
-            loginWith: function(serviceProviderName, serviceProvider, e) {
-                e.preventDefault();
-                if (!serviceProvider.isLoaded()) {
-                    return;
-                }
+        loginWith: function(serviceProviderName, serviceProvider, e) {
+            e.preventDefault();
+            if (!serviceProvider.isLoaded()) {
+                return;
+            }
 
-                var view = this;
+            var view = this;
 
 //                mediator.publish('login:pickService', serviceProviderName);
 
-                mediator.publish('!login', serviceProviderName, {
-                    login: view.$("#username").val(),
-                    password: view.$("#password").val()
-                });
-            },
+            mediator.publish('!login', serviceProviderName, {
+                login: view.$("#username").val(),
+                password: view.$("#password").val()
+            });
+        },
 
-            loginFailHandler: function () {
-                var view = this;
+        loginFailHandler: function () {
+            var view = this;
 
-                view.$(".alert-error").show();
-            },
+            view.$(".alert-error").show();
+        },
 
-            loginSuccessfulHandler: function () {
-                var view = this;
+        loginSuccessfulHandler: function () {
+            var view = this;
 
-                view.$(".alert-error").hide();
-            },
+            view.$(".alert-error").hide();
+        },
 
-            onLoginErrorCloseClick: function() {
-                var view = this;
+        onLoginErrorCloseClick: function() {
+            var view = this;
 
-                view.$(".alert-error").hide();
-            }
+            view.$(".alert-error").hide();
+        }
 
-//            ,
-//            serviceProviderLoaded: function(serviceProviderName) {
-//                this.$("." + serviceProviderName).removeClass('service-loading');
-//            },
+//        ,
+//        serviceProviderLoaded: function(serviceProviderName) {
+//            this.$("." + serviceProviderName).removeClass('service-loading');
+//        },
 //
-//            serviceProviderFailed: function(serviceProviderName) {
-//                this.$("." + serviceProviderName)
-//                    .removeClass('service-loading')
-//                    .addClass('service-unavailable')
-//                    .attr('disabled', true)
-//                    .attr('title', 'Error connecting. Please check whether you are blocking ' + ("" + (utils.upcase(serviceProviderName)) + "."));
-//            }
-
-        });
-
-        return LoginView;
-
-    })(View);
+//        serviceProviderFailed: function(serviceProviderName) {
+//            this.$("." + serviceProviderName)
+//                .removeClass('service-loading')
+//                .addClass('service-unavailable')
+//                .attr('disabled', true)
+//                .attr('title', 'Error connecting. Please check whether you are blocking ' + ("" + (utils.upcase(serviceProviderName)) + "."));
+//        }
+    });
 
     return LoginView;
 });

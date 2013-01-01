@@ -10,7 +10,6 @@ define([
     var mediator = Chaplin.mediator;
 
     var CardAccountsView = CollectionView.extend({
-        title: '',
 
         template: template,
 

@@ -23,6 +23,81 @@ define([
             child.__super__ = parent.prototype;
             return child;
         },
+
+        sessionStorage: (function() {
+            if (window.sessionStorage && sessionStorage.getItem && sessionStorage.setItem && sessionStorage.removeItem) {
+                return function(key, value) {
+                    if (typeof value === 'undefined') {
+                        value = sessionStorage.getItem(key);
+                        if ((value != null) && value.toString) {
+                            return value.toString();
+                        } else {
+                            return value;
+                        }
+                    } else {
+                        sessionStorage.setItem(key, value);
+                        return value;
+                    }
+                };
+            } else {
+                return function(key, value) {
+                    if (typeof value === 'undefined') {
+                        return utils.getCookie(key);
+                    } else {
+                        utils.setCookie(key, value);
+                        return value;
+                    }
+                };
+            }
+        })(),
+
+        sessionStorageRemove: (function() {
+            if (window.sessionStorage && sessionStorage.getItem && sessionStorage.setItem && sessionStorage.removeItem) {
+                return function(key) {
+                    return sessionStorage.removeItem(key);
+                };
+            } else {
+                return function(key) {
+                    return utils.expireCookie(key);
+                };
+            }
+        })(),
+
+        getCookie: function(key) {
+            var pair, pairs, val, _i, _len;
+            pairs = document.cookie.split('; ');
+            for (_i = 0, _len = pairs.length; _i < _len; _i++) {
+                pair = pairs[_i];
+                val = pair.split('=');
+                if (decodeURIComponent(val[0]) === key) {
+                    return decodeURIComponent(val[1] || '');
+                }
+            }
+            return null;
+        },
+
+        setCookie: function(key, value, options) {
+            var expires, getOption, payload;
+            if (options == null) {
+                options = {};
+            }
+            payload = "" + (encodeURIComponent(key)) + "=" + (encodeURIComponent(value));
+            getOption = function(name) {
+                if (options[name]) {
+                    return "; " + name + "=" + options[name];
+                } else {
+                    return '';
+                }
+            };
+            expires = options.expires ? "; expires=" + (options.expires.toUTCString()) : '';
+            return document.cookie = [payload, expires, getOption('path'), getOption('domain'), getOption('secure')].join('');
+        },
+
+        expireCookie: function(key) {
+            return document.cookie = "" + key + "=nil; expires=" + ((new Date).toGMTString());
+        },
+
+
         loadLib: function(url, success, error, timeout) {
             var head, onload, script, timeoutHandle;
             if (timeout == null) {
@@ -59,6 +134,7 @@ define([
             timeoutHandle = setTimeout(script.onerror, timeout);
             head.insertBefore(script, head.firstChild);
         },
+
         deferMethods: function(options) {
             var deferred, func, host, methods, methodsHash, name, onDeferral, target, _i, _len;
             deferred = options.deferred;
@@ -87,6 +163,7 @@ define([
                 }
             });
         },
+
         createDeferredFunction: function(deferred, func, context, onDeferral) {
             if (context == null) {
                 context = deferred;

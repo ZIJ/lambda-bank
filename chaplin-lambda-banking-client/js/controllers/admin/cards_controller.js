@@ -15,6 +15,8 @@ define([
 
     var CardsController = Controller.extend({
 
+        title: 'Cards',
+
         initialize: function(params) {
             var controller = this;
 

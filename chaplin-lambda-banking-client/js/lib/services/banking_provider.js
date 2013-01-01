@@ -35,6 +35,8 @@ define([
             // Storing here only for passing it into user
             accessToken: null,
 
+            useSessionStorage: true,
+
             load: function() {
                 var serviceProvider = this;
                 if (serviceProvider.state() === 'resolved' || serviceProvider.loading) {
@@ -90,6 +92,14 @@ define([
                 if (!callback) {
                     callback = serviceProvider.loginStatusHandler;
                 }
+
+                if (!lambdaBanking.accessToken && serviceProvider.useSessionStorage === true) {
+                    var restoredAccessToken = utils.sessionStorage('lambdaBankingAccessToken');
+                    if (restoredAccessToken) {
+                        lambdaBanking.accessToken = restoredAccessToken;
+                    }
+                }
+
                 lambdaBanking.getLoginStatus(callback);
             },
 
@@ -101,7 +111,6 @@ define([
                 var authResponse = response.authResponse;
                 if (authResponse) {
                     serviceProvider.publishSession(authResponse);
-                    serviceProvider.getUserData();
                 } else {
                     serviceProvider.logoutHandler();
                 }
@@ -150,6 +159,14 @@ define([
             },
 
             publishSession: function(authResponse) {
+                var serviceProvider = this;
+
+                if (serviceProvider.useSessionStorage === true) {
+                    utils.sessionStorage('lambdaBankingAccessToken', lambdaBanking.accessToken);
+                } else {
+                    utils.sessionStorageRemove('lambdaBankingAccessToken');
+                }
+
                 mediator.publish('serviceProviderSession', {
                     provider: this,
                     userId: authResponse.userID,
@@ -177,7 +194,23 @@ define([
                 // NOTE: currently redundant because of saveAuthResponse calls
                 serviceProvider.accessToken = null;
 
+                utils.sessionStorageRemove('lambdaBankingAccessToken');
+
                 mediator.publish('logout');
+            },
+
+            switchUseSessionStorage: function(boolValue) {
+                var serviceProvider = this;
+
+                if (boolValue === true) {
+                    if (serviceProvider.useSessionStorage === false) {
+                        serviceProvider.useSessionStorage = true;
+                        utils.sessionStorage('lambdaBankingAccessToken', lambdaBanking.accessToken);
+                    }
+                } else {
+                    serviceProvider.useSessionStorage = false;
+                    utils.sessionStorageRemove('lambdaBankingAccessToken');
+                }
             },
 
             subscribe: function(eventType, handler) {

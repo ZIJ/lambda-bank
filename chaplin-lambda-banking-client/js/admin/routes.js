@@ -17,6 +17,8 @@ define(function() {
         match('cards/:id', 'cards#show');
         match('cards/:id/edit', 'cards#edit');
 
+        match('settings', 'settings#index');
+
     };
 
     return routes;

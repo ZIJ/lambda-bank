@@ -9,7 +9,6 @@ define([
     var mediator = Chaplin.mediator;
 
     var UserEditView = View.extend({
-        title: 'User Edit',
 
         template: template,
 

@@ -15,6 +15,8 @@ define([
 
     var UsersController = Controller.extend({
 
+        title: 'Users',
+
         initialize: function(params) {
             var controller = this;
 

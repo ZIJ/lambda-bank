@@ -17,7 +17,7 @@ define([
         function SessionController() {
             var controller = this;
 
-            _.bindAll(controller, 'logout', 'serviceProviderSession', 'triggerLogin');
+            _.bindAll(controller, 'logout', 'serviceProviderSession', 'triggerLogin', 'triggerSwitchUseSessionStorage');
 
             SessionController.__super__.constructor.apply(controller, arguments);
         }
@@ -29,8 +29,6 @@ define([
         });
 
         _.extend(SessionController.prototype, {
-
-            serviceProviderName: null,
 
             loginStatusDetermined: false,
 
@@ -50,6 +48,8 @@ define([
                 controller.subscribeEvent('!showLogin', controller.showLoginView);
                 controller.subscribeEvent('!login', controller.triggerLogin);
                 controller.subscribeEvent('!logout', controller.triggerLogout);
+
+                controller.subscribeEvent('!switchUseSessionStorage', controller.triggerSwitchUseSessionStorage);
 
                 // Determine the logged-in state
                 controller.getSession();
@@ -101,7 +101,7 @@ define([
             serviceProviderSession: function(session) {
                 var controller = this;
 
-                controller.serviceProviderName = session.provider.name;
+//                serviceProvider = session.provider;
                 controller.disposeLoginView();
                 session.id = session.userId;
                 session.role = session.userRole;
@@ -133,10 +133,16 @@ define([
 
                 controller.loginStatusDetermined = true;
                 controller.disposeUser();
-                controller.serviceProviderName = null;
                 controller.showLoginView();
 
                 mediator.publish('loginStatus', false);
+            },
+
+            triggerSwitchUseSessionStorage: function(boolValue) {
+                var controller = this,
+                    serviceProvider = SessionController.serviceProviders['banking'];   // TODO: TEMP hard-coded
+
+                serviceProvider.switchUseSessionStorage(boolValue);
             },
 
 //            userData: function(data) {
