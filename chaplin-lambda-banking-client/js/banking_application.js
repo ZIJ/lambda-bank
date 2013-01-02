@@ -1,8 +1,10 @@
 define([
+    'jquery',
+    'underscore',
     'chaplin',
     'views/layout',
     'controllers/session_controller'
-], function(Chaplin, Layout, SessionController) {
+], function($, _, Chaplin, Layout, SessionController) {
     'use strict';
 
     var mediator = Chaplin.mediator;
@@ -21,7 +23,7 @@ define([
         initialize: function() {
             var app = this;
 
-            _(app).bindAll("loginHandler", "logoutHandler");
+            _(app).bindAll('loginHandler', 'logoutHandler', 'showAlert');
 
             // Call the parent constructor.
             Chaplin.Application.prototype.initialize.apply(app, arguments);
@@ -37,9 +39,10 @@ define([
             // Register all routes and start routing
             //app.initRouter(routes, { pushState: false , root: '/' });
 
-            mediator.subscribe("login", app.loginHandler);
-            mediator.subscribe("logout", app.logoutHandler);
+            mediator.subscribe('login', app.loginHandler);
+            mediator.subscribe('logout', app.logoutHandler);
 
+            mediator.subscribe('!alert', app.showAlert);
 
             // Freeze the application instance to prevent further changes
             //if (typeof Object.freeze === "function") Object.freeze(app);
@@ -122,6 +125,63 @@ define([
             if (app.navigationController) {
                 app.navigationController.dispose();
                 app.navigationController = null;
+            }
+        },
+
+        // TODO: shouldn't be here
+        // options -> { type, title, text, action, actionCallback, cancelCallback }
+        showAlert: function(options) {
+            var $fader = $('.fader');
+
+            options.title || (options.title = 'Attention!');
+
+            var $alertBox = $fader.find('.alert');
+            if ($alertBox.length === 0) {
+                $fader.append(	'<div class="alert alert-block' + (options.type ? ' alert-' + options.type : '') + ' fade in">' +
+                    '<button class="close cancel" data-dismiss="alert">×</button>' +
+                    '<h4 class="alert-heading">' + options.title + '</h4>' +
+                    '<p>' + options.text + '</p>' +
+                    (options.action ? '<p>'+
+                        '<button type="button" class="btn btn-danger action">' + options.action + '</button>'+
+                        ' <button type="button" class="btn cancel">Cancel</button></p>' : '') + '</div>');
+                $alertBox = $fader.find('.alert');
+            }
+
+            $alertBox.css({
+                'display': 'inline-block'
+            });
+
+            function close() {
+                $alertBox.remove();
+                $fader.stop().fadeOut();
+            }
+
+            function callback(func) {
+                ($.isFunction(func) ? func : $.noop)();
+            }
+
+            $fader.find('.action').click(function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                close();
+                callback(options.actionCallback);
+            });
+
+            $fader.find('.cancel').click(function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                close();
+                callback(options.cancelCallback);
+            });
+
+            $fader.stop().fadeIn();
+
+            if (options.type === 'success' || !options.action) {
+                $fader.click(function() {
+                    close();
+                });
+            } else {
+                $fader.off('click');
             }
         }
         

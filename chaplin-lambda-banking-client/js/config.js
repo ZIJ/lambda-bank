@@ -8,7 +8,8 @@ require.config({
         handlebars: 'vendor/handlebars-1.0.rc.1',
         text: 'vendor/require-text-2.0.3',
         chaplin: 'vendor/chaplin-1.0.0-pre-59cac06',
-        moment: 'vendor/moment-1.7.2'
+        moment: 'vendor/moment-1.7.2',
+        pikaday: 'vendor/jquery.pikaday'
     },
     shim: {
         underscore: {
@@ -20,6 +21,7 @@ require.config({
         },
         handlebars: {
             exports: 'Handlebars'
-        }
+        },
+        pikaday: ['jquery']
     }
 });

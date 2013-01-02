@@ -30,10 +30,20 @@ define([
             view.delegate('click', 'section > button', view.onAddNewCardClick);
         },
 
+        // TODO: TEMP, remove it
         onAddNewCardClick: function() {
             var view = this;
 
-            mediator.publish('!router:route', 'cards/create');
+//            mediator.publish('!router:route', 'cards/create');
+
+            mediator.publish('!alert', {
+                type: 'error',
+                title: 'Error',
+                text: 'Smth gone wrong',
+                action: 'Ok',
+                actionCallback: function() {},
+                cancelCallback: function() {}
+            });
         }
     });
 

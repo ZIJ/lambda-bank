@@ -65,45 +65,45 @@ define([
         },
 
         save: function(options) {
-//            var model = this,
-//                attributesToSave = {
-//                    FirstName: options.attributesToSave.firstName,
-//                    LastName: options.attributesToSave.lastName,
-//                    PassportNumber: options.attributesToSave.passportNumber,
-//                    Address: options.attributesToSave.address
-//                };
+            var model = this,
+                attributesToSave = {
+                    FirstName: options.attributesToSave.firstName,
+                    LastName: options.attributesToSave.lastName,
+                    PassportNumber: options.attributesToSave.passportNumber,
+                    Address: options.attributesToSave.address
+                };
 
-//            if (model.id && model.id !== 0) {
-//                mediator.user.get('provider').apiRequest({
-//                    url: 'admin/users/update',
-//                    data: {
-//                        user: _.extend({ ID: model.id }, attributesToSave)
-//                    },
-//                    success: function(response) {
-//                        model.saveSuccessfulHandler.call(this, response);
-//                        options.success.call(this, response);
-//                    },
-//                    error: function(jqXHR) {
-//                        model.saveErrorHandler.call(this, jqXHR);
-//                        options.error.call(this, jqXHR);
-//                    }
-//                });
-//            } else {
-//                mediator.user.get('provider').apiRequest({
-//                    url: 'admin/users/create',
-//                    data: {
-//                        user: attributesToSave
-//                    },
-//                    success: function(response) {
-//                        model.saveSuccessfulHandler.call(this, response);
-//                        options.success.call(this, response);
-//                    },
-//                    error: function(jqXHR) {
-//                        model.saveErrorHandler.call(this, jqXHR);
-//                        options.error.call(this, jqXHR);
-//                    }
-//                });
-//            }
+            if (model.id && model.id !== 0) {
+                mediator.user.get('provider').apiRequest({
+                    url: 'admin/users/update',
+                    data: {
+                        user: _.extend({ ID: model.id }, attributesToSave)
+                    },
+                    success: function(response) {
+                        model.saveSuccessfulHandler.call(this, response);
+                        options.success.call(this, response);
+                    },
+                    error: function(jqXHR) {
+                        model.saveErrorHandler.call(this, jqXHR);
+                        options.error.call(this, jqXHR);
+                    }
+                });
+            } else {
+                mediator.user.get('provider').apiRequest({
+                    url: 'admin/users/create',
+                    data: {
+                        user: attributesToSave
+                    },
+                    success: function(response) {
+                        model.saveSuccessfulHandler.call(this, response);
+                        options.success.call(this, response);
+                    },
+                    error: function(jqXHR) {
+                        model.saveErrorHandler.call(this, jqXHR);
+                        options.error.call(this, jqXHR);
+                    }
+                });
+            }
         },
 
         destroy: function(options) {
