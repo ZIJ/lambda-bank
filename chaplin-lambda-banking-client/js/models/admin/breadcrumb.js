@@ -89,6 +89,12 @@ define([
                 {
                     label: 'Edit'
                 }
+            ],
+            // Settings part
+            'settings': [
+                {
+                    label: 'Settings'
+                }
             ]
         },
 
