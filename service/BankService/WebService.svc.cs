@@ -25,6 +25,8 @@ namespace BankService
 			db = bank.Database;
 		}
 
+		#region Login
+
 		public Message Login(string login, string password)
 		{
 			LoginInfo info = bank.UserService.Logon(login, password);
@@ -51,16 +53,95 @@ namespace BankService
 			return Json(response);
 		}
 
+		public Message VerifyToken(Guid securityToken)
+		{
+			LoginInfo info = bank.UserService.GetUser(securityToken, false);
+			if (info == null)
+			{
+				throw new WebFaultException(HttpStatusCode.Unauthorized);
+			}
+
+			int secondsLeft = (int)info.TimeLeft.TotalSeconds;
+
+			var response = new
+			{
+				Role = info.User.Role.Name,
+				SecondsLeft = secondsLeft,
+				AuthenticationToken = info.UID
+			};
+
+			return Json(response);
+		}
+
+		public Message Logout(Guid securityToken)
+		{
+			bank.UserService.Logout(securityToken);
+			return Json("OK");
+		}
+
+		private BankUser GetUser(Guid securityToken)
+		{
+			LoginInfo info = bank.UserService.GetUser(securityToken);
+			if (info == null)
+			{
+				throw new WebFaultException(HttpStatusCode.Unauthorized);
+			}
+			else if (info.User.Role.ToString() != "user")
+			{
+				throw new WebFaultException(HttpStatusCode.Forbidden);
+			}
+			return info.User.BankUser;
+		}
+
+		private LoginInfo GetAdmin(Guid securityToken)
+		{
+			LoginInfo info = bank.UserService.GetUser(securityToken);
+			if (info == null)
+			{
+				throw new WebFaultException(HttpStatusCode.Unauthorized);
+			}
+			else if (info.User.Role.ToString() != "admin")
+			{
+				throw new WebFaultException(HttpStatusCode.Forbidden);
+			}
+			return info;
+		}
+
+		#endregion
+
 		public Message GetUserCards(Guid securityToken)
 		{
 			BankUser info = GetUser(securityToken);
 			return Json(info.Cards.Select(c => CreateCardResponse(c, false)));
 		}
 
+		public Message CreateCard(Guid securityToken, int userId, int typeId, DateTime expirationTime, Currency[] currency, int? accountID2Attach)
+		{
+			GetAdmin(securityToken);
+			BankUser user = db.BankUsers.Find(userId);
+			if (user == null)
+			{
+				throw new WebFaultException<string>("User was not found", HttpStatusCode.NotFound);
+			}
+
+			CardType type = db.CardTypes.Find(typeId);
+
+			if (user == null)
+			{
+				throw new WebFaultException<string>("CardType was not found", HttpStatusCode.NotFound);
+			}
+
+			int id = bank.CreateCard(user, type, currency, accountID2Attach, expirationTime);
+			return Json(new { ID = id });
+		}
+
+
 		public Message GetLog(Guid securityToken, int cardId, DateTime start, DateTime end)
 		{
 			throw new NotImplementedException();
 		}
+
+		#region Payment
 
 		public Message PayAccDetails(Guid securityToken, PaymentRequisites requisite)
 		{
@@ -89,18 +170,9 @@ namespace BankService
 			{
 				throw new WebFaultException(HttpStatusCode.BadRequest);
 			}
-			return Json("OK");
 		}
 
-		public Message GetSavedPayments(Guid securityToken)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Message GetSchedules(Guid securityToken)
-		{
-			throw new NotImplementedException();
-		}
+		#endregion
 
 		private static Message Json(object obj)
 		{
@@ -252,6 +324,7 @@ namespace BankService
 				Type = card.Type.ToString(),
 				Holder = card.Holder,
 				ExpirationDate = card.ExpirationDate,
+				CardState = card.State.ToString(),
 				Accounts =  card.Accounts.Select( a => CreateAccountResponse(a)),
 				User = joinUser? CreateUserResponse(card.BankUser, false) : (object)card.BankUser.ID
 			};
@@ -265,86 +338,84 @@ namespace BankService
 				acc.ID,
 				acc.AccountNumber,
 				Cards = acc.Cards.Select(c => c.ID),
-				acc.Currency,
+				Currency = acc.Currency.ToString(),
 				acc.Amount,
 			};
 			return response;
 		}
 
-		private BankUser GetUser(Guid securityToken)
+		#region SavedPayment
+
+		public Message SavePayment(Guid securityToken, PaymentRequisites payment)
 		{
-			LoginInfo info = bank.UserService.GetUser(securityToken);
-			if (info == null)
-			{
-				throw new WebFaultException(HttpStatusCode.Unauthorized);
-			}
-			else if (info.User.Role.ToString() != "user")
-			{
-				throw new WebFaultException(HttpStatusCode.Forbidden);
-			}
-			return info.User.BankUser;
+			BankUser user = GetUser(securityToken);
+			PaymentTemplate template = TraverseTemplate(payment);
+			template.Owner = user;
+			template.Type = TemplateType.Saved;
+			db.PaymentTemplates.Add(template);
+			db.SaveChanges();
+			return Json("Happy New Year, dude!");
 		}
 
-		private LoginInfo GetAdmin(Guid securityToken)
+		public PaymentTemplate TraverseTemplate(PaymentRequisites requisites)
 		{
-			LoginInfo info = bank.UserService.GetUser(securityToken);
-			if (info == null)
+			PaymentTemplate template = new PaymentTemplate();
+			Account account = db.Accounts.Find(requisites.AccountId);
+			if (account == null)
 			{
-				throw new WebFaultException(HttpStatusCode.Unauthorized);
+				throw new WebFaultException(HttpStatusCode.NotFound);
 			}
-			else if (info.User.Role.ToString() != "admin")
-			{
-				throw new WebFaultException(HttpStatusCode.Forbidden);
-			}
-			return info;
+			template.Account = account;
+			template.Amount = requisites.Amount;
+			template.JsonPayment = requisites.JsonPayment;
+			template.EripType = requisites.Type;
+			return template;
 		}
 
-		public Message VerifyToken(Guid securityToken)
+		public PaymentRequisites TraverseTemplate(PaymentTemplate template)
 		{
-			LoginInfo info = bank.UserService.GetUser(securityToken, false);
-			if (info == null)
-			{
-				throw new WebFaultException(HttpStatusCode.Unauthorized);
-			}
-
-			int secondsLeft = (int)info.TimeLeft.TotalSeconds;
-
-			var response = new
-			{
-				Role = info.User.Role.Name,
-				SecondsLeft = secondsLeft,
-				AuthenticationToken = info.UID
-			};
-
-			return Json(response);
+			PaymentRequisites requisite = new PaymentRequisites();
+			requisite.AccountId = template.Account.ID;
+			requisite.Amount = template.Amount;
+			requisite.JsonPayment = template.JsonPayment;
+			requisite.Type = template.EripType;
+			return requisite;
 		}
 
-		public Message CreateCard(Guid securityToken, int userId, DateTime expirationTime, Currency[] currency, int? accountID2Attach)
+		public Message GetSavedPayments(Guid securityToken)
 		{
-			GetAdmin(securityToken); 
-			BankUser user = db.BankUsers.Find(userId);
-			if (user == null)
-			{
-				throw new WebFaultException(HttpStatusCode.BadRequest);
-			}
-			int id = bank.CreateCard(user, currency, accountID2Attach);
-			return Json(new { ID = id });
+			BankUser user = GetUser(securityToken);
+			return Json(user.SavedPayments.ToArray().Select(p => TraverseTemplate(p)));
 		}
 
-		public Message Logout(Guid securityToken)
-		{
-			bank.UserService.Logout(securityToken);
-			return Json("OK");
-		}
+		#endregion SavedPayment
 
-		public Message SavePayment(Guid securityToken, string paymentInfo)
+		#region Schedule
+
+		public Message GetSchedules(Guid securityToken)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Message CreateSchedule(Guid securityToken, string paymentInfo)
+		public Message CreateSchedule(Guid securityToken, PaymentRequisites payment, DateTime startDate, ScheduleBit scheduleBit, int bitQuantity)
 		{
-			throw new NotImplementedException();
+			BankUser user = GetUser(securityToken);
+			PaymentTemplate template = TraverseTemplate(payment);
+			template.Owner = user;
+			template.Type = TemplateType.Scheduled;
+			db.PaymentTemplates.Add(template);
+			Schedule schedule = new Schedule();
+			schedule.BitQuantity = bitQuantity;
+			schedule.StartTime = startDate;
+			schedule.Template = template;
+			schedule.User = user;
+			db.Schedules.Add(schedule);
+			db.SaveChanges();
+			return Json(new 
+			{
+				MerryChristmas = "Merry Christmas",
+				ID = schedule.ID,
+			});
 		}
 
 		public Message UpdateSchedule(Guid securityToken, int id, string paymentInfo)
@@ -355,6 +426,43 @@ namespace BankService
 		public Message DeleteSchedule(Guid securityToken, int id)
 		{
 			throw new NotImplementedException();
+		}
+
+		#endregion
+
+
+		public Message GetCurrencies()
+		{
+			return Json(CreateEnumDescription(typeof(Currency)));
+		}
+
+
+		private object CreateEnumDescription(Type enumType)
+		{
+			int[] values = Enum.GetValues(enumType).Cast<int>().ToArray();
+			string[] names = Enum.GetNames(enumType);
+			List<object> result = new List<object>();
+			for (int i = 0; i < values.Length; i++)
+			{
+				result.Add(new { Id = values[i], Name = names[i] });
+			}
+			return result;
+		}
+
+		public Message GetCardTypes()
+		{
+			List<object> result = new List<object>();
+			foreach (CardType type in db.CardTypes)
+			{
+				result.Add(
+					new 
+					{
+						Id = type.ID,
+						Name = type.ToString(),
+					}
+				);
+			}
+			return Json(result);
 		}
 	}
 }

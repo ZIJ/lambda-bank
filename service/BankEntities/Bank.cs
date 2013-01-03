@@ -13,7 +13,7 @@ namespace BankEntities
 
 		private UserService userService = null;
 
-		private IERIP ERIP = null;
+		private IERIP ERIP = new EripImplementers.EripImlemetation();
 
 		private Guid thisBankGuid;
 
@@ -21,7 +21,7 @@ namespace BankEntities
 
 		public Bank()
 		{
-			Guid bankId = Guid.NewGuid();
+			Guid bankId = new Guid("{3EDDF226-9692-4EF6-8E46-C36373E455FA}");
 			thisBankGuid = bankId;
 			//BankArbiter.Banks.Add(thisBankGuid, this);
 			string connection = null;
@@ -182,7 +182,7 @@ namespace BankEntities
 			db.SaveChanges();
 		}
 		
-		public int CreateCard(BankUser user, Currency[] currencies, int? accountId)
+		public int CreateCard(BankUser user, CardType type, IEnumerable<Currency> currencies, int? accountId, DateTime expirationDate)
 		{
 			Card newCard = new Card();
 			if (currencies != null)
@@ -206,7 +206,12 @@ namespace BankEntities
 			{
 				throw new ArgumentNullException("Both arguments is null");
 			}
+			newCard.Holder = user.FirstName.ToUpper() + " " + user.LastName.ToUpper();
+			newCard.ExpirationDate = expirationDate;
+			newCard.Type = type;
 			newCard.BankUser = user;
+			newCard.CVV = string.Format("{0:3}", new Random().Next(1000));
+			newCard.PIN = string.Format("{0:4}", new Random().Next(10000));
 			user.Cards.Add(newCard);
 			db.SaveChanges();
 			return newCard.ID;
@@ -409,6 +414,11 @@ namespace BankEntities
 
 			context.SaveChanges();
 
+			Account velcomAccount = new Account();
+			velcomAccount.Currency = Currency.BYR;
+			velcomAccount.Amount = 5000000;
+			context.Accounts.Add(velcomAccount);
+			context.SaveChanges();
 			BankUser user = new BankUser();
 			user.FirstName = "Charles";
 			user.LastName = "Jr.";
@@ -421,6 +431,7 @@ namespace BankEntities
 			card.Accounts.Add(account);
 			account.Cards.Add(card);
 			card.CVV = "234";
+			card.PIN = "8844";
 			card.ExpirationDate = DateTime.Now + TimeSpan.FromDays(365);
 			card.Type = cardType;
 			account.Currency = Currency.BYR;

@@ -59,7 +59,7 @@ namespace BankService
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/admin/cards/create")]
-		Message CreateCard(Guid securityToken, int userId, DateTime expirationTime, Currency[] currency, int? accountID2Attach);
+		Message CreateCard(Guid securityToken, int userId, int typeId, DateTime expirationTime, Currency[] currency, int? accountID2Attach);
 		
 		//[WebInvoke(Method = "POST",
 		//	RequestFormat = WebMessageFormat.Json,
@@ -75,10 +75,24 @@ namespace BankService
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/accounts/get")]
+			UriTemplate = "/admin/accounts/get")]
 		Message GetAccounts(Guid securityToken, int? accountId);
 		
 		#endregion
+
+		[WebInvoke(Method = "POST",
+			RequestFormat = WebMessageFormat.Json,
+			ResponseFormat = WebMessageFormat.Json,
+			BodyStyle = WebMessageBodyStyle.Wrapped,
+			UriTemplate = "/currencies")]
+		Message GetCurrencies();
+
+		[WebInvoke(Method = "POST",
+			RequestFormat = WebMessageFormat.Json,
+			ResponseFormat = WebMessageFormat.Json,
+			BodyStyle = WebMessageBodyStyle.Wrapped,
+			UriTemplate = "/cardTypes")]
+		Message GetCardTypes();
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
@@ -155,7 +169,7 @@ namespace BankService
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/user/mypayments/save")]
-		Message SavePayment(Guid securityToken, string paymentInfo);
+		Message SavePayment(Guid securityToken, PaymentRequisites payment);
 		
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
@@ -169,7 +183,7 @@ namespace BankService
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/user/schedules/create")]
-		Message CreateSchedule(Guid securityToken, string paymentInfo);
+		Message CreateSchedule(Guid securityToken, PaymentRequisites payment, DateTime startDate, ScheduleBit scheduleBit, int bitQuantity);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,

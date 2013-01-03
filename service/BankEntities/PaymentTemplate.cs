@@ -36,7 +36,7 @@ namespace BankEntities
 	public enum TemplateType
 	{
 		OneTime,
-		Sheduled,
+		Scheduled,
 		Saved
 	}
 }

@@ -29,8 +29,13 @@ namespace BankEntities
 
 		public string Holder { get; set; }
 
+		public bool IsFrozen { get; set; }
+
 		[Required]
 		public string CVV { get; set; }
+
+		[Required]
+		public string PIN { get; set; }
 
 		public bool IsExpired
 		{
@@ -40,11 +45,38 @@ namespace BankEntities
 			}
 		}
 
+		public CardState State
+		{
+			get
+			{
+				if (IsExpired)
+				{
+					return CardState.Expired;
+				}
+				else if (IsFrozen)
+				{ 
+					return CardState.Frozen;
+				}
+				else
+				{
+					return CardState.Valid;
+				}
+			}
+		}
+
 		public virtual ICollection<Account> Accounts { get; set; }
 
+		[DataType(DataType.DateTime)]
 		public DateTime ExpirationDate { get; set; }
 
 		[Required]
 		public virtual CardType Type { get; set; }
+	}
+
+	public enum CardState
+	{ 
+		Valid,
+		Frozen,
+		Expired,
 	}
 }

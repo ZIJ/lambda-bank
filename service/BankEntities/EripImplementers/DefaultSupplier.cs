@@ -19,12 +19,27 @@ namespace BankEntities.EripImplementers
 
 		public object GetPaymentInfo(string jsonPayment)
 		{
-			throw new NotImplementedException();
+			string account = jsonPayment.GetJsonAttribute("privateNumber");
+
+			SupplierClient client = Get(account);
+			return new
+			{
+				PrivateNumber = account,
+				Name = client.Name,
+				CurrentAmount = client.Amount,
+				Dept = client.Amount < 0 ? - client.Amount : 0
+			};
 		}
 
 		public object SendPayment(string jsonPayment, decimal amount)
 		{
-			throw new NotImplementedException();
+			string account = jsonPayment.GetJsonAttribute("privateNumber");
+			SupplierClient client = Get(account);
+			client.Amount += amount;
+			return new
+			{
+				Check = "check"
+			};
 		}
 
 		private SupplierClient Get(string id)

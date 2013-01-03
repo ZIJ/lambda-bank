@@ -11,6 +11,17 @@ namespace BankEntities.EripImplementers
 
 		public EripImlemetation()
 		{
+			operators.Add(EripPaymentType.Velcom, new DefaultSupplier() 
+			{ 
+				Type = SupplierType.CreditDebet, 
+				MoneyBase = 20000, 
+				Requisite = new Prerequisite() 
+				{ 
+					BankGuid = new Guid("{3EDDF226-9692-4EF6-8E46-C36373E455FA}"), 
+					AccountNumber = "4359830000001", 
+					Currency= Currency.BYR 
+				} 
+			});
 		}
 
 		public object GetPaymentInfo(EripPaymentType type, string jsonPayment)

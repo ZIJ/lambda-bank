@@ -60,7 +60,7 @@
     <Compile Include="BankArbiter.cs" />
     <Compile Include="EripImplementers\EripImlemetation.cs" />
     <Compile Include="EripImplementers\ISupplier.cs" />
-    <Compile Include="EripImplementers\OperatorBase.cs" />
+    <Compile Include="EripImplementers\DefaultSupplier.cs" />
     <Compile Include="IERIP.cs" />
     <Compile Include="InternetBankingUser.cs" />
     <Compile Include="JsonHelpers.cs" />
