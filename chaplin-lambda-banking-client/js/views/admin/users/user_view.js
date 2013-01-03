@@ -2,8 +2,12 @@ define([
     'underscore',
     'chaplin',
     'views/base/view',
-    'text!templates/admin/users/user.hbs'
-], function(_, Chaplin, View, template) {
+    'text!templates/admin/users/user.hbs',
+    'views/admin/tabs_view',
+    'models/base/model',
+    'models/admin/cards',
+    'views/admin/users/user_cards_view'
+], function(_, Chaplin, View, template, TabsView, Model, CardsCollection, CardsView) {
     'use strict';
 
     var mediator = Chaplin.mediator;
@@ -27,7 +31,48 @@ define([
             view.delegate('click', '.btn.edit', view.onEditClick);
 //            view.delegate('click', '.btn.delete', view.onDeleteClick);
 
+            //TODO: TEMP
+            view.cards = new CardsCollection([], {
+                userId: view.model.id
+            });
+
+
 //            view.modelBind('dispose', view.modelDisposeHandler);
+        },
+
+        afterRender: function() {
+            var view = this;
+
+            UserView.__super__.afterRender.apply(view);
+
+//            var cards = new CardsCollection([], {
+//                userId: view.model.id
+//            });
+
+            view.subview('cardsAndAccountsTabsView', new TabsView({
+                // TODO: make it any other way
+                model: new Model({
+                    tabs: [
+                        {
+                            id: 'user-tab-cards',
+                            label: 'Cards'
+                        },
+                        {
+                            id: 'user-tab-accounts',
+                            label: 'Accounts'
+                        }
+                    ]
+                }),
+                container: view.$('section.content')    // view.$el
+            }));
+
+            var tabsView = view.subview('cardsAndAccountsTabsView');
+
+            tabsView.subview('userCardsView', new CardsView({
+                collection: view.cards,
+                container: tabsView.$('#user-tab-cards')
+            }));
+            tabsView.subview('userCardsView').renderAllItems();
         },
 
         onEditClick: function() {

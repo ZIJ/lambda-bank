@@ -45,7 +45,7 @@ define([
         onCancelClick: function() {
             var view = this;
 
-            mediator.publish('!router:route', 'users' + (view.model.id ? '/' + view.model.id : ''));
+            mediator.publish('!router:route', 'users/' + view.model.get('holder').id);
         }
     });
 

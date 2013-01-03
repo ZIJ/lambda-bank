@@ -16,21 +16,19 @@ define([
 
 //        user: null, // NOTE: undefined by default
 
-        initialize: function(attributes, options) {
+        initialize: function(models, options) {
             options || (options = {});
 
             var collection = this;
 
             _.bindAll(collection, 'fetchHandler');
 
-            collection.user = options.user;
-
             Cards.__super__.initialize.apply(collection, arguments);
 
-            collection.fetch();
+            collection.fetch({ userId: options.userId });
         },
 
-        fetch: function() {
+        fetch: function(options) {
             var collection = this;
 
             mediator.user.get('provider').apiRequest(
@@ -38,9 +36,9 @@ define([
                     {
                         url: 'admin/cards/get',
                         success: collection.fetchHandler
-                    }, (collection.user ? {
+                    }, (options.userId ? {
                         data: {
-                            userId: collection.user.id
+                            userId: options.userId
                         }
                     } : null)
                 )

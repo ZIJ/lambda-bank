@@ -1,0 +1,10 @@
+<ul class="nav nav-tabs">
+    {{#each tabs}}
+        <li><a href="#{{this.id}}" data-toggle="tab">{{this.label}}</a></li>
+    {{/each}}
+</ul>
+<div class="tab-content">
+    {{#each tabs}}
+        <div class="tab-pane" id="{{this.id}}"></div>
+    {{/each}}
+</div>

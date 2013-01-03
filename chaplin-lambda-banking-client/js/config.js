@@ -1,5 +1,5 @@
 require.config({
-    deps: ["main"],
+    deps: ['main'],
     //baseUrl: '../js/',
     paths: {
         jquery: 'vendor/jquery-1.8.3',
@@ -9,7 +9,8 @@ require.config({
         text: 'vendor/require-text-2.0.3',
         chaplin: 'vendor/chaplin-1.0.0-pre-59cac06',
         moment: 'vendor/moment-1.7.2',
-        pikaday: 'vendor/jquery.pikaday'
+        pikaday: 'vendor/jquery.pikaday',
+        bootstrap: 'vendor/bootstrap-tab'
     },
     shim: {
         underscore: {
@@ -22,6 +23,7 @@ require.config({
         handlebars: {
             exports: 'Handlebars'
         },
-        pikaday: ['jquery']
+        pikaday: ['jquery'],
+        bootstrap: ['jquery']
     }
 });

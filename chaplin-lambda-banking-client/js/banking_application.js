@@ -184,6 +184,16 @@ define([
                 $fader.off('click');
             }
         }
+
+// Example:
+//        mediator.publish('!alert', {
+//            type: 'error',
+//            title: 'Error',
+//            text: 'Smth gone wrong',
+//            action: 'Ok',
+//            actionCallback: function() {},
+//            cancelCallback: function() {}
+//        });
         
     });
 

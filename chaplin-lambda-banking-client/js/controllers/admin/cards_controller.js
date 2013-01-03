@@ -6,9 +6,9 @@ define([
     'models/admin/cards',
     'views/admin/cards/cards_view',
     'models/admin/card',
-//    'views/admin/cards/card_view',
-//    'views/admin/cards/card_edit_view'
-], function(_, Chaplin, Controller, CardsCollection, CardsView, CardModel, CardView, CardEditView) {
+    'models/admin/user',
+    'views/admin/cards/card_create_view'
+], function(_, Chaplin, Controller, CardsCollection, CardsView, CardModel, UserModel, CardCreateView) {
     'use strict';
 
     var mediator = Chaplin.mediator;
@@ -27,13 +27,15 @@ define([
             controller.subscribeEvent('!saveCard', controller.triggerSaveCard);
         },
 
-        index: function() {
+        index: function(params) {
             var controller = this;
 
             controller.collection = new CardsCollection();
 
             controller.view = new CardsView({
                 collection: controller.collection
+            }, {
+                userId: params ? params.userId : void 0
             });
         },
 
@@ -53,13 +55,22 @@ define([
             });
         },
 
-        create: function() {
+        create: function(params) {
             var controller = this;
 
-            controller.model = new CardModel();
+            var userModel = new UserModel({
+                id: params.userId
+            });
 
-            controller.view = new CardEditView({
-                model: controller.model
+            userModel.fetch({
+                success: function() {
+                    controller.model = new CardModel({
+                        holder: userModel
+                    });
+                    controller.view = new CardCreateView({
+                        model: controller.model
+                    });
+                }
             });
         },
 

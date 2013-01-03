@@ -106,23 +106,23 @@ define([
             }
         },
 
-        destroy: function(options) {
-            var model = this;
-
-            mediator.user.get('provider').apiRequest({
-                url: 'admin/cards/delete',  // TODO: verify this
-                data: {
-                    cardId: model.id
-                },
-                success: function() {
-                    model.destroySuccessfulHandler();
-                    options.success.call(this);
-                },
-                error: function(jqXHR) {
-                    // TODO: implementation needed
-                }
-            });
-        },
+//        destroy: function(options) {
+//            var model = this;
+//
+//            mediator.user.get('provider').apiRequest({
+//                url: 'admin/cards/delete',  // TODO: verify this
+//                data: {
+//                    cardId: model.id
+//                },
+//                success: function() {
+//                    model.destroySuccessfulHandler();
+//                    options.success.call(this);
+//                },
+//                error: function(jqXHR) {
+//                    // TODO: implementation needed
+//                }
+//            });
+//        },
 
         fetchSuccessfulHandler: function(response) {
             var model = this;

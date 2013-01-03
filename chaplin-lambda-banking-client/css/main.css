@@ -218,19 +218,19 @@ input[disabled]+label {
     box-shadow: 0 0 0 2px #0B98B8;
 }
 
-.user .cards-n-accounts .nav-tabs {
+.cards-n-accounts .nav-tabs {
     margin-bottom: 0;
     border: none;
 }
 
-.user .cards-n-accounts .tab-content {
+.cards-n-accounts .tab-content {
     border: 1px solid #ddd;
     background-color: #fff;
     padding: 10px;
     border-radius: 0 4px 4px 4px;
 }
 
-.user .cards-n-accounts .tab-content .table {
+.cards-n-accounts .tab-content .table {
     margin: 0;
 }
 
