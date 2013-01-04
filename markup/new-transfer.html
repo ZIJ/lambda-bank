@@ -107,46 +107,9 @@
                         <dl class="data-fields clearfix">
                             <dt>Target</dt>
                             <dd>
-                                <ul class="treeview">
-                                    <li>
-                                        <input type="checkbox" id="cell"><label for="cell">Cellular network</label>
-                                        <ul>
-                                            <li><input type="radio" id="velcom" name="payment_target"><label for="velcom">Velcom</label></li>
-                                            <li><input type="radio" id="MTS" name="payment_target"><label for="MTS">MTS</label></li>
-                                            <li><input type="radio" id="life" name="payment_target"><label for="life">Life:)</label></li>
-                                            <li><input type="radio" id="diallog" name="payment_target"><label for="diallog">Diallog</label></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <input type="checkbox" id="mcpn"><label for="mcpn">MCPN</label>
-                                        <ul>
-                                            <li><input type="radio" id="btc" name="payment_target"><label for="btc">Beltelecom</label></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <input type="checkbox" id="util"><label for="util">Utilities</label>
-                                        <ul>
-                                            <li><input type="radio" id="electricity" name="payment_target"><label for="electricity">Electricity</label></li>
-                                            <li><input type="radio" id="aqua" name="payment_target"><label for="aqua">Aqua</label></li>
-                                            <li><input type="radio" id="gas" name="payment_target"><label for="gas">Gas</label></li>
-                                            <li><input type="radio" id="utilities" name="payment_target"><label for="utilities">Utilities</label></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <input type="checkbox" id="internet"><label for="internet">Internet providers</label>
-                                        <ul>
-                                            <li><input type="radio" id="bn" name="payment_target"><label for="bn">Business Network</label></li>
-                                            <li><input type="radio" id="at" name="payment_target"><label for="at">Atlant Telecom</label></li>
-                                            <li><input type="radio" id="adsl" name="payment_target"><label for="adsl">ADSL.BY</label></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <input type="checkbox" id="tickets"><label for="tickets">Tickets</label>
-                                        <ul>
-                                            <li><input type="radio" id="plane" name="payment_target"><label for="plane">Plane tickets</label></li>
-                                            <li><input type="radio" id="railway" name="payment_target"><label for="railway">Railway tickets</label></li>
-                                        </ul>
-                                    </li>
+                                <ul>
+                                    <li><input type="radio" name="target_type" id="type_self"><label for="type_self">To own account</label></li>
+                                    <li><input type="radio" name="target_type" id="type_outer"><label for="type_outer">To outer account</label></li>
                                 </ul>
                             </dd>
                         </dl>
@@ -163,52 +126,51 @@
                     <br>
                     <!-- DONT USE SUCH A METHOD IN PRODUCTION!!! -->
                     
-                    <div class="step well">
-                        <p>Please, enter 10-digits account number.</p>
+                    <div class="step well">   
                         <dl class="data-fields clearfix">
-                            <dt>Account</dt>
-                            <dd>
-                                <input type="text" placeholder="3569874549" autofocus required>
+                            <dt>Target account</dt>
+                            <dd class="card">
+                                <dl>
+                                    <dt>card #133513</dt>
+                                    <dd><input type="radio" name="target_account" id="11" checked><label for="11">account #123123124</label> <span class="balance">$100</span></dd>
+                                    <dd><input type="radio" name="target_account" id="12" disabled title="This account is selected as a departure one"><label for="12" title="This account is selected as a departure one">account #513435454</label> <span class="balance">€200</span></dd>
+                                </dl>
                             </dd>
-                        </dl>
-                        <p>Please, enter 10-digits order number.</p>
-                        <dl class="data-fields clearfix">
-                            <dt>Order</dt>
-                            <dd>
-                                <input type="text" placeholder="3569874549" autofocus required>
+                            <dd class="card error" title="This card is expired and can't be used">
+                                <dl>
+                                    <dt>card #133513 <span class="label label-important">Expired!</span></dt>
+                                    <dd><input type="radio" name="target_account" id="13" disabled><label for="13">account #123123124</label></dd>
+                                    <dd><input type="radio" name="target_account" id="14" disabled><label for="14">account #513435454</label></dd>
+                                </dl>
                             </dd>
-                        </dl>
-                        <p>Please, enter 10-digits fine number.</p>
-                        <dl class="data-fields clearfix">
-                            <dt>Fine</dt>
-                            <dd>
-                                <input type="text" placeholder="3569874549" autofocus required>
-                            </dd>
-                        </dl>
-                        <p>Please, enter 7-digits phone number.</p>
-                        <dl class="data-fields clearfix">
-                            <dt>Phone</dt>
-                            <dd>+375 17
-                                <input type="text" placeholder="3987454" autofocus required>
-                            </dd>
-                        </dl>
-                        <p>Please, enter 7-digits phone number.</p>
-                        <dl class="data-fields clearfix">
-                            <dt>Phone</dt>
-                            <dd>+375
-                                <select name="" id="code" class="code">
-                                    <option value="29">29</option>
-                                    <option value="44">44</option>
-                                    <option value="33">33</option>
-                                    <option value="25">25</option>
-                                </select>
-                                <input type="text" placeholder="3569874" autofocus required>
+                            <dd class="card error" title="This card is frozen and can't be used">
+                                <dl>
+                                    <dt>card #133513 <span class="label label-important">Frozen!</span></dt>
+                                    <dd><input type="radio" name="target_account" id="15" disabled><label for="15">account #123123124</label></dd>
+                                    <dd><input type="radio" name="target_account" id="16" disabled><label for="16">account #513435454</label></dd>
+                                </dl>
                             </dd>
                         </dl>
                     </div>
                     <div class="form-actions">
                         <button type="button" class="btn cancel">Cancel</button>
-                        <button type="button" class="btn btn-primary back">Back</button>
+                        <button type="submit" class="btn btn-primary next">Next</button>
+                    </div>
+                    
+                    <!-- DONT USE SUCH A METHOD IN PRODUCTION!!! -->
+                    <br>
+                    <br>
+                    <br>
+                    <!-- DONT USE SUCH A METHOD IN PRODUCTION!!! -->
+                    
+                    <div class="step well">   
+                        <dl class="data-fields clearfix">
+                            <dt>Target account</dt>
+                            <dd><input type="text" placeholder="10-digits" title="10-digits" autofocus required></dd>
+                        </dl>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn cancel">Cancel</button>
                         <button type="submit" class="btn btn-primary next">Next</button>
                     </div>
                     
@@ -221,16 +183,8 @@
                                                   
                     <div class="step well">
                         <dl class="data-fields clearfix">
-                            <dt>Account holder</dt>
-                            <dd>Pupkin Zade</dd>
-                            <dt>Adress</dt>
-                            <dd>12-29 Kozlova str.</dd>
-                            <dt>Previous value</dt>
-                            <dd>100500 m<sup>3</sup></dd>
-                            <dt>Current rate</dt>
-                            <dd>1256$ per m<sup>3</sup></dd>
                             <dt>Amount</dt>
-                            <dd><input type="text" value="100" autofocus required></dd>
+                            <dd><input type="text" autofocus required placeholder="1 to 9999" title="1 to 9999"></dd>
                         </dl>
                     </div>
                     <div class="form-actions">

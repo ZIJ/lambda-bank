@@ -4,7 +4,7 @@ html, body {
 }
 
 body {
-    background: url(../img/bg.jpg) center center no-repeat;
+    background: url(../img/bg.jpg) center center;
 }
 
 input[type=text],
@@ -12,8 +12,14 @@ select {
     margin: 0;
 }
 
+input[type=checkbox]+label,
+input[type=radio]+label {
+    cursor: pointer;
+}
+
 input[disabled]+label {
     color: rgba(0, 0, 0, .5);
+    cursor: not-allowed;
 }
 
 #page-container {
@@ -111,7 +117,7 @@ input[disabled]+label {
 
 .data-fields .card {
     float: none;
-    margin: 0 0 10px 160px;
+    margin: 0 0 10px 170px;
     padding: 0 1em;
     display: table;
     background: #fff;
@@ -121,7 +127,8 @@ input[disabled]+label {
 
 .data-fields .error {
     color: #b94a48;
-    background: rgba(255, 255, 255, .9)
+    background: rgba(255, 255, 255, .9);
+    cursor: not-allowed;
 }
 
 .data-fields .balance {
@@ -221,6 +228,11 @@ input[disabled]+label {
     display: table-cell;
     background: rgba(255, 255, 255, .9);
     border: 1px solid #e5e5e5;
+}
+
+
+.step .data-fields {
+    margin: 0;
 }
 
 table {
