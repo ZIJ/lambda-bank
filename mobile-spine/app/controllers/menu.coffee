@@ -6,6 +6,8 @@ class Menu extends Spine.Controller
     console.log('menu controller created')
     @render()
 
+  className: 'menuPage'
+
   render: ->
     @html require('views/menu')()
     

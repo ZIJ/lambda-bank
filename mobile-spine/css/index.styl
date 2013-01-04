@@ -1,1 +1,36 @@
 @import './mixin'
+
+body
+    background-color rgb(244,240,232)
+
+.stack > *:not(.active)
+    display none
+
+.loginPage
+    input
+        display block
+        margin 10px
+    input[type=submit]
+        padding 10px
+        height 2em
+        background-color #10609E
+        border none
+        color white
+
+.menuPage
+    ul
+        list-style-type none
+        padding 0
+        li
+            margin 10px
+            background-color #10609E
+
+            a, a:hover, a:visited
+                display: block
+                width 100%
+                height 100%
+                padding 10px
+                text-decoration none
+                color white
+
+

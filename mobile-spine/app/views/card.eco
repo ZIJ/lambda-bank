@@ -1,4 +1,6 @@
-<div>
-    <span><%= @type %></span>
-    <span><%= @number %></span>
-</div>
+<li>
+    <a href="#/cards/<%= @id %>">
+        <span><%= @type %></span>
+        <span><%= @number %></span>
+    </a>
+</li>

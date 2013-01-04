@@ -6,6 +6,8 @@ class Login extends Spine.Controller
     super
     @render()
 
+  className: 'loginPage'
+
   url: 'http://lambda-bank.drs-cd.com/WebService.svc/login'
 
   elements:

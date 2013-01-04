@@ -1,3 +1,35 @@
+body {
+  background-color: #f4f0e8;
+}
 .stack > *:not(.active) {
-    display: none
+  display: none;
+}
+.loginPage input {
+  display: block;
+  margin: 10px;
+}
+.loginPage input[type=submit] {
+  padding: 10px;
+  height: 2em;
+  background-color: #10609e;
+  border: none;
+  color: #fff;
+}
+.menuPage ul {
+  list-style-type: none;
+  padding: 0;
+}
+.menuPage ul li {
+  margin: 10px;
+  background-color: #10609e;
+}
+.menuPage ul li a,
+.menuPage ul li a:hover,
+.menuPage ul li a:visited {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  text-decoration: none;
+  color: #fff;
 }

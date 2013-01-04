@@ -1,7 +1,7 @@
 Spine = require('spine')
 
 class Card extends Spine.Model
-  @configure 'Card', 'id', 'accounts', 'number', 'type', 'user'
+  @configure 'Card', 'id', 'accounts', 'number', 'type', 'user', 'state'
 
   @listUrl: 'http://lambda-bank.drs-cd.com/WebService.svc/user/cards/list'
 
@@ -28,6 +28,7 @@ class Card extends Spine.Model
         type: info.Type
         user: info.User
         accounts: info.Accounts
+        state: info.CardState
     @trigger('loaded')
 
 

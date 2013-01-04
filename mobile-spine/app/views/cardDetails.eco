@@ -1,0 +1,4 @@
+<div>Type: <%= @type %></div>
+<div>Number: <%= @number %></div>
+<div>Balance: <%= @accounts[0].Amount %> <%= @accounts[0].Currency %></div>
+<div>State: <%= @state %></div>
