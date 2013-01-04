@@ -13,7 +13,7 @@ define(function() {
         match('users/:id/edit', 'users#edit');
 
         match('users/:userId/cards', 'cards#index');    // NOTE: currently is not used
-        match('users/:userId/cards/create', 'card#create');
+        match('users/:userId/cards/create', 'cards#create');
 
         match('cards', 'cards#index');
 //        match('cards/create', 'cards#create');

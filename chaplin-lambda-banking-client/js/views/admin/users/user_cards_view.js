@@ -21,7 +21,7 @@ define([
         initialize: function(options) {
             var view = this;
 
-            _.bind(view.onAddNewCardClick, view, options.userId);
+            view.onAddNewCardClick = _.bind(view.onAddNewCardClick, view, options.userId);
 
             CardsView.__super__.initialize.apply(view, arguments);
 
@@ -32,7 +32,7 @@ define([
         onAddNewCardClick: function(userId) {
             var view = this;
 
-            mediator.publish('!router:route', 'user/' + userId + '/cards/create');
+            mediator.publish('!router:route', 'users/' + userId + '/cards/create');
         }
     });
 

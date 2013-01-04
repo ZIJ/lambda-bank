@@ -7,7 +7,7 @@ define([
     'models/base/model',
     'models/admin/cards',
     'views/admin/users/user_cards_view'
-], function(_, Chaplin, View, template, TabsView, Model, CardsCollection, CardsView) {
+], function(_, Chaplin, View, template, TabsView, Model, CardsCollection, UserCardsView) {
     'use strict';
 
     var mediator = Chaplin.mediator;
@@ -68,9 +68,10 @@ define([
 
             var tabsView = view.subview('cardsAndAccountsTabsView');
 
-            tabsView.subview('userCardsView', new CardsView({
+            tabsView.subview('userCardsView', new UserCardsView({
                 collection: view.cards,
-                container: tabsView.$('#user-tab-cards')
+                container: tabsView.$('#user-tab-cards'),
+                userId: view.model.id
             }));
             tabsView.subview('userCardsView').renderAllItems();
         },

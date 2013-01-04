@@ -53,6 +53,23 @@ define([
                     label: 'Edit'
                 }
             ],
+            'users/:userId/cards/create': [
+                {
+                    label: 'Users',
+                    href: '#users'
+                },
+                {
+                    label: '<%= userId %>',
+                    href: '#users/<%= userId %>'
+                },
+                {
+                    label: 'Cards',
+                    href: '#users/<%= userId %>'
+                },
+                {
+                    label: 'Create'
+                }
+            ],
             // Cards part
             'cards': [
                 {

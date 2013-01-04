@@ -2,7 +2,8 @@ define([
     'underscore',
     'chaplin',
     'views/base/view',
-    'text!templates/admin/cards/card_create.hbs'
+    'text!templates/admin/cards/card_create.hbs',
+    'pikaday'
 ], function(_, Chaplin, View, template) {
     'use strict';
 
@@ -26,6 +27,17 @@ define([
 
             view.delegate('click', '.btn.save', view.onSaveClick);
             view.delegate('click', '.btn.cancel', view.onCancelClick);
+        },
+
+        afterRender: function() {
+            var view = this;
+
+            CardCreateView.__super__.afterRender.apply(view);
+
+            view.$('.datepicker').pikaday({
+                format: 'DD.MM.YYYY',
+                setDefaultDate : true
+            });
         },
 
         onSaveClick: function() {
