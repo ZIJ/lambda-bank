@@ -10,3 +10,9 @@ D:\Source Code\lambda-bank\service\ExRatesBy\bin\Debug\ExRatesBy.pdb
 D:\Source Code\lambda-bank\service\ExRatesBy\obj\Debug\ExRatesBy.csprojResolveAssemblyReference.cache
 D:\Source Code\lambda-bank\service\ExRatesBy\obj\Debug\ExRatesBy.dll
 D:\Source Code\lambda-bank\service\ExRatesBy\obj\Debug\ExRatesBy.pdb
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\ExRatesBy\bin\Debug\ExRatesBy.dll.config
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\ExRatesBy\bin\Debug\ExRatesBy.dll
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\ExRatesBy\bin\Debug\ExRatesBy.pdb
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\ExRatesBy\obj\Debug\ExRatesBy.csprojResolveAssemblyReference.cache
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\ExRatesBy\obj\Debug\ExRatesBy.dll
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\ExRatesBy\obj\Debug\ExRatesBy.pdb

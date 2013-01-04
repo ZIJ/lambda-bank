@@ -52,3 +52,15 @@ D:\Source Code\lambda-bank\service\ConsoleTest\bin\Debug\ExRatesBy.dll
 D:\Source Code\lambda-bank\service\ConsoleTest\bin\Debug\ExRatesBy.pdb
 F:\Source Code\lambda-bank\service\ConsoleTest\bin\Debug\ExRatesBy.dll
 F:\Source Code\lambda-bank\service\ConsoleTest\bin\Debug\ExRatesBy.pdb
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\ConsoleTest\obj\Debug\ConsoleTest.csprojResolveAssemblyReference.cache
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\ConsoleTest\bin\Debug\ConsoleTest.exe.config
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\ConsoleTest\bin\Debug\ConsoleTest.exe
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\ConsoleTest\bin\Debug\ConsoleTest.pdb
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\ConsoleTest\bin\Debug\BankEntities.dll
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\ConsoleTest\bin\Debug\EntityFramework.dll
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\ConsoleTest\bin\Debug\ExRatesBy.dll
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\ConsoleTest\bin\Debug\BankEntities.pdb
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\ConsoleTest\bin\Debug\ExRatesBy.pdb
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\ConsoleTest\bin\Debug\EntityFramework.xml
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\ConsoleTest\obj\Debug\ConsoleTest.exe
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\ConsoleTest\obj\Debug\ConsoleTest.pdb

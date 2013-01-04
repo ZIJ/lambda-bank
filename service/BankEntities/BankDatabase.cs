@@ -43,5 +43,17 @@ namespace BankEntities
 			modelBuilder.Entity<Transaction>().Property(t => t.ToAccountBackupAmount).HasPrecision(16, 6);
 			modelBuilder.Entity<Transaction>().Property(t => t.ToAccountDelta).HasPrecision(16, 6);
 		}
+
+		public Account FindAccount(string accountNumber)
+		{
+			int id = int.Parse(accountNumber.Substring(6));
+			return Accounts.Find(id);
+		}
+
+		public Card FindCard(string cardNumber)
+		{
+			int id = int.Parse(cardNumber.Substring(6));
+			return Cards.Find(id);
+		}
 	}
 }

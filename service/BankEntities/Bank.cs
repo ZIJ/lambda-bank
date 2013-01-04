@@ -132,21 +132,38 @@ namespace BankEntities
 			{
 				lock (this)
 				{
-					if (changeId != UserService.PasswordDistortion(account.Amount.ToString(), "res"))
+					Prerequisite requisite = ERIP.GetPrerequisites(type);
+					decimal amountCharged = BackConvertCurrency(account.Currency, requisite.Currency, amount);
+
+					if (changeId == null || changeId != UserService.PasswordDistortion(account.Amount.ToString(), "res"))
 					{
-						Prerequisite requisite = ERIP.GetPrerequisites(type);
-						decimal amountCharged = BackConvertCurrency(account.Currency, requisite.Currency, amount);
-						var info = new
+						return new
 						{
 							Status = "AccountChanged",
 							AmountCharged = amount,
 							ChangeId = UserService.PasswordDistortion(account.Amount.ToString(), "res"),
-							EnoughMoney = amountCharged >= account.Amount
+							EnoughMoney = true
 						};
-						return info;
 					}
+
+					if (amountCharged > account.Amount)
+					{
+						return new
+						{
+							Status = "NotEnoughMoney",
+							AmountCharged = amount,
+							ChangeId = UserService.PasswordDistortion(account.Amount.ToString(), "res"),
+							EnoughMoney = false
+						};
+					}
+
 					Pay(template);
-					return new { Status = "OK" };
+
+					return new
+					{
+						Status = "AccountCharged",
+						AmountCharged = amount,
+					};
 				}
 			}
 			else
@@ -264,14 +281,14 @@ namespace BankEntities
 		{
 			decimal fromRate = Currencies[from];
 			decimal toRate = Currencies[to];
-			return fromRate / toRate;
+			return amount * fromRate / toRate;
 		}
 
 		private decimal BackConvertCurrency(Currency from, Currency to, decimal converted)
 		{
 			decimal fromRate = Currencies[from];
 			decimal toRate = Currencies[to];
-			return toRate/fromRate;
+			return converted * toRate / fromRate;
 		}
 
 		private void RollbackTransaction(Transaction t)
@@ -320,7 +337,7 @@ namespace BankEntities
 				t.FromAccountNumber = account.AccountNumber;
 				t.FromBank = thisBankGuid;
 				t.FromAccountID = account.ID;
-				t.FromAccountDelta = BackConvertCurrency(account.Currency, requisite.Currency, template.Amount);
+				t.FromAccountDelta = -BackConvertCurrency(account.Currency, requisite.Currency, template.Amount);
 				t.FromAccountCurrency = account.Currency;
 
 				t.ToBank = requisite.BankGuid;
@@ -328,7 +345,7 @@ namespace BankEntities
 
 				if (internalTransaction)
 				{
-					receiver = db.Accounts.Where(a => a.AccountNumber == requisite.AccountNumber).FirstOrDefault();
+					receiver = db.FindAccount(requisite.AccountNumber);
 					if (receiver == null)
 					{
 						throw new ArgumentOutOfRangeException("receive account was not found");

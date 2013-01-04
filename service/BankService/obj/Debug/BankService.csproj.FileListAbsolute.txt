@@ -47,3 +47,14 @@ D:\Source Code\lambda-bank\service\BankService\bin\ExRatesBy.dll
 D:\Source Code\lambda-bank\service\BankService\bin\ExRatesBy.pdb
 F:\Source Code\lambda-bank\service\BankService\bin\ExRatesBy.dll
 F:\Source Code\lambda-bank\service\BankService\bin\ExRatesBy.pdb
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\BankService\obj\Debug\BankService.csprojResolveAssemblyReference.cache
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\BankService\bin\BankService.dll
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\BankService\bin\BankService.pdb
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\BankService\bin\BankEntities.dll
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\BankService\bin\EntityFramework.dll
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\BankService\bin\ExRatesBy.dll
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\BankService\bin\BankEntities.pdb
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\BankService\bin\EntityFramework.xml
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\BankService\bin\ExRatesBy.pdb
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\BankService\obj\Debug\BankService.dll
+C:\Users\s.gil\Documents\GitHub\lambda-bank\service\BankService\obj\Debug\BankService.pdb
