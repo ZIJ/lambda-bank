@@ -3,8 +3,12 @@
     <dl class="data-fields clearfix">
         <dt>Holder</dt>
         <dd><input type="text" placeholder="username" value="{{this.holder.firstName}} {{this.holder.lastName}}" disabled></dd>
+        <dt class="card-new-type">Card Type</dt>
+        <dd>
+            <select class="card-new-types" name="" id=""></select>
+        </dd>
         <dt>Exp. date</dt>
-        <dd><input type="text" value="" class="datepicker"></dd>
+        <dd><input type="text" class="datepicker"></dd>
         <dt class="card-new-type">Account type</dt>
         <dd>
             <ul class="type">
@@ -24,22 +28,12 @@
         </dd>
         <dt class="card-new-account">Account</dt>
         <dd>
-            <select name="" id="">
-                <option value="">131231</option>
-                <option value="">131232</option>
-                <option value="">131233</option>
-            </select>
+            <select class="card-new-accounts" name="" id=""></select>
         </dd>
         <dt class="card-new-currency">Currency</dt>
         <dd>
-            <select name="" id="">
-                <option value="">USD</option>
-                <option value="">CAD</option>
-                <option value="">JPY</option>
-                <option value="">AUD</option>
-                <option value="">BYR</option>
-            </select>
-            <button class="add" title="Add"><i class="icon-plus-sign"></i></button>
+            <select class="card-new-currencies" name="" id=""></select>
+            <button class="card-new-currency-add" title="Add currency"><i class="icon-plus-sign"></i></button>
         </dd>
     </dl>
     <div class="form-actions">

@@ -1,15 +1,16 @@
 define([
+    'underscore',
     'chaplin',
     'models/base/collection',
-    'models/admin/user'
-], function(Chaplin, Collection, User) {
+    'models/card_type'
+], function(_, Chaplin, Collection, CardType) {
     'use strict';
 
     var mediator = Chaplin.mediator;
 
-    var Users = Collection.extend({
+    var CardTypes = Collection.extend({
 
-        model: User,
+        model: CardType,
 
         idAttribute: 'id',
 
@@ -18,9 +19,7 @@ define([
 
             _.bindAll(collection, 'fetchHandler');
 
-            Users.__super__.initialize.apply(collection, arguments);
-            
-            collection.fetch();
+            CardTypes.__super__.initialize.apply(collection, arguments);
         },
 
         fetch: function(options) {
@@ -29,18 +28,17 @@ define([
             var collection = this;
 
             mediator.user.get('provider').apiRequest({
-                url: 'admin/users/get',
-                data: {
-                    joinCards: false
-                },
+                url: 'cardtypes',
                 success: function(response) {
                     collection.fetchHandler.call(this, response);
                     if (options.success && _.isFunction(options.success)) {
                         options.success.call(this, response);
                     }
+                },
+                error: function(jqXHR) {
+                    // TODO: implementation needed
                 }
             });
-
         },
 
         fetchHandler: function(response) {
@@ -51,5 +49,5 @@ define([
 
     });
 
-    return Users;
+    return CardTypes;
 });

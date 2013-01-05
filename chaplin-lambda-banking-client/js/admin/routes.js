@@ -12,12 +12,12 @@ define(function() {
         match('users/:id', 'users#show');
         match('users/:id/edit', 'users#edit');
 
-        match('users/:userId/cards', 'cards#index');    // NOTE: currently is not used
+        match('users/:userId/cards', 'cards#index');    // implemented but not used
         match('users/:userId/cards/create', 'cards#create');
 
         match('cards', 'cards#index');
-//        match('cards/create', 'cards#create');
-        match('cards/:id', 'cards#show');
+//        match('cards/create', 'cards#create');    // NOTE: not needed
+//        match('cards/:id', 'cards#show');    // NOTE: not needed (implemented in controller, but there is no CardView)
         match('cards/:id/edit', 'cards#edit');
 
         match('settings', 'settings#index');

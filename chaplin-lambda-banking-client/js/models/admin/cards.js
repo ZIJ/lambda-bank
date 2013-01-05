@@ -29,13 +29,20 @@ define([
         },
 
         fetch: function(options) {
+            options || (options = []);
+
             var collection = this;
 
             mediator.user.get('provider').apiRequest(
                 _.extend(
                     {
                         url: 'admin/cards/get',
-                        success: collection.fetchHandler
+                        success: function(response) {
+                            collection.fetchHandler.call(this, response);
+                            if (options.success && _.isFunction(options.success)) {
+                                options.success.call(this, response);
+                            }
+                        }
                     }, (options.userId ? {
                         data: {
                             userId: options.userId
