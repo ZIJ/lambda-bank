@@ -136,6 +136,11 @@ input[disabled]+label {
     clear: both;
 }
 
+.data-fields>dd+dd {
+    clear: left;
+    margin-left: 170px;
+}
+
 .data-fields .type {
     list-style: none;
     margin: 0;
@@ -173,6 +178,11 @@ input[disabled]+label {
     background: transparent;
     padding: 0;
 }
+
+.data-fields .currency {
+    width: auto;
+}
+
 
 .data-fields .type li {
     display: inline-block;
