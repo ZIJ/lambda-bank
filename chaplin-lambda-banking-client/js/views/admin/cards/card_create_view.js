@@ -22,7 +22,8 @@ define([
         initialize: function(options) {
             var view = this;
 
-            _.bindAll(view, 'onSaveClick', 'onCancelClick', 'userAccountsLoadedHandler', 'currenciesLoadedHandler', 'cardTypesLoadedHandler');
+            _.bindAll(view, 'onSaveClick', 'onCancelClick', 'onCardAccountTypeChange', 'onCurrencyAddClick'
+                , 'userAccountsLoadedHandler', 'currenciesLoadedHandler', 'cardTypesLoadedHandler');
 
             CardCreateView.__super__.initialize.apply(view, arguments);
 
@@ -37,6 +38,9 @@ define([
             view.currenciesDef = new $.Deferred();
             view.cardTypesDef = new $.Deferred();
 
+            view.delegate('change', '.card-new-account-types', view.onCardAccountTypeChange);
+            view.delegate('click', '.icon-plus-sign', view.onCurrencyAddClick);
+
             mediator.publish('!loadCardTypes');
 
             // TODO: should be loaded only when needed
@@ -49,12 +53,6 @@ define([
 
             CardCreateView.__super__.afterRender.apply(view);
 
-            view.$('.datepicker').pikaday({
-                format: 'DD.MM.YYYY',
-                defaultDate: moment().add('years', 3).toDate(), // TODO: hard-coded to current + 3 years
-                setDefaultDate: true
-            });
-
             view.userAccountsDef.done(function(accounts) {
                 view.renderUserAccounts(accounts);
             });
@@ -64,6 +62,16 @@ define([
             view.cardTypesDef.done(function(cardTypes) {
                 view.renderCardTypes(cardTypes);
             });
+
+            view.$('.datepicker').pikaday({
+                format: 'DD.MM.YYYY',
+                defaultDate: moment().add('years', 3).toDate(), // TODO: hard-coded to current + 3 years
+                setDefaultDate: true
+            });
+
+            // TODO: initial setup
+            view.$('#type_existing').prop('checked', 'checked');
+            view.$('.card-new-account-types').change();
         },
 
 
@@ -83,6 +91,36 @@ define([
             view.cardTypesDef.resolve(cardTypes);
         },
 
+
+        onCardAccountTypeChange: function() {
+            var view = this,
+                newCardAccountTypeId = view.$('.card-new-account-types input[type=radio]:checked').prop('id');
+
+            switch (newCardAccountTypeId) {
+                case 'type_existing':
+
+                    view.$('.card-new-currency, .card-new-currency + dd').hide();
+                    view.$('.card-new-account, .card-new-account + dd').show();
+
+                    break;
+                case 'type_single':
+
+                    view.$('.card-new-account, .card-new-account + dd, .icon-plus-sign').hide();
+                    view.$('.card-new-currency, .card-new-currency + dd').show();
+
+                    break;
+                case 'type_multi':
+
+                    view.$('.card-new-account, .card-new-account + dd').hide();
+                    view.$('.card-new-currency, .card-new-currency + dd, .icon-plus-sign').show();
+
+                    break;
+            }
+        },
+
+        onCurrencyAddClick: function() {
+
+        },
 
         onSaveClick: function() {
             var view = this,

@@ -29,6 +29,7 @@ define([
                 holder: new UserModel(UserModel.prototype.parse(response['User'])),
                 expirationDate: moment(response['ExpirationDate']).format('YYYY-MM-DD'),
                 state: response['CardState'],
+                freezeDate: moment(response['FreezeDate']).format('YYYY-MM-DD'),
                 accounts: (function() {
                     var retVal = new AccountsCollection();
                     retVal.fetchHandler(response['Accounts']);

@@ -784,3 +784,26 @@ table .expandable table .controls-container {
     box-shadow: none !important;
     border-radius: 3px !important;
 }
+
+
+/* cards/create */
+
+.card-new-account
+ {
+    display: none;
+}
+
+.card-new-account + dd
+{
+    display: none;
+}
+
+.card-new-currency
+{
+    display: none;
+}
+
+.card-new-currency + dd
+{
+    display: none;
+}
