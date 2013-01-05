@@ -23,6 +23,7 @@ define([
             var view = this;
 
             _.bindAll(view, 'onSaveClick', 'onCancelClick', 'onCardAccountTypeChange', 'onCurrencyAddClick'
+                , 'onCurrencyRemoveClick', 'onCurrencyChange'
                 , 'userAccountsLoadedHandler', 'currenciesLoadedHandler', 'cardTypesLoadedHandler');
 
             CardCreateView.__super__.initialize.apply(view, arguments);
@@ -39,7 +40,9 @@ define([
             view.cardTypesDef = new $.Deferred();
 
             view.delegate('change', '.card-new-account-types', view.onCardAccountTypeChange);
-            view.delegate('click', '.icon-plus-sign', view.onCurrencyAddClick);
+            view.delegate('click', '.card-new-currency-add', view.onCurrencyAddClick);
+            view.delegate('click', '.card-new-currency-remove', view.onCurrencyRemoveClick);
+            view.delegate('change', '.card-new-currencies', view.onCurrencyChange);
 
             mediator.publish('!loadCardTypes');
 
@@ -54,13 +57,13 @@ define([
             CardCreateView.__super__.afterRender.apply(view);
 
             view.userAccountsDef.done(function(accounts) {
-                view.renderUserAccounts(accounts);
+                view.$('.card-new-accounts').html(view.$getUserAccounts(accounts));
             });
             view.currenciesDef.done(function(currencies) {
-                view.renderCurrencies(currencies);
+                view.$('.card-new-currencies').html(view.$getCurrencies(currencies));
             });
             view.cardTypesDef.done(function(cardTypes) {
-                view.renderCardTypes(cardTypes);
+                view.$('.card-new-types').html(view.$getCardTypes(cardTypes));
             });
 
             view.$('.datepicker').pikaday({
@@ -100,26 +103,81 @@ define([
                 case 'type_existing':
 
                     view.$('.card-new-currency, .card-new-currency + dd').hide();
+                    view.$('.card-new-currencies').not(':eq(0)').parent().remove();
                     view.$('.card-new-account, .card-new-account + dd').show();
 
                     break;
                 case 'type_single':
+                    var $currencySelects = view.$('.card-new-currencies');
 
-                    view.$('.card-new-account, .card-new-account + dd, .icon-plus-sign').hide();
+                    $currencySelects.removeClass('error');
+
+                    view.$('.card-new-account, .card-new-account + dd, .card-new-currency-add, .card-new-currency-remove').hide();
+                    $currencySelects.not(':eq(0)').parent().remove();
                     view.$('.card-new-currency, .card-new-currency + dd').show();
 
                     break;
                 case 'type_multi':
 
-                    view.$('.card-new-account, .card-new-account + dd').hide();
-                    view.$('.card-new-currency, .card-new-currency + dd, .icon-plus-sign').show();
+                    view.$('.card-new-account, .card-new-account + dd, .card-new-currency-remove').hide();
+                    view.$('.card-new-currency, .card-new-currency + dd, .card-new-currency-add').show();
+
+                    // TODO: 2 selects by default
+                    view.onCurrencyAddClick();
 
                     break;
             }
         },
 
         onCurrencyAddClick: function() {
+            var view = this,
+                $ddLast = view.$('.card-new-currencies').last().parent();
 
+            $ddLast.after($ddLast.clone());
+
+            if (view.$('.card-new-currencies').length === 3) {
+                view.$('.card-new-currency-remove').show();
+            }
+
+            view.onCurrencyChange();
+        },
+
+        onCurrencyRemoveClick: function(event) {
+            var view = this;
+
+            $(event.currentTarget).parent('dd').remove();
+
+            if (view.$('.card-new-currencies').length === 2) {
+                view.$('.card-new-currency-remove').hide();
+            }
+
+            view.onCurrencyChange();
+        },
+
+        onCurrencyChange: function() {
+            var view = this,
+                $currencySelects = view.$('.card-new-currencies'),
+                selectedCurrenciesHash = {};    // hash by currencyId of arrays with select indices
+
+            $currencySelects.removeClass('error');
+
+            $currencySelects.each(function(index) {
+                var currencyId = $(this).children('option:selected').val();
+
+                if (!selectedCurrenciesHash[currencyId]) {
+                    selectedCurrenciesHash[currencyId] = [index]
+                } else {
+                    selectedCurrenciesHash[currencyId].push(index);
+                }
+            });
+
+            _.each(selectedCurrenciesHash, function(occurrencies, currencyId) {
+                if (occurrencies.length > 1) {
+                    _.each(occurrencies, function(selectIndex) {
+                        $($currencySelects.get(selectIndex)).addClass('error');
+                    });
+                }
+            });
         },
 
         onSaveClick: function() {
@@ -143,64 +201,46 @@ define([
         },
 
 
-        // TODO: All TEMPORARY render* methods evidence that we need subviews for each of these components
+        // TODO: All TEMPORARY $* methods evidence that we need subviews for each of these components
 
-        renderUserAccounts: function(accounts) {
-            var view = this;
+        $getUserAccounts: function(accounts) {
+            var $options = $();
 
-            view.$('.card-new-accounts').html(
-                (function() {
-                    var $options = $();
+            accounts.each(function(account) {
+                $options = $options.add(
+                    $('<option></option>', {
+                        'value': account.id
+                    }).text(account.get('number'))
+                );
+            });
 
-                    accounts.each(function(account) {
-                        $options = $options.add(
-                            $('<option></option>', {
-                                'value': account.id
-                            }).text(account.get('number'))
-                        );
-                    });
-
-                    return $options;
-                })()
-            );
+            return $options;
         },
-        renderCurrencies: function(currencies) {
-            var view = this;
+        $getCurrencies: function(currencies) {
+            var $options = $();
 
-            view.$('.card-new-currencies').html(
-                (function() {
-                    var $options = $();
+            currencies.each(function(currency) {
+                $options = $options.add(
+                    $('<option></option>', {
+                        'value': currency.id
+                    }).text(currency.get('name'))
+                );
+            });
 
-                    currencies.each(function(currency) {
-                        $options = $options.add(
-                            $('<option></option>', {
-                                'value': currency.id
-                            }).text(currency.get('name'))
-                        );
-                    });
-
-                    return $options;
-                })()
-            );
+            return $options;
         },
-        renderCardTypes: function(cardTypes) {
-            var view = this;
+        $getCardTypes: function(cardTypes) {
+            var $options = $();
 
-            view.$('.card-new-types').html(
-                (function() {
-                    var $options = $();
+            cardTypes.each(function(cardType) {
+                $options = $options.add(
+                    $('<option></option>', {
+                        'value': cardType.id
+                    }).text(cardType.get('name'))
+                );
+            });
 
-                    cardTypes.each(function(cardType) {
-                        $options = $options.add(
-                            $('<option></option>', {
-                                'value': cardType.id
-                            }).text(cardType.get('name'))
-                        );
-                    });
-
-                    return $options;
-                })()
-            );
+            return $options;
         }
     });
 
