@@ -142,4 +142,5 @@ $('button.delete').click(function() {
 		showAlert('success', 'Успех!', 'Вы успешно удалили пользователя <strong>username</strong>');
 	});
 });
+
 });

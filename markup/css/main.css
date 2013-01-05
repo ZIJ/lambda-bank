@@ -7,9 +7,10 @@ body {
     background: url(../img/bg.jpg) center center;
 }
 
-input[type=text],
-select {
+.main input,
+.main select {
     margin: 0;
+    text-align: left;
 }
 
 input[type=checkbox]+label,
@@ -125,7 +126,7 @@ input[disabled]+label {
     border-radius: 5px;
 }
 
-.data-fields .error {
+.data-fields .card.error {
     color: #b94a48;
     background: rgba(255, 255, 255, .9);
     cursor: not-allowed;
