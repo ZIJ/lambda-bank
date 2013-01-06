@@ -306,7 +306,8 @@ table .expander:hover td:not(.check){
     background-color: #efe;
 }
 
-table .expandable {
+table .expandable,
+table .expandable div {
     display: none;
 }
 
