@@ -23,7 +23,7 @@ define([
 
             _.bindAll(collection, 'fetchHandler');
 
-            collection.user = options.user;
+            collection.fetch = _.bind(collection.fetch, collection, { userId: options.userId });
 
             Accounts.__super__.initialize.apply(collection, arguments);
         },
@@ -43,9 +43,9 @@ define([
                                 options.success.call(this, response);
                             }
                         }
-                    }, (collection.user ? {
+                    }, (options.userId ? {
                         data: {
-                            userId: collection.user.id
+                            userId: options.userId
                         }
                     } : null)
                 )

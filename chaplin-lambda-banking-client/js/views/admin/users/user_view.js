@@ -32,7 +32,7 @@ define([
             view.delegate('click', '.btn.edit', view.onEditClick);
 //            view.delegate('click', '.btn.delete', view.onDeleteClick);
 
-            //TODO: TEMP, shouldn't be created inside this view, maybe pass from cards_controller
+            //TODO: TEMP, shouldn't be created inside this view, maybe do it with the help of deferreds like in card_create_view
             view.cards = new CardsCollection([], {
                 userId: view.model.id
             });

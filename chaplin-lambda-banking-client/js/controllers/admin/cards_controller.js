@@ -24,11 +24,15 @@ define([
         initialize: function(params) {
             var controller = this;
 
-            _.bindAll(controller, 'triggerSaveCard', 'triggerLoadUserAccounts', 'triggerLoadCurrencies', 'triggerLoadCardTypes');
+            _.bindAll(controller, 'triggerSaveCard', 'triggerFreezeCards', 'triggerUnfreezeCards'
+                , 'triggerLoadUserAccounts', 'triggerLoadCurrencies', 'triggerLoadCardTypes');
 
             CardsController.__super__.initialize.apply(controller, arguments);
 
             controller.subscribeEvent('!saveCard', controller.triggerSaveCard);
+            controller.subscribeEvent('!freezeCards', controller.triggerFreezeCards);
+            controller.subscribeEvent('!unfreezeCards', controller.triggerUnfreezeCards);
+
             controller.subscribeEvent('!loadUserAccounts', controller.triggerLoadUserAccounts);
             controller.subscribeEvent('!loadCurrencies', controller.triggerLoadCurrencies);
             controller.subscribeEvent('!loadCardTypes', controller.triggerLoadCardTypes);
@@ -110,6 +114,66 @@ define([
             });
         },
 
+        triggerFreezeCards: function(cardsIdsToFreeze) {
+            var controller = this;
+
+            if (cardsIdsToFreeze.length === 0) {
+                mediator.publish('!alert', {
+                    title: 'Warning!',
+                    text: 'All selected cards are already frozen',
+                    action: 'Ok',
+                    actionCallback: function() {},
+                    cancelCallback: function() {}
+                });
+                return;
+            }
+
+            mediator.user.get('provider').apiRequest({
+                url: 'admin/cards/freeze',
+                data: {
+                    cardsIds: cardsIdsToFreeze
+                },
+                success: function(response) {
+                    if (controller.collection) {
+                        controller.collection.fetch();
+                    }
+                },
+                error: function(jqXHR) {
+                    // TODO: implementation needed
+                }
+            });
+        },
+
+        triggerUnfreezeCards: function(cardsIdsToUnfreeze) {
+            var controller = this;
+
+            if (cardsIdsToUnfreeze.length === 0) {
+                mediator.publish('!alert', {
+                    title: 'Warning!',
+                    text: 'No frozen cards selected',
+                    action: 'Ok',
+                    actionCallback: function() {},
+                    cancelCallback: function() {}
+                });
+                return;
+            }
+
+            mediator.user.get('provider').apiRequest({
+                url: 'admin/cards/unfreeze',
+                data: {
+                    cardsIds: cardsIdsToUnfreeze
+                },
+                success: function(response) {
+                    if (controller.collection) {
+                        controller.collection.fetch();
+                    }
+                },
+                error: function(jqXHR) {
+                    // TODO: implementation needed
+                }
+            });
+        },
+
         triggerLoadUserAccounts: function() {
             var controller = this,
                 accounts = new AccountsCollection([], {
@@ -146,7 +210,6 @@ define([
                 }
             });
         }
-
 
     });
 
