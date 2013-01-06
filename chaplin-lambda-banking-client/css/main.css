@@ -483,7 +483,7 @@ table .expandable table .controls-container {
     -o-transition: all ease-in-out 0.3s;
     transition: all ease-in-out 0.3s;
     text-shadow: 0 1px 0 rgba(0, 0, 0, .3);
-    margin: -5px 0 0 0;
+    margin: -5px 0 10px 0;
 }
 
 .btn:not([disabled]):hover {
