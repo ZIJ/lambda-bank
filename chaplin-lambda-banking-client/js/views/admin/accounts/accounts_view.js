@@ -2,20 +2,20 @@ define([
     'underscore',
     'chaplin',
     'views/base/collection_view',
-    'views/admin/users/user_item_view',
-    'text!templates/admin/users/users.hbs'
-], function(_, Chaplin, CollectionView, UserItemView, template) {
+    'views/admin/accounts/account_item_view',
+    'text!templates/admin/accounts/accounts.hbs'
+], function(_, Chaplin, CollectionView, AccountItemView, template) {
     'use strict';
 
     var mediator = Chaplin.mediator;
 
-    var UsersView = CollectionView.extend({
+    var AccountsView = CollectionView.extend({
 
         template: template,
 
         className: 'span10',
         container: 'div.row-fluid',
-        itemView: UserItemView,
+        itemView: AccountItemView,
         listSelector: 'tbody',
         autoRender: true,
 
@@ -25,12 +25,12 @@ define([
 
 //            _.bindAll(view, 'onAddNewUserClick');
 
-            UsersView.__super__.initialize.apply(view, arguments);
+            AccountsView.__super__.initialize.apply(view, arguments);
 
 //            view.delegate('click', 'section > button', view.onAddNewUserClick);
         }
     });
 
 
-    return UsersView;
+    return AccountsView;
 });

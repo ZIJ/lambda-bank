@@ -37,12 +37,12 @@ define([
         index: function(params) {
             var controller = this;
 
-            controller.collection = new CardsCollection();
+            controller.collection = new CardsCollection([], {
+                userId: params.userId ? params.userId : void 0
+            });
 
             controller.view = new CardsView({
                 collection: controller.collection
-            }, {
-                userId: params ? params.userId : void 0
             });
         },
 
