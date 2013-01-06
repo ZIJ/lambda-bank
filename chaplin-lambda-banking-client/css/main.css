@@ -384,7 +384,7 @@ table .number {
 }
 
 table .holder {
-    width: 37%;
+    width: 27%;
 }
 
 table .expirationDate {
@@ -392,6 +392,10 @@ table .expirationDate {
 }
 
 table .type {
+    width: 10%;
+}
+
+table .state {
     width: 10%;
 }
 
