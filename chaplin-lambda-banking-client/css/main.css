@@ -315,14 +315,17 @@ table .expandable td {
     padding: 0;
 }
 
+table .expandable table td,
+table .expandable table th {
+    border-left: 0;
+}
+
 table .expandable .accounts,
 table .expandable .cards,
 table .expandable .payment {
-    display: none;
     list-style: none;
     margin: 0;
     padding: 0;
-    border-bottom: 1px solid #ddd;
 }
 
 table .expandable .accounts>li,
@@ -417,14 +420,15 @@ table .expandable table td {
 }
 
 
-table.table-bordered .expandable table:not(:first-of-type) th {
-    border-top: 1px solid #bbb;
+.table-bordered table thead:first-child tr:first-child th, .table-bordered tbody:first-child tr:first-child th {
+    border-bottom: 1px solid #ddd;
 }
 
 table .expandable table .controls-container {
     padding: 0;
     width: 1%;
 }
+
 
 .user .form-actions {
     display: none;
