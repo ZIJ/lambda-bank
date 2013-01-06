@@ -486,12 +486,12 @@ table .expandable table .controls-container {
     margin: -5px 0 0 0;
 }
 
-.btn:hover {
+.btn:not([disabled]):hover {
     background: #0B98B8;
     color: #fff;
 }
 
-.btn:active {
+.btn:not([disabled]):active {
     background: #09829E;
     color: #fff;
     box-shadow: 0 2px 0 0 #075F73,
@@ -520,12 +520,12 @@ table .expandable table .controls-container {
     0 5px 10px 0 rgba(0, 0, 0, .5);
 }
 
-.btn.btn-danger:active {
+.btn.btn-danger:not([disabled]):active {
     box-shadow: 0 2px 0 0 #9E211B,
     0 2px 2px 0 rgba(0, 0, 0, .5);
 }
 
-.btn.btn-danger:hover {
+.btn.btn-danger:not([disabled]):hover {
     background: #EB3228;
 }
 
@@ -535,11 +535,11 @@ table .expandable table .controls-container {
     0 5px 10px 0 rgba(0, 0, 0, .5);
 }
 
-.btn.btn-primary:hover {
+.btn.btn-primary:not([disabled]):hover {
     background: #1270B8;
 }
 
-.btn.btn-primary:active {
+.btn.btn-primary:not([disabled]):active {
     box-shadow: 0 2px 0 0 #0B416B,
     0 2px 2px 0 rgba(0, 0, 0, .5);
 }
@@ -550,13 +550,17 @@ table .expandable table .controls-container {
     0 5px 10px 0 rgba(0, 0, 0, .5);
 }
 
-.btn.btn-warning:hover {
+.btn.btn-warning:not([disabled]):hover {
     background: #FFC141;
 }
 
-.btn.btn-warning:active {
+.btn.btn-warning:not([disabled]):active {
     box-shadow: 0 2px 0 0 #B2862D,
     0 2px 2px 0 rgba(0, 0, 0, .5);
+}
+
+.btn[disabled] {
+    cursor: not-allowed;
 }
 
 /*
