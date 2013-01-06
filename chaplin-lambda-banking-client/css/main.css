@@ -527,6 +527,7 @@ table .expandable table .controls-container {
 }
 
 .btn.btn-danger:not([disabled]):active {
+    background: #D22C24;
     box-shadow: 0 2px 0 0 #9E211B,
     0 2px 2px 0 rgba(0, 0, 0, .5);
 }
@@ -546,6 +547,7 @@ table .expandable table .controls-container {
 }
 
 .btn.btn-primary:not([disabled]):active {
+    background: #10609E;
     box-shadow: 0 2px 0 0 #0B416B,
     0 2px 2px 0 rgba(0, 0, 0, .5);
 }
@@ -561,6 +563,7 @@ table .expandable table .controls-container {
 }
 
 .btn.btn-warning:not([disabled]):active {
+    background: #E5AC39;
     box-shadow: 0 2px 0 0 #B2862D,
     0 2px 2px 0 rgba(0, 0, 0, .5);
 }
