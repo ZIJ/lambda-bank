@@ -80,21 +80,21 @@ define([
             });
         },
 
-        edit: function(params) {
-            var controller = this;
-
-            controller.model = new CardModel({
-                id: params.id
-            });
-
-            controller.model.fetch({
-                success: function() {
-                    controller.view = new CardEditView({
-                        model: controller.model
-                    });
-                }
-            });
-        },
+//        edit: function(params) {
+//            var controller = this;
+//
+//            controller.model = new CardModel({
+//                id: params.id
+//            });
+//
+//            controller.model.fetch({
+//                success: function() {
+//                    controller.view = new CardEditView({
+//                        model: controller.model
+//                    });
+//                }
+//            });
+//        },
 
         triggerSaveCard: function(options) {
             var controller = this;
@@ -102,7 +102,7 @@ define([
             controller.model.save({
                 attributesToSave: options.attributesToSave,
                 success: function() {
-                    mediator.publish('!router:route', 'user/' + controller.model.get('holder').id);
+                    mediator.publish('!router:route', 'users/' + controller.model.get('holder').id);
                 },
                 error: function() {
                     // TODO: implementation needed
