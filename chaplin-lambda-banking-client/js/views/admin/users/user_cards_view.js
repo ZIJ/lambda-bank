@@ -1,34 +1,33 @@
 define([
     'underscore',
     'chaplin',
-    'views/base/collection_view',
+    'views/admin/cards/cards_view',
     'views/admin/users/user_card_item_view',
     'text!templates/admin/users/user_cards.hbs'
-], function(_, Chaplin, CollectionView, CardItemView, template) {
+], function(_, Chaplin, CardsView, UserCardItemView, template) {
     'use strict';
 
     var mediator = Chaplin.mediator;
 
-    var CardsView = CollectionView.extend({
+    var UserCardsView = CardsView.extend({
 
         template: template,
 
-        itemView: CardItemView,
-        listSelector: 'tbody',
-        autoRender: true,
+        itemView: UserCardItemView,
 
-        // Expects the serviceProviders in the options.
+        className: null,
+        container: null,
+
         initialize: function(options) {
             var view = this;
 
             view.onAddNewCardClick = _.bind(view.onAddNewCardClick, view, options.userId);
 
-            CardsView.__super__.initialize.apply(view, arguments);
+            UserCardsView.__super__.initialize.apply(view, arguments);
 
             view.delegate('click', '.btn-link', view.onAddNewCardClick);
         },
 
-        // TODO: TEMP, remove it
         onAddNewCardClick: function(userId) {
             var view = this;
 
@@ -36,6 +35,5 @@ define([
         }
     });
 
-
-    return CardsView;
+    return UserCardsView;
 });

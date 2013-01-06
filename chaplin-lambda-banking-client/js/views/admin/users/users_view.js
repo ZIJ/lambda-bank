@@ -23,12 +23,19 @@ define([
         initialize: function(options) {
             var view = this;
 
-//            _.bindAll(view, 'onAddNewUserClick');
+            _.bindAll(view, 'onAddNewUserClick');
 
             UsersView.__super__.initialize.apply(view, arguments);
 
-//            view.delegate('click', 'section > button', view.onAddNewUserClick);
+            view.delegate('click', 'section > button', view.onAddNewUserClick);
+        },
+
+        onAddNewUserClick: function() {
+            var view = this;
+
+            mediator.publish('!router:route', 'users/create');
         }
+
     });
 
 

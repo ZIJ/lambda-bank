@@ -23,11 +23,31 @@ define([
         initialize: function(options) {
             var view = this;
 
-//            _.bindAll(view, 'onAddNewCardClick');
+            _.bindAll(view, 'onThCheckInputClick', 'onTdCheckInputClick');
 
             CardsView.__super__.initialize.apply(view, arguments);
 
-//            view.delegate('click', 'section > button', view.onAddNewCardClick);
+            view.delegate('click', 'th.check input[type=checkbox]', view.onThCheckInputClick);
+            view.delegate('click', 'td.check input[type=checkbox]', view.onTdCheckInputClick);
+        },
+
+        onThCheckInputClick: function(event) {
+            var view = this,
+                checked = $(event.currentTarget).prop('checked');
+
+            view.$('td.check input[type=checkbox]').prop('checked', checked);
+        },
+
+        onTdCheckInputClick: function() {
+            var view = this,
+                checked = true;
+
+            view.$('td.check input[type=checkbox]').each(function() {
+                if ($(this).prop('checked') !== true) {
+                    checked = false;
+                }
+            });
+            view.$('th.check input[type=checkbox]').prop('checked', checked);
         }
 
     });
