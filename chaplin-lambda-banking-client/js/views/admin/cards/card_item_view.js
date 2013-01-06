@@ -37,7 +37,12 @@ define([
             view.subview('cardAccountsView').renderAllItems();
         },
 
-        onCardItemClick: function() {
+        onCardItemClick: function(event) {
+            var $eventTarget = $(event.target);
+            if ($eventTarget.is('input[type=checkbox]') || $eventTarget.is('td.check')) {
+                return;
+            }
+
             var view = this,
                 $expander = view.$('.expander'),
                 $expandable = view.$('.expandable'),
