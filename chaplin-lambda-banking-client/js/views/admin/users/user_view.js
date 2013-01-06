@@ -6,8 +6,10 @@ define([
     'views/admin/tabs_view',
     'models/base/model',
     'models/admin/cards',
-    'views/admin/users/user_cards_view'
-], function(_, Chaplin, View, template, TabsView, Model, CardsCollection, UserCardsView) {
+    'views/admin/users/user_cards_view',
+    'models/admin/accounts',
+    'views/admin/users/user_accounts_view'
+], function(_, Chaplin, View, template, TabsView, Model, CardsCollection, UserCardsView, AccountsCollection, UserAccountsView) {
     'use strict';
 
     var mediator = Chaplin.mediator;
@@ -34,7 +36,10 @@ define([
             view.cards = new CardsCollection([], {
                 userId: view.model.id
             });
-
+            view.accounts = new AccountsCollection([], {
+                userId: view.model.id
+            });
+            view.accounts.fetch();
 
 //            view.modelBind('dispose', view.modelDisposeHandler);
         },
@@ -43,10 +48,6 @@ define([
             var view = this;
 
             UserView.__super__.afterRender.apply(view);
-
-//            var cards = new CardsCollection([], {
-//                userId: view.model.id
-//            });
 
             view.subview('cardsAndAccountsTabsView', new TabsView({
                 // TODO: make it any other way
@@ -73,6 +74,13 @@ define([
                 userId: view.model.id
             }));
             tabsView.subview('userCardsView').renderAllItems();
+
+            tabsView.subview('userAccountsView', new UserAccountsView({
+                collection: view.accounts,
+                container: tabsView.$('#user-tab-accounts'),
+                userId: view.model.id
+            }));
+            tabsView.subview('userAccountsView').renderAllItems();
         },
 
         onEditClick: function() {
