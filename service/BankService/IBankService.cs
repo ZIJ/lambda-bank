@@ -8,6 +8,7 @@ using System.Text;
 using System.ServiceModel.Channels;
 using System.Web.Script.Serialization;
 using BankEntities;
+using BankSystem;
 
 namespace BankService
 {
@@ -60,13 +61,20 @@ namespace BankService
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/admin/cards/create")]
 		Message CreateCard(Guid securityToken, int userId, int typeId, DateTime expirationTime, Currency[] currency, int? accountID2Attach);
-		
-		//[WebInvoke(Method = "POST",
-		//	RequestFormat = WebMessageFormat.Json,
-		//	ResponseFormat = WebMessageFormat.Json,
-		//	BodyStyle = WebMessageBodyStyle.Wrapped,
-		//	UriTemplate = "/admin/card/attach")]
-		//Message AttachAccount2Card(Guid securityToken, int accountID, int cardID);
+
+		[WebInvoke(Method = "POST",
+			RequestFormat = WebMessageFormat.Json,
+			ResponseFormat = WebMessageFormat.Json,
+			BodyStyle = WebMessageBodyStyle.Wrapped,
+			UriTemplate = "/admin/cards/freeze")]
+		Message FreezeCards(Guid securityToken, int[] cardsIds);
+
+		[WebInvoke(Method = "POST",
+			RequestFormat = WebMessageFormat.Json,
+			ResponseFormat = WebMessageFormat.Json,
+			BodyStyle = WebMessageBodyStyle.Wrapped,
+			UriTemplate = "/admin/cards/unfreeze")]
+		Message UnfreezeCards(Guid securityToken, int[] cardsIds);
 		#endregion
 
 		#region Accounts
@@ -134,21 +142,42 @@ namespace BankService
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/user/payment/accountdetails")]
-		Message PayAccDetails(Guid securityToken, PaymentRequisites requisite);
+		Message PaymentAccountDetails(Guid securityToken, PaymentRequisites requisite);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/user/payment/preinfo")]
-		Message PrePaymentInfo(Guid securityToken, PaymentRequisites requisite);
+		Message PaymentPreInfo(Guid securityToken, PaymentRequisites requisite);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/user/payments/proceed")]
-		Message Payment(Guid securityToken, PaymentRequisites requisite);
+		Message PaymentProceed(Guid securityToken, PaymentRequisites requisite);
+		
+		[WebInvoke(Method = "POST",
+			RequestFormat = WebMessageFormat.Json,
+			ResponseFormat = WebMessageFormat.Json,
+			BodyStyle = WebMessageBodyStyle.Wrapped,
+			UriTemplate = "/user/transfer/accountdetails")]
+		Message TransferAccountDetails(Guid securityToken, TransferRequisite requisite);
+
+		[WebInvoke(Method = "POST",
+			RequestFormat = WebMessageFormat.Json,
+			ResponseFormat = WebMessageFormat.Json,
+			BodyStyle = WebMessageBodyStyle.Wrapped,
+			UriTemplate = "/user/transfer/preinfo")]
+		Message TransferPreInfo(Guid securityToken, TransferRequisite requisite);
+
+		[WebInvoke(Method = "POST",
+			RequestFormat = WebMessageFormat.Json,
+			ResponseFormat = WebMessageFormat.Json,
+			BodyStyle = WebMessageBodyStyle.Wrapped,
+			UriTemplate = "/user/transfer/proceed")]
+		Message TransferProceed(Guid securityToken, TransferRequisite requisite);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,

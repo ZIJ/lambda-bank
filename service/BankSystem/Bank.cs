@@ -4,8 +4,10 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Web;
+using BankEntities;
 
-namespace BankEntities
+namespace BankSystem
 {
 	public class Bank
 	{
@@ -15,14 +17,12 @@ namespace BankEntities
 
 		private IERIP ERIP = new EripImplementers.EripImlemetation();
 
-		private Guid thisBankGuid;
+		private Guid thisBankGuid = new Guid("{3EDDF226-9692-4EF6-8E46-C36373E455FA}");
 
 		private Dictionary<Currency, decimal> currencyRates = null;
 
 		public Bank()
 		{
-			Guid bankId = new Guid("{3EDDF226-9692-4EF6-8E46-C36373E455FA}");
-			thisBankGuid = bankId;
 			//BankArbiter.Banks.Add(thisBankGuid, this);
 			string connection = null;
 			ConnectionStringSettings connectionString = ConfigurationManager.ConnectionStrings["LambdaDB"];
@@ -55,10 +55,6 @@ namespace BankEntities
 				return currencyRates;
 			}
 		}
-
-		public static readonly Guid FirstBankGuid = new Guid("{79928B2B-641A-42B2-B790-9B02BF50D30C}");
-
-		public static readonly Guid SecondBankGuid = new Guid("{D8C62C10-0FDA-421F-ACA6-CF17CA8D6961}");
 
 		public BankDatabase Database
 		{
@@ -107,7 +103,7 @@ namespace BankEntities
 
 				var info = new
 				{
-					AmountCharged = amount,
+					AmountCharged = amountCharged,
 					ChangeId = UserService.PasswordDistortion(account.Amount.ToString(), "res"),
 					EnoughMoney = amountCharged >= account.Amount
 				};
@@ -135,7 +131,7 @@ namespace BankEntities
 					Prerequisite requisite = ERIP.GetPrerequisites(type);
 					decimal amountCharged = BackConvertCurrency(account.Currency, requisite.Currency, amount);
 
-					if (changeId == null || changeId != UserService.PasswordDistortion(account.Amount.ToString(), "res"))
+					if (changeId != null && changeId != UserService.PasswordDistortion(account.Amount.ToString(), "res"))
 					{
 						return new
 						{
@@ -145,7 +141,6 @@ namespace BankEntities
 							EnoughMoney = true
 						};
 					}
-
 					if (amountCharged > account.Amount)
 					{
 						return new
@@ -156,9 +151,7 @@ namespace BankEntities
 							EnoughMoney = false
 						};
 					}
-
 					Pay(template);
-
 					return new
 					{
 						Status = "AccountCharged",
@@ -170,6 +163,26 @@ namespace BankEntities
 			{
 				throw new ArgumentNullException();
 			}
+		}
+
+		public object TransferMoney(BankUser user, Account sender, Account receiver, Currency currency, decimal amount)
+		{
+			Transaction t = null;
+			try
+			{
+				t = new Transaction();
+				Transact(t, sender, receiver, currency, amount);
+				db.SaveChanges();
+			}
+			catch
+			{
+				if (t != null && t.ID != 0)
+				{
+					RollbackTransaction(t);
+					db.SaveChanges();
+				}
+			}
+			return null;
 		}
 
 		public void IncomingPay(BankPayment payment)
@@ -212,6 +225,7 @@ namespace BankEntities
 					newAccount.Currency = c;
 					db.Accounts.Add(newAccount);
 					newCard.Accounts.Add(newAccount);
+					newAccount.Owner = user;
 				}
 			}
 			else if (accountId.HasValue)
@@ -234,6 +248,90 @@ namespace BankEntities
 			return newCard.ID;
 		}
 
+		public decimal ConvertCurrency(Currency from, Currency to, decimal amount)
+		{
+			decimal fromRate = Currencies[from];
+			decimal toRate = Currencies[to];
+			return amount * fromRate / toRate;
+		}
+
+		public decimal BackConvertCurrency(Currency from, Currency to, decimal converted)
+		{
+			decimal fromRate = Currencies[from];
+			decimal toRate = Currencies[to];
+			return converted * toRate / fromRate;
+		}
+
+		public IEnumerable<TransactionLog> GetLog(Account account, DateTime startDate, DateTime endDate)
+		{
+			List<TransactionLog> logs = new List<TransactionLog>();
+			IEnumerable<Transaction> transactions = 
+				db.Transactions.Where( t => t.FromAccount == account && t.Time >= startDate && t.Time <= endDate);
+			foreach (Transaction t in transactions)
+			{
+				TransactionLog log = new TransactionLog();
+				log.Time = t.Time;
+				log.FromAccount = t.FromAccount.AccountNumber;
+			}
+
+			return logs;
+		}
+
+		private void Pay(PaymentTemplate template)
+		{
+			Transaction t = null;
+			PaymentEntry entry = new PaymentEntry();
+			entry.Template = template;
+			entry.StartTime = DateTime.Now;
+			Prerequisite requisite = ERIP.GetPrerequisites(template.EripType);
+			Account receiver = db.FindAccount(requisite.AccountNumber);
+			Account sender = template.Account;
+			try
+			{
+				t = new Transaction();
+
+				Transact(t, sender, receiver, requisite.Currency, template.Amount);
+
+				t.Payment = entry;
+				db.Payments.Add(entry);
+				db.SaveChanges();
+				ERIP.SendPayment(template.EripType, template.JsonPayment, template.Amount);
+			}
+			catch
+			{
+				if (t != null && t.ID != 0)
+				{
+					RollbackTransaction(t);
+					db.SaveChanges();
+				}
+			}
+		}
+
+		private void Transact(Transaction t, Account from, Account to, Currency currency, decimal amount)
+		{
+			t.Time = DateTime.Now;
+			t.FromAccountBackupAmount = from.Amount;
+			t.FromAccountNumber = from.AccountNumber;
+			t.FromBank = thisBankGuid;
+			t.FromAccount = from;
+			t.FromAccountDelta = -BackConvertCurrency(from.Currency, currency, amount);
+			t.FromAccountCurrency = from.Currency;
+
+			t.ToAccountNumber = to.AccountNumber;
+			t.ToAccount = to;
+			t.ToAccountBackupAmount = to.Amount;
+			t.ToAccountCurrency = to.Currency;
+			t.ToAccountDelta = ConvertCurrency(currency, to.Currency, amount);
+			t.State = TransactionState.Opened;
+			db.Transactions.Add(t);
+			db.SaveChanges();
+
+			from.Amount += t.FromAccountDelta;
+			to.Amount += t.ToAccountDelta;
+			db.SaveChanges();
+			t.State = TransactionState.Closed;
+		}
+
 		private void StartProcessing()
 		{
 			while (true)
@@ -243,7 +341,6 @@ namespace BankEntities
 				foreach (Schedule schedule in db.Schedules)
 				{
 					DateTime nextPay = DateTime.Now;
-					bool payNow = false;
 					switch (schedule.ScheduleBit)
 					{
  						case ScheduleBit.Year:
@@ -277,25 +374,11 @@ namespace BankEntities
 			}
 		}
 
-		private decimal ConvertCurrency(Currency from, Currency to, decimal amount)
-		{
-			decimal fromRate = Currencies[from];
-			decimal toRate = Currencies[to];
-			return amount * fromRate / toRate;
-		}
-
-		private decimal BackConvertCurrency(Currency from, Currency to, decimal converted)
-		{
-			decimal fromRate = Currencies[from];
-			decimal toRate = Currencies[to];
-			return converted * toRate / fromRate;
-		}
-
 		private void RollbackTransaction(Transaction t)
 		{
-			if (t.FromAccountID != null)
+			if (t.FromAccount != null)
 			{
-				Account acc = db.Accounts.Find(t.FromAccountID);
+				Account acc = t.FromAccount;
 				acc.Amount = t.FromAccountBackupAmount;
 			}
 			else
@@ -303,9 +386,9 @@ namespace BankEntities
 				RollbackOuterAccount(t.FromAccountNumber, t.FromAccountCurrency, t.FromAccountBackupAmount);
 			}
 
-			if (t.ToAccountID != null)
+			if (t.ToAccount != null)
 			{
-				Account acc = db.Accounts.Find(t.ToAccountID);
+				Account acc = t.ToAccount;
 				acc.Amount = t.ToAccountBackupAmount;
 			}
 			else
@@ -316,85 +399,9 @@ namespace BankEntities
 
 		private void RollbackOuterAccount(string accountNumber, Currency currency, decimal value)
 		{
-
+			//TODO let arbiter know about failed transaction
 		}
 
-		private void Pay(PaymentTemplate template)
-		{
-			Transaction t = null;
-			PaymentEntry entry = new PaymentEntry();
-			entry.Template = template;
-			entry.StartTime = DateTime.Now;
-			
-			Account account = template.Account;
-			try
-			{
-				Prerequisite requisite = ERIP.GetPrerequisites(template.EripType);
-				bool internalTransaction = requisite.BankGuid == thisBankGuid;
-				Account receiver = null;
-				t = new Transaction();
-				t.FromAccountBackupAmount = account.Amount;
-				t.FromAccountNumber = account.AccountNumber;
-				t.FromBank = thisBankGuid;
-				t.FromAccountID = account.ID;
-				t.FromAccountDelta = -BackConvertCurrency(account.Currency, requisite.Currency, template.Amount);
-				t.FromAccountCurrency = account.Currency;
-
-				t.ToBank = requisite.BankGuid;
-				t.ToAccountNumber = requisite.AccountNumber;
-
-				if (internalTransaction)
-				{
-					receiver = db.FindAccount(requisite.AccountNumber);
-					if (receiver == null)
-					{
-						throw new ArgumentOutOfRangeException("receive account was not found");
-					}
-					t.ToAccountID = receiver.ID;
-					t.ToAccountBackupAmount = receiver.Amount;
-					t.ToAccountCurrency = receiver.Currency;
-					t.ToAccountDelta = -ConvertCurrency(requisite.Currency, receiver.Currency, t.FromAccountDelta);
-				}
-				else
-				{
-					t.ToAccountCurrency = requisite.Currency;
-				}
-				t.State = TransactionState.Opened;
-				db.Transactions.Add(t);
-				db.SaveChanges();
-
-
-				if (internalTransaction)
-				{
-					account.Amount += t.FromAccountDelta;
-					receiver.Amount += t.ToAccountDelta;
-				}
-				else
-				{
-					BankPayment bp = new BankPayment();
-					bp.Amount = template.Amount;
-					bp.FromBank = thisBankGuid;
-					bp.ToBank = requisite.BankGuid;
-					bp.FromAccountNumber = account.AccountNumber;
-					bp.ToAccountNumber = requisite.AccountNumber;
-					bp.Currency = requisite.Currency;
-					BankArbiter.Transact(bp);
-				}
-				t.State = TransactionState.Closed;
-				t.Payment = entry;
-				db.Payments.Add(entry);
-				db.SaveChanges();
-				ERIP.SendPayment(template.EripType, template.JsonPayment, template.Amount);
-			}
-			catch 
-			{
-				if (t != null && t.ID != 0)
-				{
-					RollbackTransaction(t);
-					db.SaveChanges();
-				}
-			}
-		}
 	}
 
 	class DefaultInitializer : System.Data.Entity.DropCreateDatabaseAlways<BankDatabase>// DropCreateDatabaseIfModelChanges<BankDatabase>
@@ -410,6 +417,7 @@ namespace BankEntities
 			{
 				Name = "Visa"
 			};
+			cardClass.Types.Add(new CardType() { Name = "Virtuon", Class = cardClass });
 			CardType cardType = new CardType() { Name = "Electron", Class = cardClass };
 			cardClass.Types.Add(cardType);
 			cardClass.Types.Add(new CardType() { Name = "Classic", Class = cardClass });
@@ -418,7 +426,12 @@ namespace BankEntities
 			cardClass.Types.FirstOrDefault(t => { context.CardTypes.Add(t); return false; });
 
 			context.CardClasses.Add(cardClass);
-			context.CardClasses.Add(new CardClass { Name = "Master Card" });
+			cardClass = new CardClass { Name = "MasterCard" };
+			cardClass.Types.Add(cardType);
+			cardClass.Types.Add(new CardType() { Name = "Standard", Class = cardClass });
+			cardClass.Types.Add(new CardType() { Name = "Standard Autohelp", Class = cardClass });
+			cardClass.Types.Add(new CardType() { Name = "Gold", Class = cardClass });
+			cardClass.Types.FirstOrDefault(t => { context.CardTypes.Add(t); return false; });
 
 			context.SaveChanges();
 
@@ -451,8 +464,8 @@ namespace BankEntities
 			card.PIN = "8844";
 			card.ExpirationDate = DateTime.Now + TimeSpan.FromDays(365);
 			card.Type = cardType;
-			account.Currency = Currency.BYR;
-			account.Amount = 10000000;
+			account.Currency = Currency.USD;
+			account.Amount = 10000;
 
 			InternetBankingUser ibu = new InternetBankingUser();
 			ibu.BankUser = user;

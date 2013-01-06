@@ -1,0 +1,12 @@
+F:\Source Code\lambda-bank\service\BankSystem\obj\Debug\BankSystem.csprojResolveAssemblyReference.cache
+F:\Source Code\lambda-bank\service\BankSystem\bin\Debug\BankSystem.dll.config
+F:\Source Code\lambda-bank\service\BankSystem\bin\Debug\BankSystem.dll
+F:\Source Code\lambda-bank\service\BankSystem\bin\Debug\BankSystem.pdb
+F:\Source Code\lambda-bank\service\BankSystem\bin\Debug\BankEntities.dll
+F:\Source Code\lambda-bank\service\BankSystem\bin\Debug\EntityFramework.dll
+F:\Source Code\lambda-bank\service\BankSystem\bin\Debug\ExRatesBy.dll
+F:\Source Code\lambda-bank\service\BankSystem\bin\Debug\BankEntities.pdb
+F:\Source Code\lambda-bank\service\BankSystem\bin\Debug\ExRatesBy.pdb
+F:\Source Code\lambda-bank\service\BankSystem\bin\Debug\EntityFramework.xml
+F:\Source Code\lambda-bank\service\BankSystem\obj\Debug\BankSystem.dll
+F:\Source Code\lambda-bank\service\BankSystem\obj\Debug\BankSystem.pdb

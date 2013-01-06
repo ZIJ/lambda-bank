@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BankEntities.EripImplementers
+namespace BankSystem.EripImplementers
 {
 	class DefaultSupplier : ISupplier
 	{

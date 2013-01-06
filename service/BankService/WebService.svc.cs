@@ -9,6 +9,8 @@ using BankEntities;
 using System.ServiceModel.Channels;
 using System.Dynamic;
 using System.Net;
+using BankEntities;
+using BankSystem;
 
 namespace BankService
 {
@@ -143,20 +145,20 @@ namespace BankService
 
 		#region Payment
 
-		public Message PayAccDetails(Guid securityToken, PaymentRequisites requisite)
+		public Message PaymentAccountDetails(Guid securityToken, PaymentRequisites requisite)
 		{
 			GetUser(securityToken);
 			return Json(bank.GetPaymentInfo(requisite.Type, requisite.JsonPayment));
 		}
 
-		public Message PrePaymentInfo(Guid securityToken, PaymentRequisites requisite)
+		public Message PaymentPreInfo(Guid securityToken, PaymentRequisites requisite)
 		{
 			BankUser user = GetUser(securityToken);
 			return Json(bank.GetPrepaymentInfo(user, requisite.AccountId, requisite.Amount, requisite.Type, requisite.JsonPayment));
 		}
 
-		public Message Payment(Guid securityToken, PaymentRequisites requisite)
-		{
+		public Message PaymentProceed(Guid securityToken, PaymentRequisites requisite)
+		{	
 			try
 			{
 				BankUser user = GetUser(securityToken);
@@ -172,12 +174,81 @@ namespace BankService
 			}
 		}
 
+		public Message TransferAccountDetails(Guid securityToken, TransferRequisite requisite)
+		{
+			BankUser user = GetUser(securityToken);
+			Account account = GetReceiverAccount(requisite);
+			if (account == null)
+			{
+				throw new WebFaultException<string>("Receiver account was not found", HttpStatusCode.NotFound);
+			}
+			return Json(new
+			{
+				Status = "Valid"
+			});
+		}
+
+		public Message TransferPreInfo(Guid securityToken, TransferRequisite requisite)
+		{
+			BankUser user = GetUser(securityToken);
+			Account receiver = GetReceiverAccount(requisite);
+			if (receiver == null)
+			{
+				throw new WebFaultException<string>("Receiver account was not found", HttpStatusCode.NotFound);
+			}
+
+			Account sender = db.Accounts.Find(requisite.FromAccountId);
+			if (sender == null || !user.OwnsAccount(sender))
+			{
+				throw new WebFaultException<string>("Sender account was not found", HttpStatusCode.NotFound);
+			}
+
+			decimal amountCharged = bank.BackConvertCurrency(sender.Currency, requisite.Currency, requisite.Amount);
+
+			var info = new
+			{
+				AmountCharged = amountCharged,
+				ChangeId = UserService.PasswordDistortion(receiver.Amount.ToString(), "res"),
+				EnoughMoney = amountCharged >= receiver.Amount
+			};
+
+			return Json(info);
+		}
+
+		public Message TransferProceed(Guid securityToken, TransferRequisite requisite)
+		{
+			BankUser user = GetUser(securityToken);
+			Account receiver = GetReceiverAccount(requisite);
+			if (receiver == null)
+			{
+				throw new WebFaultException<string>("Receiver account was not found", HttpStatusCode.NotFound);
+			}
+
+			Account sender = db.Accounts.Find(requisite.FromAccountId);
+			if (sender == null || !user.OwnsAccount(sender))
+			{
+				throw new WebFaultException<string>("Sender account was not found", HttpStatusCode.NotFound);
+			}
+			return Json(bank.TransferMoney(user, sender, receiver, requisite.Currency, requisite.Amount));
+		}
+
+		private Account GetReceiverAccount(TransferRequisite requisite)
+		{
+			if (requisite.ToAccountId != null)
+			{
+				return db.Accounts.Find(requisite.ToAccountId.Value);
+			}
+			else
+			{
+				return db.FindAccount(requisite.ToAccountNumber);
+			}
+		}
+
 		#endregion
 
 		private static Message Json(object obj)
 		{
 			string response = serializer.Serialize(new { Response = obj });
-			//WebOperationContext.Current.OutgoingResponse.Headers.Add("Access-Control-Allow-Origin", "*");
 			return WebOperationContext.Current.CreateTextResponse(response, "application/json");
 		}
 
@@ -279,6 +350,30 @@ namespace BankService
 			return Json(db.Cards.ToList().Select(c => CreateCardResponse(c, true)));
 		}
 
+		public Message FreezeCards(Guid securityToken, int[] cardsIds)
+		{
+			return SetFreezeAttribute(securityToken, cardsIds, true);
+		}
+
+		public Message UnfreezeCards(Guid securityToken, int[] cardsIds)
+		{
+			return SetFreezeAttribute(securityToken, cardsIds, false);
+		}
+
+		public Message SetFreezeAttribute(Guid securityToken, int[] cardsIds, bool freeze)
+		{
+			GetAdmin(securityToken);
+			foreach (int id in cardsIds)
+			{
+				Card card = db.Cards.Find(id);
+				if (card != null)
+				{
+					card.FreezeDate = freeze ? DateTime.Now : (DateTime?)null;
+				}
+			}
+			return Json("OK");
+		}
+
 		#endregion
 
 		#region Accounts
@@ -325,6 +420,7 @@ namespace BankService
 				Holder = card.Holder,
 				ExpirationDate = card.ExpirationDate,
 				CardState = card.State.ToString(),
+				FreezeDate = card.FreezeDate,
 				Accounts =  card.Accounts.Select( a => CreateAccountResponse(a)),
 				User = joinUser? CreateUserResponse(card.BankUser, false) : (object)card.BankUser.ID
 			};
@@ -430,12 +526,10 @@ namespace BankService
 
 		#endregion
 
-
 		public Message GetCurrencies()
 		{
 			return Json(CreateEnumDescription(typeof(Currency)));
 		}
-
 
 		private object CreateEnumDescription(Type enumType)
 		{
@@ -464,5 +558,6 @@ namespace BankService
 			}
 			return Json(result);
 		}
+
 	}
 }

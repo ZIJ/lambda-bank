@@ -25,7 +25,6 @@ namespace BankEntities
 			}
 		}
 
-		[Required]
 		public Currency Currency { get; set; }
 
 		[Required]
@@ -33,5 +32,7 @@ namespace BankEntities
 
 		[IgnoreDataMember]
 		public virtual ICollection<Card> Cards { get; set; }
+
+		public BankUser Owner { get; set; }
 	}
 }
