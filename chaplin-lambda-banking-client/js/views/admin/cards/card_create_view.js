@@ -131,7 +131,13 @@ define([
 
         onCurrencyAddClick: function() {
             var view = this,
-                $ddLast = view.$('.card-new-currencies').last().parent();
+                $selects = view.$('.card-new-currencies');
+
+            if ($selects.length === $selects.first().children('option').length) {
+                return;
+            }
+
+            var $ddLast = $selects.last().parent();
 
             $ddLast.after($ddLast.clone());
 
@@ -184,14 +190,36 @@ define([
             var view = this,
                 options = {
                     attributesToSave: {
-                        expirationDate: view.$('.firstName').val(),
-                        type: view.$('.card-new-types').children('option:selected').val(),
-                        passportNumber: view.$('.passportNumber').val(),
-                        address: view.$('.address').val()
+                        type: parseInt(view.$('.card-new-types').children('option:selected').val()),
+                        expirationDate: moment(view.$('.datepicker').val(), 'DD.MM.YYYY')
                     }
                 };
 
-//            mediator.publish('!saveCard', options);
+            switch (view.$('.card-new-account-types input[type=radio]:checked').prop('id')) {
+                case 'type_existing':
+                    _.extend(options.attributesToSave, {
+                        accountID2Attach: view.$('.card-new-accounts').val()
+                    });
+                    break;
+                case 'type_single':
+                    _.extend(options.attributesToSave, {
+                        currencies: [parseInt(view.$('.card-new-currencies').first().val())]
+                    });
+                    break;
+                case 'type_multi':
+                    var currenciesIds = [];
+
+                    view.$('.card-new-currencies').each(function() {
+                        currenciesIds.push(parseInt($(this).val()));
+                    });
+
+                    _.extend(options.attributesToSave, {
+                        currencies: currenciesIds
+                    });
+                    break;
+            }
+
+            mediator.publish('!saveCard', options);
         },
 
         onCancelClick: function() {

@@ -20,7 +20,6 @@ define([
         container: 'div.row-fluid',
         autoRender: true,
 
-        // Expects the serviceProviders in the options.
         initialize: function(options) {
             var view = this;
 
@@ -31,7 +30,7 @@ define([
             view.delegate('click', '.btn.edit', view.onEditClick);
 //            view.delegate('click', '.btn.delete', view.onDeleteClick);
 
-            //TODO: TEMP
+            //TODO: TEMP, shouldn't be created inside this view, maybe pass from cards_controller
             view.cards = new CardsCollection([], {
                 userId: view.model.id
             });

@@ -222,6 +222,7 @@ define([
             },
 
             apiRequest: function(params) {
+                // TODO: inject !alert event publishes into 'error' callback
                 lambdaBanking.api(params);
             },
 
