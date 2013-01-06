@@ -1,12 +1,21 @@
 <section class="content well">
     <h1>Account #{{this.number}}
-    	<button class="btn btn-warning recharge"><i class="icon-plus-sign icon-white"></i> Recharge</button>
-    	<button class="btn btn-danger delete"><i class="icon-trash icon-white"></i> Delete</button>
+        <button class="btn btn-danger delete"><i class="icon-trash icon-white"></i> Delete</button>
     </h1>
     <dl class="data-fields clearfix">
         <dt>Amount</dt>
         <dd>{{this.amount}}</dd>
         <dt>Currency</dt>
         <dd>{{this.currency}}</dd>
+        
     </dl>
+    <h2>Operate</h2>
+    <form action="">
+    <dl class="data-fields clearfix">
+        <dt>Amount</dt>
+        <dd><input type="number" value="100" min="1" max="999999" required title="Digits only. 1-999999"></dd>
+    </dl>
+    <button class="btn btn-warning recharge"><i class="icon-plus-sign icon-white"></i> Recharge</button>
+    <button class="btn btn-warning withdraw"><i class="icon-minus-sign icon-white"></i> Withdraw</button>
+        </form>
 </section>
