@@ -514,6 +514,12 @@ table .expandable table .controls-container {
     border: 0;
 }
 
+.btn-link[disabled],
+.btn-link[disabled]:hover,
+.btn-link[disabled]:active {
+    color: grey;
+}
+
 .btn.btn-danger {
     background: #D22C24;
     box-shadow: 0 5px 0 0 #9E211B,
@@ -559,7 +565,8 @@ table .expandable table .controls-container {
     0 2px 2px 0 rgba(0, 0, 0, .5);
 }
 
-.btn[disabled] {
+.btn[disabled],
+.btn-link[disabled] {
     cursor: not-allowed;
 }
 
