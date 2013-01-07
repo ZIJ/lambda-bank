@@ -3,7 +3,8 @@ define([
     'underscore',
     'chaplin',
     'views/layout',
-    'controllers/session_controller'
+    'controllers/session_controller',
+    'bootstrap'
 ], function($, _, Chaplin, Layout, SessionController) {
     'use strict';
 
