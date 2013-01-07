@@ -29,21 +29,29 @@ define([
         },
 
         onReplenishClick: function() {
-            $('#submitter').val('replenish');
+            var view = this;
+
+            view.$('#submitter').val('replenish');
         },
 
         onWithdrawClick: function() {
-            $('#submitter').val('withdraw');
+            var view = this;
+
+            view.$('#submitter').val('withdraw');
         },
+
         onFormSubmit: function(e) {
             e.preventDefault();
+
             var view = this,
-                action = $('#submitter').val();
-            if( action === '' ) {
+                action = view.$('#submitter').val();
+
+            if (action === '') {
                 return;
             }
-            var amount = parseFloat(view.$('input[type=text]').val());
-            mediator.publish('!'+action, amount);
+            var amount = parseFloat(view.$('input[type=text]').val().replace(',', '.'));
+
+            mediator.publish('!' + action, amount);
         }
     });
 
