@@ -1,0 +1,6 @@
+<form>
+    <input name="number" type="number" />
+    <input name="amount" type="number" />
+    <select name="card" />
+    <input type="submit" value="Pay"/>
+</form>

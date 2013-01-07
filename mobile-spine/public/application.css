@@ -15,6 +15,18 @@ body {
   border: none;
   color: #fff;
 }
+.payCellPage input,
+.payCellPage select {
+  display: block;
+  margin: 10px;
+}
+.payCellPage input[type=submit] {
+  padding: 10px;
+  height: 2em;
+  background-color: #10609e;
+  border: none;
+  color: #fff;
+}
 .menuPage ul {
   list-style-type: none;
   padding: 0;
