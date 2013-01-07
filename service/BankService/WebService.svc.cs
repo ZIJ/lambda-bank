@@ -9,7 +9,6 @@ using BankEntities;
 using System.ServiceModel.Channels;
 using System.Dynamic;
 using System.Net;
-using BankEntities;
 using BankSystem;
 
 namespace BankService
@@ -35,7 +34,7 @@ namespace BankService
 
 			if (info == null)
 			{
-				throw new WebFaultException(System.Net.HttpStatusCode.Unauthorized);
+				throw new WebFaultException((HttpStatusCode)477);
 			}
 
 			string role = info.User.Role.ToString();
@@ -60,7 +59,7 @@ namespace BankService
 			LoginInfo info = bank.UserService.GetUser(securityToken, false);
 			if (info == null)
 			{
-				throw new WebFaultException(HttpStatusCode.Unauthorized);
+				throw new WebFaultException((HttpStatusCode)477);
 			}
 
 			int secondsLeft = (int)info.TimeLeft.TotalSeconds;
@@ -86,7 +85,7 @@ namespace BankService
 			LoginInfo info = bank.UserService.GetUser(securityToken);
 			if (info == null)
 			{
-				throw new WebFaultException(HttpStatusCode.Unauthorized);
+				throw new WebFaultException((HttpStatusCode)477);
 			}
 			else if (info.User.Role.ToString() != "user")
 			{
@@ -100,7 +99,7 @@ namespace BankService
 			LoginInfo info = bank.UserService.GetUser(securityToken);
 			if (info == null)
 			{
-				throw new WebFaultException(HttpStatusCode.Unauthorized);
+				throw new WebFaultException((HttpStatusCode)477);
 			}
 			else if (info.User.Role.ToString() != "admin")
 			{
@@ -137,10 +136,23 @@ namespace BankService
 			return Json(new { ID = id });
 		}
 
-
 		public Message GetLog(Guid securityToken, int cardId, DateTime start, DateTime end)
 		{
-			throw new NotImplementedException();
+			BankUser user = GetUser(securityToken);
+			Card card = db.Cards.Find(cardId);
+			if (card.BankUser != user)
+			{
+				throw new WebFaultException(HttpStatusCode.Forbidden);
+			}
+			SortedList<DateTime, TransactionLog> sorted = new SortedList<DateTime, TransactionLog>();
+			foreach (Account account in card.Accounts)
+			{
+				foreach (TransactionLog log in bank.GetLog(account, start, end))
+				{
+					sorted.Add(log.Time, log);
+				}
+			}
+			return Json(sorted.Values);
 		}
 
 		#region Payment
@@ -378,7 +390,7 @@ namespace BankService
 
 		#region Accounts
 
-		public Message GetAccounts(Guid securityToken, int? accountId)
+		public Message GetAccounts(Guid securityToken, int? accountId, int? userId)
 		{
 			GetAdmin(securityToken);
 			if (accountId != null)
@@ -390,9 +402,41 @@ namespace BankService
 				}
 				return Json(CreateAccountResponse(account));
 			}
+			if (userId != null)
+			{
+				return Json(db.Accounts.Where(a => a.Owner == null ? false : a.Owner.ID == userId).ToList().Select(a => CreateAccountResponse(a)));
+			}
 			return Json(db.Accounts.ToList().Select(a => CreateAccountResponse(a)));
 		}
 
+
+		public Message ReplenishAccount(Guid securityToken, int id, decimal amount)
+		{
+			GetAdmin(securityToken);
+			Account account = db.Accounts.Find(id);
+			if (account == null)
+			{
+				throw new WebFaultException<string>("Account was not found", HttpStatusCode.NotFound);
+			}
+			bank.ReplenishAccount(account, amount);
+			return Json(new { Status = "OK" });
+		}
+
+		public Message WithdrawAccount(Guid securityToken, int id, decimal amount)
+		{
+			GetAdmin(securityToken);
+			Account account = db.Accounts.Find(id);
+			if (account == null)
+			{
+				throw new WebFaultException<string>("Account was not found", HttpStatusCode.NotFound);
+			}
+			if (account.Amount < amount)
+			{
+				return Json(new { Status = "NotEnoughMoney" });
+			}
+			bank.WithdrawAccount(account, amount);
+			return Json(new { Status = "OK" });
+		}
 
 		#endregion
 
@@ -557,6 +601,18 @@ namespace BankService
 				);
 			}
 			return Json(result);
+		}
+
+
+
+		public Message CreateAdmin(Guid securityToken)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Message CreateOperator(Guid securityToken)
+		{
+			throw new NotImplementedException();
 		}
 
 	}

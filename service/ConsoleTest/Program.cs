@@ -27,9 +27,9 @@ namespace ConsoleTest
 			
 			smtp.EnableSsl = true;
 			smtp.Send(message);*/
-			System.Web.Script.Serialization.JavaScriptSerializer ser = new System.Web.Script.Serialization.JavaScriptSerializer();
-			string ss = ser.Serialize(DateTime.Now);
-			
+
+			Console.WriteLine(string.Format("{0:000}", 1));
+
 			Console.ReadKey();
 		}
 

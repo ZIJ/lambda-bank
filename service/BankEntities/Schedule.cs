@@ -14,8 +14,14 @@ namespace BankEntities
 
 		public DateTime StartTime { get; set; }
 
-		public ScheduleBit ScheduleBit { get; set; }
+		public int DbStubScheduleBit { get; set; }
 
+		public ScheduleBit ScheduleBit
+		{
+			get { return (ScheduleBit)DbStubScheduleBit; }
+			set { DbStubScheduleBit = (int)value; }
+		}
+		
 		public int BitQuantity { get; set; }
 
 		public PaymentTemplate Template { get; set; }

@@ -66,23 +66,29 @@ namespace BankSystem
 			return info;
 		}
 
-
 		public void GenerateInternetBankingUser(BankUser user, out string login, out string password)
 		{
-			if (db.InternetBankingUsers.Any(u => u.BankUser.ID == user.ID))
-			{
-				throw new ArgumentOutOfRangeException("user not found");
-			}
-			password = System.Web.Security.Membership.GeneratePassword(12, 2);
 			login = System.Web.Security.Membership.GeneratePassword(9, 0).ToUpper();
-
-			InternetBankingUser internetUser = new InternetBankingUser();
+			password = System.Web.Security.Membership.GeneratePassword(12, 2);
+			InternetBankingUser internetUser = db.InternetBankingUsers.Where(u => u.BankUser.ID == user.ID).FirstOrDefault();
+			if (internetUser == null)
+			{
+				internetUser = new InternetBankingUser();
+				db.InternetBankingUsers.Add(internetUser);
+			}
+			else
+			{
+				LoginInfo info = authenticatedUsers.Values.Where(l => l.User == internetUser).FirstOrDefault();
+				if (info != null)
+				{
+					authenticatedUsers.Remove(info.UID);
+				}
+			}
 			internetUser.Login = login;
 			internetUser.Salt = Guid.NewGuid().ToString("N");
 			internetUser.PasswordHash = PasswordDistortion(password, internetUser.Salt);
 			internetUser.BankUser = user;
 			internetUser.Role = db.Roles.FirstOrDefault((r) => r.Name == "User");
-			db.InternetBankingUsers.Add(internetUser);
 			db.SaveChanges();
 		}
 

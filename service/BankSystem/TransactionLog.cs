@@ -7,6 +7,25 @@ namespace BankSystem
 {
 	public class TransactionLog
 	{
+		public TransactionLog(Transaction transaction, bool relativeFrom)
+		{
+			Time = transaction.Time;
+			Description = transaction.Description;
+			FromAccount = transaction.FromAccountNumber == "0000000000000" ? "Bank Facility, Operator" : transaction.FromAccountNumber;
+			ToAccount = transaction.ToAccountNumber == "0000000000000" ? "Bank Facility, Operator" : transaction.ToAccountNumber;
+			TransactionAmount = transaction.TransactionAmount;
+			TransactionCurrency = transaction.TransactionCurrency;
+			if (relativeFrom)
+			{
+				AccountChange = transaction.FromAccountDelta;
+				AccountCurrency = transaction.FromAccountCurrency;
+			}
+			else
+			{
+				AccountChange = transaction.ToAccountDelta;
+				AccountCurrency = transaction.ToAccountCurrency;
+			}
+		}
 		public DateTime Time { get; set; }
 
 		public string Description { get; set; }

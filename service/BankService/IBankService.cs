@@ -45,6 +45,20 @@ namespace BankService
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/admin/users/addinternetbankingrole")]
 		Message AddIBUser(Guid securityToken, int id);
+
+		[WebInvoke(Method = "POST",
+			RequestFormat = WebMessageFormat.Json,
+			ResponseFormat = WebMessageFormat.Json,
+			BodyStyle = WebMessageBodyStyle.Wrapped,
+			UriTemplate = "/admin/users/createadmin")]
+		Message CreateAdmin(Guid securityToken);
+
+		[WebInvoke(Method = "POST",
+			RequestFormat = WebMessageFormat.Json,
+			ResponseFormat = WebMessageFormat.Json,
+			BodyStyle = WebMessageBodyStyle.Wrapped,
+			UriTemplate = "/admin/users/operator")]
+		Message CreateOperator(Guid securityToken);
 		#endregion
 
 		#region Cards
@@ -84,7 +98,21 @@ namespace BankService
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/admin/accounts/get")]
-		Message GetAccounts(Guid securityToken, int? accountId);
+		Message GetAccounts(Guid securityToken, int? accountId, int? userId);
+
+		[WebInvoke(Method = "POST",
+			RequestFormat = WebMessageFormat.Json,
+			ResponseFormat = WebMessageFormat.Json,
+			BodyStyle = WebMessageBodyStyle.Wrapped,
+			UriTemplate = "/admin/accounts/replenish")]
+		Message ReplenishAccount(Guid securityToken, int id, decimal amount);
+
+		[WebInvoke(Method = "POST",
+			RequestFormat = WebMessageFormat.Json,
+			ResponseFormat = WebMessageFormat.Json,
+			BodyStyle = WebMessageBodyStyle.Wrapped,
+			UriTemplate = "/admin/accounts/withdraw")]
+		Message WithdrawAccount(Guid securityToken, int id, decimal amount);
 		
 		#endregion
 
@@ -213,13 +241,6 @@ namespace BankService
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/user/schedules/create")]
 		Message CreateSchedule(Guid securityToken, PaymentRequisites payment, DateTime startDate, ScheduleBit scheduleBit, int bitQuantity);
-
-		[WebInvoke(Method = "POST",
-			RequestFormat = WebMessageFormat.Json,
-			ResponseFormat = WebMessageFormat.Json,
-			BodyStyle = WebMessageBodyStyle.Wrapped,
-			UriTemplate = "/user/schedules/update")]
-		Message UpdateSchedule(Guid securityToken, int id, string paymentInfo);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,

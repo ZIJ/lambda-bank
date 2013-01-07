@@ -105,7 +105,7 @@ namespace BankSystem
 				{
 					AmountCharged = amountCharged,
 					ChangeId = UserService.PasswordDistortion(account.Amount.ToString(), "res"),
-					EnoughMoney = amountCharged >= account.Amount
+					EnoughMoney = amountCharged <= account.Amount
 				};
 				return info;
 			}
@@ -241,8 +241,8 @@ namespace BankSystem
 			newCard.ExpirationDate = expirationDate;
 			newCard.Type = type;
 			newCard.BankUser = user;
-			newCard.CVV = string.Format("{0:3}", new Random().Next(1000));
-			newCard.PIN = string.Format("{0:4}", new Random().Next(10000));
+			newCard.CVV = string.Format("{0:000}", new Random().Next(1000));
+			newCard.PIN = string.Format("{0:0000}", new Random().Next(10000));
 			user.Cards.Add(newCard);
 			db.SaveChanges();
 			return newCard.ID;
@@ -264,17 +264,63 @@ namespace BankSystem
 
 		public IEnumerable<TransactionLog> GetLog(Account account, DateTime startDate, DateTime endDate)
 		{
-			List<TransactionLog> logs = new List<TransactionLog>();
-			IEnumerable<Transaction> transactions = 
-				db.Transactions.Where( t => t.FromAccount == account && t.Time >= startDate && t.Time <= endDate);
-			foreach (Transaction t in transactions)
-			{
-				TransactionLog log = new TransactionLog();
-				log.Time = t.Time;
-				log.FromAccount = t.FromAccount.AccountNumber;
-			}
+			return
+				db.Transactions.Where(t => t.FromAccount == account && t.Time >= startDate && t.Time <= endDate)
+				.ToList().Select(t => new TransactionLog(t, true)).Concat(
+				db.Transactions.Where(t => t.ToAccount == account && t.Time >= startDate && t.Time <= endDate)
+				.ToList().Select(t => new TransactionLog(t, false))).ToList();
+			
+		}
 
-			return logs;
+		public void ReplenishAccount(Account account, decimal amount)
+		{
+			Transaction t = new Transaction();
+			{
+				t.Time = DateTime.Now;
+
+				t.FromAccountNumber = "0000000000000";
+
+				t.TransactionCurrency = account.Currency;
+				t.TransactionAmount = amount;
+
+				t.ToAccountNumber = account.AccountNumber;
+				t.ToAccount = account;
+				t.ToAccountBackupAmount = account.Amount;
+				t.ToAccountCurrency = account.Currency;
+				t.ToAccountDelta = amount;
+				t.State = TransactionState.Opened;
+				db.Transactions.Add(t);
+				db.SaveChanges();
+				account.Amount += t.ToAccountDelta;
+				t.State = TransactionState.Closed;
+				db.SaveChanges();
+			}
+		}
+
+		public void WithdrawAccount(Account account, decimal amount)
+		{
+			Transaction t = new Transaction();
+			{
+				t.Time = DateTime.Now;
+				t.FromAccountBackupAmount = account.Amount;
+				t.FromAccountNumber = account.AccountNumber;
+				t.FromAccount = account;
+				t.FromAccountDelta = -amount;
+				t.FromAccountCurrency = account.Currency;
+
+				t.TransactionCurrency = account.Currency;
+				t.TransactionAmount = amount;
+
+				t.ToAccountNumber = "0000000000000";
+
+				t.State = TransactionState.Opened;
+				db.Transactions.Add(t);
+				db.SaveChanges();
+
+				account.Amount += t.FromAccountDelta;
+				t.State = TransactionState.Closed;
+				db.SaveChanges();
+			}
 		}
 
 		private void Pay(PaymentTemplate template)
@@ -316,6 +362,9 @@ namespace BankSystem
 			t.FromAccount = from;
 			t.FromAccountDelta = -BackConvertCurrency(from.Currency, currency, amount);
 			t.FromAccountCurrency = from.Currency;
+
+			t.TransactionCurrency = currency;
+			t.TransactionAmount = amount;
 
 			t.ToAccountNumber = to.AccountNumber;
 			t.ToAccount = to;
@@ -401,7 +450,6 @@ namespace BankSystem
 		{
 			//TODO let arbiter know about failed transaction
 		}
-
 	}
 
 	class DefaultInitializer : System.Data.Entity.DropCreateDatabaseAlways<BankDatabase>// DropCreateDatabaseIfModelChanges<BankDatabase>
@@ -426,12 +474,14 @@ namespace BankSystem
 			cardClass.Types.FirstOrDefault(t => { context.CardTypes.Add(t); return false; });
 
 			context.CardClasses.Add(cardClass);
-			cardClass = new CardClass { Name = "MasterCard" };
-			cardClass.Types.Add(cardType);
-			cardClass.Types.Add(new CardType() { Name = "Standard", Class = cardClass });
-			cardClass.Types.Add(new CardType() { Name = "Standard Autohelp", Class = cardClass });
-			cardClass.Types.Add(new CardType() { Name = "Gold", Class = cardClass });
-			cardClass.Types.FirstOrDefault(t => { context.CardTypes.Add(t); return false; });
+
+			CardClass cardClass2 = new CardClass { Name = "MasterCard" };
+			cardClass2.Types.Add(new CardType() { Name = "Standard", Class = cardClass });
+			cardClass2.Types.Add(new CardType() { Name = "Standard Autohelp", Class = cardClass });
+			cardClass2.Types.Add(new CardType() { Name = "Gold", Class = cardClass });
+			cardClass2.Types.FirstOrDefault(t => { context.CardTypes.Add(t); return false; });
+
+			context.CardClasses.Add(cardClass2);
 
 			context.SaveChanges();
 
@@ -466,6 +516,7 @@ namespace BankSystem
 			card.Type = cardType;
 			account.Currency = Currency.USD;
 			account.Amount = 10000;
+			account.Owner = user;
 
 			InternetBankingUser ibu = new InternetBankingUser();
 			ibu.BankUser = user;

@@ -28,9 +28,21 @@ namespace BankEntities
 
 		public ICollection<PaymentEntry> Entries { get; set; }
 
-		public TemplateType Type { get; set; }
+		public int DbStubType { get; set; }
 
-		public EripPaymentType EripType { get; set; }
+		public TemplateType Type
+		{
+			get { return (TemplateType)DbStubType; }
+			set { DbStubType = (int)value; }
+		}
+
+		public int DbStubEripType { get; set; }
+
+		public EripPaymentType EripType
+		{
+			get { return (EripPaymentType)DbStubEripType; }
+			set { DbStubEripType = (int)value; }
+		}		
 	}
 
 	public enum TemplateType
