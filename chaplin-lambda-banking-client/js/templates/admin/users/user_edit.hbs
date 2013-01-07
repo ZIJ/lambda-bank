@@ -7,18 +7,20 @@
         {{/if}}
         <!--<button class="btn btn-danger delete"><i class="icon-trash icon-white"></i> Delete</button>-->
     </h1>
-    <dl class="data-fields clearfix">
-        <dt>First Name</dt>
-        <dd><input type="text" placeholder="first name" value="{{this.firstName}}" class="firstName"></dd>
-        <dt>Last Name</dt>
-        <dd><input type="text" placeholder="last name" value="{{this.lastName}}" class="lastName"></dd>
-        <dt>Passport ID</dt>
-        <dd><input type="text" placeholder="passport id" value="{{this.passportNumber}}" class="passportNumber"></dd>
-        <dt>Address</dt>
-        <dd><input type="text" placeholder="address" value="{{this.address}}" class="address"></dd>
-    </dl>
-    <div class="form-actions">
-        <button type="submit" class="btn btn-primary save">Save changes</button>
-        <button type="button" class="btn cancel">Cancel</button>
-    </div>
+    <form action="">
+        <dl class="data-fields clearfix">
+            <dt>First Name</dt>
+            <dd><input type="text" placeholder="first name" value="{{this.firstName}}" class="firstName" required></dd>
+            <dt>Last Name</dt>
+            <dd><input type="text" placeholder="last name" value="{{this.lastName}}" class="lastName" required></dd>
+            <dt>Passport ID</dt>
+            <dd><input type="text" placeholder="passport id" value="{{this.passportNumber}}" class="passportNumber" required pattern="^([0-9]{7})([a-zA-Z])([a-zA-Z0-9]{3})([a-zA-Z]{2})([0-9])$" title="Latin letters and digits only" data-validate="passport" rel="popover" data-content="Checksumm doesn't match!" data-trigger="manual"></dd>
+            <dt>Address</dt>
+            <dd><input type="text" placeholder="address" value="{{this.address}}" class="address" required></dd>
+        </dl>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary save">Save changes</button>
+            <button type="button" class="btn cancel">Cancel</button>
+        </div>
+    </form>
 </section>
