@@ -492,9 +492,11 @@ namespace BankService
 			PaymentTemplate template = TraverseTemplate(payment);
 			template.Owner = user;
 			template.Type = TemplateType.Saved;
+			
 			db.PaymentTemplates.Add(template);
 			db.SaveChanges();
-			return Json("Happy New Year, dude!");
+
+			return Json(TraverseTemplate(template));
 		}
 
 		public PaymentTemplate TraverseTemplate(PaymentRequisites requisites)
@@ -515,6 +517,7 @@ namespace BankService
 		public PaymentRequisites TraverseTemplate(PaymentTemplate template)
 		{
 			PaymentRequisites requisite = new PaymentRequisites();
+			requisite.ID = template.ID;
 			requisite.AccountId = template.Account.ID;
 			requisite.Amount = template.Amount;
 			requisite.JsonPayment = template.JsonPayment;
@@ -528,44 +531,61 @@ namespace BankService
 			return Json(user.SavedPayments.ToArray().Select(p => TraverseTemplate(p)));
 		}
 
+		public Message DeleteSavedPayment(Guid securityToken, int id)
+		{
+			BankUser user = GetUser(securityToken);
+			PaymentTemplate payment = user.SavedPayments.Where(p => p.ID == id).FirstOrDefault();
+			db.Payments.Remove(payment);
+			db.SaveChanges();
+			return Json(new { Status = "OK" });
+		}
+
 		#endregion SavedPayment
 
 		#region Schedule
 
 		public Message GetSchedules(Guid securityToken)
 		{
-			throw new NotImplementedException();
+			BankUser user = GetUser(securityToken);
+			return Json(user.Schedules);
 		}
 
-		public Message CreateSchedule(Guid securityToken, PaymentRequisites payment, DateTime startDate, ScheduleBit scheduleBit, int bitQuantity)
+		public Message CreateSchedule(Guid securityToken, Schedule schedule, PaymentRequisites requisite)
 		{
 			BankUser user = GetUser(securityToken);
-			PaymentTemplate template = TraverseTemplate(payment);
+			PaymentTemplate template = TraverseTemplate(requisite);
 			template.Owner = user;
 			template.Type = TemplateType.Scheduled;
 			db.PaymentTemplates.Add(template);
-			Schedule schedule = new Schedule();
-			schedule.BitQuantity = bitQuantity;
-			schedule.StartTime = startDate;
+
 			schedule.Template = template;
 			schedule.User = user;
+			user.Schedules.Add(schedule);
 			db.Schedules.Add(schedule);
 			db.SaveChanges();
+
 			return Json(new 
 			{
 				MerryChristmas = "Merry Christmas",
+				Status = "OK",
 				ID = schedule.ID,
 			});
 		}
 
-		public Message UpdateSchedule(Guid securityToken, int id, string paymentInfo)
-		{
-			throw new NotImplementedException();
-		}
-
 		public Message DeleteSchedule(Guid securityToken, int id)
 		{
-			throw new NotImplementedException();
+			BankUser user = GetUser(securityToken);
+			Schedule schedule = db.Schedules.Find(id);
+			if (schedule.User != user)
+			{
+				throw new WebFaultException(HttpStatusCode.Forbidden);
+			}
+			db.Schedules.Remove(schedule);
+			db.SaveChanges();
+			return Json(new
+			{
+				Status = "OK",
+			});
 		}
 
 		#endregion
@@ -603,8 +623,6 @@ namespace BankService
 			return Json(result);
 		}
 
-
-
 		public Message CreateAdmin(Guid securityToken)
 		{
 			throw new NotImplementedException();
@@ -615,5 +633,8 @@ namespace BankService
 			throw new NotImplementedException();
 		}
 
+
+
+		
 	}
 }

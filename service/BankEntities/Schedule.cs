@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
+
 namespace BankEntities
 {
 	public class Schedule
@@ -24,8 +26,12 @@ namespace BankEntities
 		
 		public int BitQuantity { get; set; }
 
+		[IgnoreDataMember]
 		public PaymentTemplate Template { get; set; }
 
+		public int? RepeatsLeft { get; set; }
+
+		[IgnoreDataMember]
 		[Required]
 		public BankUser User { get; set; }
 	}

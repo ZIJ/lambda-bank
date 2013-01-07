@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Bank.cs" />
     <Compile Include="BankArbiter.cs" />
+    <Compile Include="BankSchedule.cs" />
     <Compile Include="EripImplementers\DefaultSupplier.cs" />
     <Compile Include="EripImplementers\EripImlemetation.cs" />
     <Compile Include="EripImplementers\ISupplier.cs" />

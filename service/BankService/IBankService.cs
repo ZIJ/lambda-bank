@@ -227,6 +227,13 @@ namespace BankService
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/user/mypayments/save")]
 		Message SavePayment(Guid securityToken, PaymentRequisites payment);
+
+		[WebInvoke(Method = "POST",
+			RequestFormat = WebMessageFormat.Json,
+			ResponseFormat = WebMessageFormat.Json,
+			BodyStyle = WebMessageBodyStyle.Wrapped,
+			UriTemplate = "/user/mypayments/deletesaved")]
+		Message DeleteSavedPayment(Guid securityToken, int id);
 		
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
@@ -240,7 +247,7 @@ namespace BankService
 			ResponseFormat = WebMessageFormat.Json,
 			BodyStyle = WebMessageBodyStyle.Wrapped,
 			UriTemplate = "/user/schedules/create")]
-		Message CreateSchedule(Guid securityToken, PaymentRequisites payment, DateTime startDate, ScheduleBit scheduleBit, int bitQuantity);
+		Message CreateSchedule(Guid securityToken, Schedule schedule, PaymentRequisites requisite);
 
 		[WebInvoke(Method = "POST",
 			RequestFormat = WebMessageFormat.Json,
