@@ -24,6 +24,7 @@ namespace BankEntities
 				return string.Format("435983{0:0000000}", ID);
 			}
 		}
+
 		public int DbStubCurrency { get; set; }
 
 		public Currency Currency
@@ -31,6 +32,8 @@ namespace BankEntities
 			get { return (Currency)DbStubCurrency; }
 			set { DbStubCurrency = (int)value; }
 		}
+
+		public string Description { get; set; }
 
 		[Required]
 		public decimal Amount { get; set; }

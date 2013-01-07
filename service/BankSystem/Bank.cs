@@ -226,6 +226,7 @@ namespace BankSystem
 					db.Accounts.Add(newAccount);
 					newCard.Accounts.Add(newAccount);
 					newAccount.Owner = user;
+					newAccount.Description = "Card-Account";
 				}
 			}
 			else if (accountId.HasValue)
@@ -494,11 +495,26 @@ namespace BankSystem
 
 			context.SaveChanges();
 
-			Account velcomAccount = new Account();
-			velcomAccount.Currency = Currency.BYR;
-			velcomAccount.Amount = 5000000;
-			context.Accounts.Add(velcomAccount);
-			context.SaveChanges();
+			CreateSystemAccount(context, "Velcom account", Currency.EUR, 100000);
+			CreateSystemAccount(context, "MTS account", Currency.BYR, 1000000000);
+			CreateSystemAccount(context, "Life account", Currency.TRY, 20000);
+			CreateSystemAccount(context, "Diallog account", Currency.BYR, 1000000000);
+			CreateSystemAccount(context, "BeltelecomMGTS account", Currency.BYR, 1000000000);
+
+			CreateSystemAccount(context, "Electro Service account", Currency.BYR, 1000000000);
+			CreateSystemAccount(context, "Aqua Service account", Currency.BYR, 1000000000);
+			CreateSystemAccount(context, "Gas Service account", Currency.BYR, 1000000000);
+			CreateSystemAccount(context, "Utility Service account", Currency.BYR, 1000000000);
+			CreateSystemAccount(context, "BusinessNetwork iProvider account", Currency.BYR, 1000000000);
+
+			CreateSystemAccount(context, "AtlantTelecom iProvider account", Currency.BYR, 1000000000);
+			CreateSystemAccount(context, "AdslBy iProvider account", Currency.USD, 100000);
+			CreateSystemAccount(context, "AirTikets account", Currency.EUR, 100000);
+			CreateSystemAccount(context, "RailwayTikets account", Currency.BYR, 1000000000);
+			CreateSystemAccount(context, "CosmosTv account", Currency.USD, 100000);
+
+			CreateSystemAccount(context, "PoliceFine account", Currency.EUR, 100000);
+
 			BankUser user = new BankUser();
 			user.FirstName = "Charles";
 			user.LastName = "Jr.";
@@ -517,6 +533,7 @@ namespace BankSystem
 			account.Currency = Currency.USD;
 			account.Amount = 10000;
 			account.Owner = user;
+			account.Description = "Card-Account";
 
 			InternetBankingUser ibu = new InternetBankingUser();
 			ibu.BankUser = user;
@@ -528,6 +545,16 @@ namespace BankSystem
 			context.Accounts.Add(account);
 			context.Cards.Add(card);
 			context.BankUsers.Add(user);
+			context.SaveChanges();
+		}
+
+		static void CreateSystemAccount(BankDatabase context, string description, Currency currency, decimal amount)
+		{
+			Account account = new Account();
+			account.Description = description;
+			account.Currency = currency;
+			account.Amount = amount;
+			context.Accounts.Add(account);
 			context.SaveChanges();
 		}
 	}

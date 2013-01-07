@@ -15,6 +15,8 @@ namespace BankSystem.EripImplementers
 
 		public virtual Prerequisite Requisite { get; set; }
 
+		public decimal Rate { get; set; }
+
 		Dictionary<string, SupplierClient> accounts = new Dictionary<string, SupplierClient>();
 
 		public object GetPaymentInfo(string jsonPayment)

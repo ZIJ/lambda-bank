@@ -17,11 +17,18 @@ namespace BankSystem
 
 	public class Prerequisite
 	{
+		public Prerequisite()
+		{
+			Rate = 1;
+		}
+
 		public Guid BankGuid { get; set; }
 
 		public string AccountNumber { get; set; }
 
 		public Currency Currency { get; set; }
+
+		public decimal Rate { get; set; }
 	}
 
 	public class PaymentCheck
