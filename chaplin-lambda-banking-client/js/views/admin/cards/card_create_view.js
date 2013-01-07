@@ -28,7 +28,7 @@ define([
 
             CardCreateView.__super__.initialize.apply(view, arguments);
 
-            view.delegate('click', '.btn.save', view.onSaveClick);
+            view.delegate('submit', 'form', view.onSaveClick);
             view.delegate('click', '.btn.cancel', view.onCancelClick);
 
             view.subscribeEvent('userAccountsLoaded', view.userAccountsLoadedHandler);
