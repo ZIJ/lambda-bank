@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BankEntities;
 
-namespace BankEntities.EripImplementers
+namespace BankSystem.EripImplementers
 {
 	class EripImlemetation: IERIP
 	{
@@ -19,7 +20,7 @@ namespace BankEntities.EripImplementers
 				{ 
 					BankGuid = new Guid("{3EDDF226-9692-4EF6-8E46-C36373E455FA}"), 
 					AccountNumber = "4359830000001", 
-					Currency= Currency.BYR 
+					Currency = Currency.BYR 
 				} 
 			});
 		}

@@ -18,7 +18,11 @@ define(function() {
         match('cards', 'cards#index');
 //        match('cards/create', 'cards#create');    // NOTE: not needed
 //        match('cards/:id', 'cards#show');    // NOTE: not needed (implemented in controller, but there is no CardView)
-        match('cards/:id/edit', 'cards#edit');
+//        match('cards/:id/edit', 'cards#edit');    // NOTE: not needed
+
+        match('accounts', 'accounts#index');
+        match('accounts/:id', 'accounts#show');
+
 
         match('settings', 'settings#index');
 

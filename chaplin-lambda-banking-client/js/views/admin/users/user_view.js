@@ -6,8 +6,10 @@ define([
     'views/admin/tabs_view',
     'models/base/model',
     'models/admin/cards',
-    'views/admin/users/user_cards_view'
-], function(_, Chaplin, View, template, TabsView, Model, CardsCollection, UserCardsView) {
+    'views/admin/users/user_cards_view',
+    'models/admin/accounts',
+    'views/admin/users/user_accounts_view'
+], function(_, Chaplin, View, template, TabsView, Model, CardsCollection, UserCardsView, AccountsCollection, UserAccountsView) {
     'use strict';
 
     var mediator = Chaplin.mediator;
@@ -20,22 +22,25 @@ define([
         container: 'div.row-fluid',
         autoRender: true,
 
-        // Expects the serviceProviders in the options.
         initialize: function(options) {
             var view = this;
 
-            _.bindAll(view, 'onEditClick'); // 'onDeleteClick'
+            _.bindAll(view, 'onEditClick', 'onGenerateCredentialsClick'); // 'onDeleteClick'
 
             UserView.__super__.initialize.apply(view, arguments);
 
             view.delegate('click', '.btn.edit', view.onEditClick);
 //            view.delegate('click', '.btn.delete', view.onDeleteClick);
+            view.delegate('click', '.btn.credentials', view.onGenerateCredentialsClick);
 
-            //TODO: TEMP
+            //TODO: TEMP, shouldn't be created inside this view, maybe do it with the help of deferreds like in card_create_view
             view.cards = new CardsCollection([], {
                 userId: view.model.id
             });
-
+            view.accounts = new AccountsCollection([], {
+                userId: view.model.id
+            });
+            view.accounts.fetch();
 
 //            view.modelBind('dispose', view.modelDisposeHandler);
         },
@@ -44,10 +49,6 @@ define([
             var view = this;
 
             UserView.__super__.afterRender.apply(view);
-
-//            var cards = new CardsCollection([], {
-//                userId: view.model.id
-//            });
 
             view.subview('cardsAndAccountsTabsView', new TabsView({
                 // TODO: make it any other way
@@ -74,13 +75,26 @@ define([
                 userId: view.model.id
             }));
             tabsView.subview('userCardsView').renderAllItems();
+
+            tabsView.subview('userAccountsView', new UserAccountsView({
+                collection: view.accounts,
+                container: tabsView.$('#user-tab-accounts'),
+                userId: view.model.id
+            }));
+            tabsView.subview('userAccountsView').renderAllItems();
         },
 
         onEditClick: function() {
             var view = this;
 
             mediator.publish('!router:route', 'users/' + view.model.id + '/edit');
-        }//,
+        },
+
+        onGenerateCredentialsClick: function() {
+            var view = this;
+
+            mediator.publish('!generateCredentials');
+        }
 
 //        onDeleteClick: function() {
 //            var view = this;

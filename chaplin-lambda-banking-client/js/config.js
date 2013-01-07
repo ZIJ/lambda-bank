@@ -10,7 +10,7 @@ require.config({
         chaplin: 'vendor/chaplin-1.0.0-pre-59cac06',
         moment: 'vendor/moment-1.7.2',
         pikaday: 'vendor/jquery.pikaday',
-        bootstrap: 'vendor/bootstrap-tab'
+        bootstrap: 'vendor/bootstrap.min'
     },
     shim: {
         underscore: {

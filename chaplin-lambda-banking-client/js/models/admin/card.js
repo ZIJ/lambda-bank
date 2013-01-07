@@ -26,16 +26,19 @@ define([
                 id: response['ID'],
                 number: response['Number'],
                 type: response['Type'],
-                holder: new UserModel(UserModel.prototype.parse(response['User'])),
-                expirationDate: moment(response['ExpirationDate']).format('YYYY-MM-DD'),
+                holder: response['User'] ? new UserModel(UserModel.prototype.parse(response['User'])) : void 0,
+                expirationDate: response['ExpirationDate'] ? moment(response['ExpirationDate']).format('YYYY-MM-DD') : void 0,
                 state: response['CardState'],
-                freezeDate: moment(response['FreezeDate']).format('YYYY-MM-DD'),
+                freezeDate: response['FreezeDate'] ? moment(response['FreezeDate']).format('YYYY-MM-DD') : void 0,
                 accounts: (function() {
-                    var retVal = new AccountsCollection();
-                    retVal.fetchHandler(response['Accounts']);
-                    return retVal;
+                    if (response['Accounts']) {
+                        var retVal = new AccountsCollection();
+                        retVal.fetchHandler(response['Accounts']);
+                        return retVal;
+                    } else {
+                        return void 0;
+                    }
                 })()
-                // TODO: add fetchable attributes parsers here
             };
 
             _(attributesHash).each(function(attrValue, attrName) {
@@ -68,43 +71,31 @@ define([
         save: function(options) {
             var model = this,
                 attributesToSave = {
-                    FirstName: options.attributesToSave.firstName,
-                    LastName: options.attributesToSave.lastName,
-                    PassportNumber: options.attributesToSave.passportNumber,
-                    Address: options.attributesToSave.address
+                    userId: model.get('holder').id,
+                    typeId: options.attributesToSave.type,
+                    expirationTime: '/Date(' + options.attributesToSave.expirationDate.valueOf() + ')/'
                 };
 
-            if (model.id && model.id !== 0) {
-                mediator.user.get('provider').apiRequest({
-                    url: 'admin/users/update',
-                    data: {
-                        user: _.extend({ ID: model.id }, attributesToSave)
-                    },
-                    success: function(response) {
-                        model.saveSuccessfulHandler.call(this, response);
-                        options.success.call(this, response);
-                    },
-                    error: function(jqXHR) {
-                        model.saveErrorHandler.call(this, jqXHR);
-                        options.error.call(this, jqXHR);
-                    }
-                });
+            if (options.attributesToSave.currencies) {
+                attributesToSave.currency = options.attributesToSave.currencies;
+            } else if (options.attributesToSave.accountID2Attach) {
+                attributesToSave.accountID2Attach = options.attributesToSave.accountID2Attach;
             } else {
-                mediator.user.get('provider').apiRequest({
-                    url: 'admin/users/create',
-                    data: {
-                        user: attributesToSave
-                    },
-                    success: function(response) {
-                        model.saveSuccessfulHandler.call(this, response);
-                        options.success.call(this, response);
-                    },
-                    error: function(jqXHR) {
-                        model.saveErrorHandler.call(this, jqXHR);
-                        options.error.call(this, jqXHR);
-                    }
-                });
+                // TODO: throw error
             }
+
+            mediator.user.get('provider').apiRequest({
+                url: 'admin/cards/create',
+                data: attributesToSave,
+                success: function(response) {
+                    model.saveSuccessfulHandler.call(this, response);
+                    options.success.call(this, response);
+                },
+                error: function(jqXHR) {
+                    model.saveErrorHandler.call(this, jqXHR);
+                    options.error.call(this, jqXHR);
+                }
+            });
         },
 
 //        destroy: function(options) {

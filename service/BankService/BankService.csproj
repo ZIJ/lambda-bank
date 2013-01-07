@@ -93,6 +93,10 @@
       <Project>{c764dd38-cf7c-47e7-b847-2534607f8a9a}</Project>
       <Name>BankEntities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BankSystem\BankSystem.csproj">
+      <Project>{696718d5-c878-4065-9b8c-b6f1ba6213e3}</Project>
+      <Name>BankSystem</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

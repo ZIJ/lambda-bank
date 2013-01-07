@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/glyphicons.css">
     <script src="js/vendor/modernizr-2.6.1.min.js"></script>
+
 </head>
 <body>
 <!--[if lt IE 7]>
@@ -66,9 +67,9 @@
                     <form action="">
                         <dl class="data-fields clearfix">
                             <dt>Passport id</dt>
-                                <dd><input type="text" pattern="^[a-zA-Z0-9]+$" placeholder="username" required title="Latin letters and digits only"></dd>
-                            <dt>Account</dt>
-                                <dd><input type="number" pattern="^[0-9]+$" min="1" max="9999" placeholder="10-digits number" required title="Digits only. 1-9999"></dd>
+                                <dd><input type="text" pattern="^([0-9]{7})([a-zA-Z])([a-zA-Z0-9]{3})([a-zA-Z]{2})([0-9])$" placeholder="username" required title="Latin letters and digits only" data-validate="passport" rel="popover" data-content="Checksumm doesn't match!" data-trigger="manual"></dd>
+                            <dt>Amount</dt>
+                                <dd><input type="number" pattern="^[0-9]*\,?[0-9]+$" min="1" max="9999999999" step="any" placeholder="floating point allowed with ," required title="Digits only. 1-9999"></dd>
                             <dt>Account</dt>
                             <dd>
                                 <select name="" id="" required class="error">
@@ -95,7 +96,14 @@
     <script src="js/main.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script>
-        
+    $(document).load(function(){
+        var id_field = $('#passport_id');
+        var re = new RegExp(id_field.prop('pattern'));
+        var val = id_field.val();
+        id_field.change(function(){
+            console.log(re.exec(val)[8]);
+        })
+    });
     </script>
 
 </body>

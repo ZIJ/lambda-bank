@@ -45,5 +45,10 @@ namespace BankEntities
 				return Payments.Where(t => t.Type == TemplateType.Saved).ToList();
 			}
 		}
+
+		public bool OwnsAccount(Account account)
+		{
+			return this.Cards.SelectMany(c => c.Accounts).Any(a => a.ID == account.ID);
+		}
 	}
 }

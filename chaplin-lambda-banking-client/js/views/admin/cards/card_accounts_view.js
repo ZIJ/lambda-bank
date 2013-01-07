@@ -15,7 +15,7 @@ define([
 
         tagName: 'td',
         attributes: {
-            'colspan': '4'
+            'colspan': '6'
         },
         itemView: CardAccountItemView,
         listSelector: '.accounts',

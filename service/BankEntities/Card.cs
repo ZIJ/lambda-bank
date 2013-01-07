@@ -29,7 +29,8 @@ namespace BankEntities
 
 		public string Holder { get; set; }
 
-		public bool IsFrozen { get; set; }
+		[DataType(DataType.DateTime)]
+		public DateTime? FreezeDate { get; set; }
 
 		[Required]
 		public string CVV { get; set; }
@@ -41,7 +42,7 @@ namespace BankEntities
 		{
 			get
 			{
-				return DateTime.Now < ExpirationDate;
+				return DateTime.Now >= ExpirationDate;
 			}
 		}
 
@@ -53,7 +54,7 @@ namespace BankEntities
 				{
 					return CardState.Expired;
 				}
-				else if (IsFrozen)
+				else if (FreezeDate != null)
 				{ 
 					return CardState.Frozen;
 				}

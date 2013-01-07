@@ -107,6 +107,21 @@ define([
                     label: 'Edit'
                 }
             ],
+            // Accounts part
+            'accounts': [
+                {
+                    label: 'Accounts'
+                }
+            ],
+            'accounts/:id': [
+                {
+                    label: 'Accounts',
+                    href: '#accounts'
+                },
+                {
+                    label: '<%= id %>'
+                }
+            ],
             // Settings part
             'settings': [
                 {

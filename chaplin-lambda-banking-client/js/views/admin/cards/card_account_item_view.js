@@ -11,7 +11,7 @@ define([
     var CardAccountItemView = View.extend({
         template: template,
 
-        tagName: 'li',
+        tagName: 'tr',
 
         initialize: function(options) {
             var view = this;

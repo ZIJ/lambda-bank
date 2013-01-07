@@ -28,9 +28,18 @@ define([
             view.delegate('click', 'input', view.onSwitchSessionStorage);
         },
 
+        afterRender: function() {
+            var view = this;
+
+            SettingsView.__super__.afterRender.apply(view);
+
+            // TODO: TEMP: 'useSessionStorage' flag should be passed from settings_controller by event
+            view.$('#session').prop('checked', mediator.user.get('provider').useSessionStorage);
+        },
+
         onSwitchSessionStorage: function() {
             var view = this,
-                $checkbox = view.$('input');
+                $checkbox = view.$('#session');
 
             if ($checkbox.prop('checked') === true) {
                 mediator.publish('!switchUseSessionStorage', true);

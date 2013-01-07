@@ -40,8 +40,6 @@ F:\Source Code\lambda-bank\service\BankEntities\obj\Debug\BankEntities.dll
 F:\Source Code\lambda-bank\service\BankEntities\obj\Debug\BankEntities.pdb
 D:\Source Code\lambda-bank\service\BankEntities\bin\Debug\ExRatesBy.dll
 D:\Source Code\lambda-bank\service\BankEntities\bin\Debug\ExRatesBy.pdb
-F:\Source Code\lambda-bank\service\BankEntities\bin\Debug\ExRatesBy.dll
-F:\Source Code\lambda-bank\service\BankEntities\bin\Debug\ExRatesBy.pdb
 C:\Users\s.gil\Documents\GitHub\lambda-bank\service\BankEntities\obj\Debug\BankEntities.csprojResolveAssemblyReference.cache
 C:\Users\s.gil\Documents\GitHub\lambda-bank\service\BankEntities\bin\Debug\BankEntities.dll.config
 C:\Users\s.gil\Documents\GitHub\lambda-bank\service\BankEntities\bin\Debug\BankEntities.dll

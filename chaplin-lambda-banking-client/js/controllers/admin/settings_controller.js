@@ -6,6 +6,8 @@ define([
 ], function(Chaplin, _, Controller, SettingsView) {
     'use strict';
 
+    var mediator = Chaplin.mediator;
+
     var SettingsController = Controller.extend({
 
         title: 'Settings',
@@ -13,7 +15,7 @@ define([
         initialize: function(params) {
             var controller = this;
 
-            // TODO: hard-coded 'true' default value for useSessionStorage flag (even in template)
+            // TODO: hard-coded 'true' default value for useSessionStorage flag in banking_provider
 
         },
 
@@ -22,7 +24,6 @@ define([
 
             controller.view = new SettingsView();
         }
-
     });
 
     return SettingsController;

@@ -6,8 +6,8 @@
             <a class="close" data-dismiss="alert" href="#">×</a>Incorrect Username or Password!
         </div>
         <form method="POST" action="" accept-charset="UTF-8">
-            <input type="text" id="username" name="username" placeholder="Username" value="{{username}}">
-            <input type="password" id="password" name="password" placeholder="Password" value="{{password}}">
+            <input type="text" id="username" name="username" placeholder="Username" value="{{username}}" required autofocus>
+            <input type="password" id="password" name="password" placeholder="Password" value="{{password}}" required>
             <button type="submit" name="submit" class="btn btn-primary btn-block" data-loading-text="Logging...">Sign in</button>
         </form>
     </div>

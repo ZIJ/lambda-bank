@@ -35,6 +35,7 @@ define([
 
             mediator.publish('!router:route', 'users/create');
         }
+
     });
 
 

@@ -37,32 +37,33 @@ define([
             view.subview('cardAccountsView').renderAllItems();
         },
 
-        onCardItemClick: function() {
+        onCardItemClick: function(event) {
+            var $eventTarget = $(event.target);
+            if ($eventTarget.is('input[type=checkbox]') || $eventTarget.is('td.check')) {
+                return;
+            }
+
             var view = this,
                 $expander = view.$('.expander'),
                 $expandable = view.$('.expandable'),
-                $expandableTd = $expandable.children('td'),
-                $expandableUl = $expandableTd.children().first();
-
-            if ($expandableUl.length === 0) {
-                return;
-            }
-            if ($expandableUl.is(':visible')) {
-                $expandableTd.stop(true).animate({'padding': 0}, function() {
-                    $expandableTd.css('padding', $expandableTd.css('padding'));
-                });
-                $expandableUl.stop(true).slideUp(function() {
-                    $(this).parent().parent().hide();
+                $expandableDiv = $expandable.find('div');
+            // if ($expandableUl.length === 0) {
+            //     return;
+            // }
+            if($expandable.is(":visible"))
+            {
+                $expandableDiv.stop(true).slideUp(function(){
+                    $expandable.stop(true).hide();
                     $expander.prop('title', 'Expand');
                 });
-                return;
             }
-            $expandable.show();
-            $expandableTd.css('padding', 0);
-            $expandableTd.stop(true).animate({'padding': $expandableTd.css('padding')});
-            $expandableUl.stop(true).slideDown(function() {
-                $expander.prop('title', 'Collapse');
-            });
+            else
+            {
+                $expandable.stop(true).show();
+                $expandableDiv.stop(true).slideDown(function(){
+                    $expander.prop('title', 'Collapse');
+                });
+            }
         }
 
     });

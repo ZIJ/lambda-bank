@@ -5,10 +5,10 @@
         <dd><input type="text" placeholder="username" value="{{this.holder.firstName}} {{this.holder.lastName}}" disabled></dd>
         <dt class="card-new-type">Card Type</dt>
         <dd>
-            <select class="card-new-types" name="" id=""></select>
+            <select class="card-new-types" name="" id="" autofocus></select>
         </dd>
         <dt>Exp. date</dt>
-        <dd><input type="text" class="datepicker"></dd>
+        <dd><input type="text" class="datepicker" required></dd>
         <dt class="card-new-account-type">Account type</dt>
         <dd>
             <ul class="type card-new-account-types">
@@ -28,14 +28,14 @@
         </dd>
         <dt class="card-new-account">Account</dt>
         <dd>
-            <select class="card-new-accounts" name=""></select>
+            <select class="card-new-accounts currency" name=""></select>
         </dd>
         <dt class="card-new-currency">
             Currency
             <button class="card-new-currency-add" title="Add"><i class="icon-plus-sign"></i></button>
         </dt>
         <dd>
-            <select class="card-new-currencies" name=""></select>
+            <select class="card-new-currencies currency" name=""></select>
             <button class="card-new-currency-remove" title="Remove"><i class="icon-minus-sign"></i></button>
         </dd>
     </dl>

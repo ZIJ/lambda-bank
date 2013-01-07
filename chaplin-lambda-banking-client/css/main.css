@@ -39,6 +39,10 @@ input[disabled]+label {
     cursor: not-allowed;
 }
 
+input[type=number]:not(.account) {
+    width: 100px;
+}
+
 select.error {
     border-color: #e9322d;
     -webkit-box-shadow: 0 0 6px #f8b9b7;
@@ -306,7 +310,8 @@ table .expander:hover td:not(.check){
     background-color: #efe;
 }
 
-table .expandable {
+table .expandable,
+table .expandable div {
     display: none;
 }
 
@@ -315,14 +320,17 @@ table .expandable td {
     padding: 0;
 }
 
+table .expandable table td,
+table .expandable table th {
+    border-left: 0;
+}
+
 table .expandable .accounts,
 table .expandable .cards,
 table .expandable .payment {
-    display: none;
     list-style: none;
     margin: 0;
     padding: 0;
-    border-bottom: 1px solid #ddd;
 }
 
 table .expandable .accounts>li,
@@ -384,7 +392,7 @@ table .number {
 }
 
 table .holder {
-    width: 37%;
+    width: 27%;
 }
 
 table .expirationDate {
@@ -392,6 +400,10 @@ table .expirationDate {
 }
 
 table .type {
+    width: 10%;
+}
+
+table .state {
     width: 10%;
 }
 
@@ -413,14 +425,15 @@ table .expandable table td {
 }
 
 
-table.table-bordered .expandable table:not(:first-of-type) th {
-    border-top: 1px solid #bbb;
+.table-bordered table thead:first-child tr:first-child th, .table-bordered tbody:first-child tr:first-child th {
+    border-bottom: 1px solid #ddd;
 }
 
 table .expandable table .controls-container {
     padding: 0;
     width: 1%;
 }
+
 
 .user .form-actions {
     display: none;
@@ -479,15 +492,15 @@ table .expandable table .controls-container {
     -o-transition: all ease-in-out 0.3s;
     transition: all ease-in-out 0.3s;
     text-shadow: 0 1px 0 rgba(0, 0, 0, .3);
-    margin: -5px 0 0 0;
+    margin: -5px 0 10px 0;
 }
 
-.btn:hover {
+.btn:not([disabled]):hover {
     background: #0B98B8;
     color: #fff;
 }
 
-.btn:active {
+.btn:not([disabled]):active {
     background: #09829E;
     color: #fff;
     box-shadow: 0 2px 0 0 #075F73,
@@ -510,18 +523,25 @@ table .expandable table .controls-container {
     border: 0;
 }
 
+.btn-link[disabled],
+.btn-link[disabled]:hover,
+.btn-link[disabled]:active {
+    color: grey;
+}
+
 .btn.btn-danger {
     background: #D22C24;
     box-shadow: 0 5px 0 0 #9E211B,
     0 5px 10px 0 rgba(0, 0, 0, .5);
 }
 
-.btn.btn-danger:active {
+.btn.btn-danger:not([disabled]):active {
+    background: #D22C24;
     box-shadow: 0 2px 0 0 #9E211B,
     0 2px 2px 0 rgba(0, 0, 0, .5);
 }
 
-.btn.btn-danger:hover {
+.btn.btn-danger:not([disabled]):hover {
     background: #EB3228;
 }
 
@@ -531,11 +551,12 @@ table .expandable table .controls-container {
     0 5px 10px 0 rgba(0, 0, 0, .5);
 }
 
-.btn.btn-primary:hover {
+.btn.btn-primary:not([disabled]):hover {
     background: #1270B8;
 }
 
-.btn.btn-primary:active {
+.btn.btn-primary:not([disabled]):active {
+    background: #10609E;
     box-shadow: 0 2px 0 0 #0B416B,
     0 2px 2px 0 rgba(0, 0, 0, .5);
 }
@@ -546,13 +567,19 @@ table .expandable table .controls-container {
     0 5px 10px 0 rgba(0, 0, 0, .5);
 }
 
-.btn.btn-warning:hover {
+.btn.btn-warning:not([disabled]):hover {
     background: #FFC141;
 }
 
-.btn.btn-warning:active {
+.btn.btn-warning:not([disabled]):active {
+    background: #E5AC39;
     box-shadow: 0 2px 0 0 #B2862D,
     0 2px 2px 0 rgba(0, 0, 0, .5);
+}
+
+.btn[disabled],
+.btn-link[disabled] {
+    cursor: not-allowed;
 }
 
 /*

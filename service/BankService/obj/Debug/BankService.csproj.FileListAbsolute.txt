@@ -58,3 +58,5 @@ C:\Users\s.gil\Documents\GitHub\lambda-bank\service\BankService\bin\EntityFramew
 C:\Users\s.gil\Documents\GitHub\lambda-bank\service\BankService\bin\ExRatesBy.pdb
 C:\Users\s.gil\Documents\GitHub\lambda-bank\service\BankService\obj\Debug\BankService.dll
 C:\Users\s.gil\Documents\GitHub\lambda-bank\service\BankService\obj\Debug\BankService.pdb
+F:\Source Code\lambda-bank\service\BankService\bin\BankSystem.dll
+F:\Source Code\lambda-bank\service\BankService\bin\BankSystem.pdb
