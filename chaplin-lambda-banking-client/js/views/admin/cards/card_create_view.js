@@ -244,7 +244,6 @@ define([
             mediator.publish('!router:route', 'users/' + view.model.get('holder').id);
         },
 
-
         // TODO: All TEMPORARY $* methods evidence that we need subviews for each of these components
 
         $getUserAccounts: function(accounts) {

@@ -373,7 +373,7 @@
         self._onInputChange = function(e)
         {
             if (hasMoment) {
-                self.setDate(window.moment(opts.field.value, opts.format).toDate());
+                self.setDate(window.moment(opts.field.value === '' ? 'xxx' : opts.field.value, opts.format).toDate());
             }
             else {
                 var date = new Date(Date.parse(opts.field.value));

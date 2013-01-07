@@ -25,7 +25,7 @@ define([
 
             UserCardsView.__super__.initialize.apply(view, arguments);
 
-            view.delegate('click', '.btn-link', view.onAddNewCardClick);
+            view.delegate('click', '.btn.add-card', view.onAddNewCardClick);
         },
 
         onAddNewCardClick: function(userId) {
