@@ -57,7 +57,8 @@ define([
 //            view.model.destroy();
 //        },
 
-        onSaveClick: function() {
+        onSaveClick: function(e) {
+            e.preventDefault();
             var view = this,
                 options = {
                     attributesToSave: {
@@ -69,37 +70,37 @@ define([
                 };
 
 
-        var passport_input = $('input[data-validate="passport"]');
-        console.log(passport_input);
-        passport_input.popover({title:function(){return '';}});
-        var val = passport_input.val();
-        var re = new RegExp(passport_input.prop('pattern'));
-        var result = re.exec(val);
-        if(passport_input.is(':valid'))
-        {
-            var checksumm = Number(result[5]);
-            var summ = 0;
-            var multiplyer = 1;
-            var numbers = numerize(val);
-            for (var i = 0; i < numbers.length - 1; i++) {
-                multiplyer = weight[i%weight.length];
-                summ += numbers[i] * multiplyer;
-            }
-            var result = summ%10;
-            if ( result !== checksumm )
+            var passport_input = $('input[data-validate="passport"]');
+            console.log(passport_input);
+            passport_input.popover({title:function(){return '';}});
+            var val = passport_input.val();
+            var re = new RegExp(passport_input.prop('pattern'));
+            var result = re.exec(val);
+            if(passport_input.is(':valid'))
             {
-                
-                passport_input.popover('show');
-                passport_input.on('input',function(){
-                    passport_input.popover('hide'); //test that shit
-                });
-                return;
+                var checksumm = Number(result[5]);
+                var summ = 0;
+                var multiplyer = 1;
+                var numbers = numerize(val);
+                for (var i = 0; i < numbers.length - 1; i++) {
+                    multiplyer = weight[i%weight.length];
+                    summ += numbers[i] * multiplyer;
+                }
+                var result = summ%10;
+                if ( result !== checksumm )
+                {
+                    
+                    passport_input.popover('show');
+                    passport_input.on('input',function(){
+                        passport_input.popover('hide'); //test that shit
+                    });
+                    return;
+                }
+                else 
+                {
+                    passport_input.popover('hide');
+                }
             }
-            else 
-            {
-                passport_input.popover('hide');
-            }
-        }
 
             mediator.publish('!saveUser', options);
         },

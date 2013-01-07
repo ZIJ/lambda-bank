@@ -197,7 +197,8 @@ define([
             });
         },
 
-        onSaveClick: function() {
+        onSaveClick: function(e) {
+            e.preventDefault();
             var view = this;
 
             if (view.$('.error').length !== 0) {
