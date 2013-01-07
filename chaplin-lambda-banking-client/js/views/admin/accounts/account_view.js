@@ -28,15 +28,17 @@ define([
         },
 
         onReplenishClick: function() {
-            var view = this;
+            var view = this,
+                amount = parseFloat(view.$('input[type=number]').val());
 
-
+            mediator.publish('!replenish', amount);
         },
 
         onWithdrawClick: function() {
-            var view = this;
+            var view = this,
+                amount = parseFloat(view.$('input[type=number]').val());
 
-
+            mediator.publish('!withdraw', amount);
         }
     });
 

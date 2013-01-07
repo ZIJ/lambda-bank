@@ -21,11 +21,12 @@ define([
         initialize: function(params) {
             var controller = this;
 
-//            _.bindAll(controller, 'triggerSaveCard');
+            _.bindAll(controller, 'triggerReplenish', 'triggerWithdraw');
 
             AccountsController.__super__.initialize.apply(controller, arguments);
 
-//            controller.subscribeEvent('!saveCard', controller.triggerSaveCard);
+            controller.subscribeEvent('!replenish', controller.triggerReplenish);
+            controller.subscribeEvent('!withdraw', controller.triggerWithdraw);
         },
 
         index: function(params) {
@@ -53,6 +54,50 @@ define([
                     controller.view = new AccountView({
                         model: controller.model
                     });
+                }
+            });
+        },
+
+        triggerReplenish: function(amount) {
+            var controller = this;
+
+            mediator.user.get('provider').apiRequest({
+                url: 'admin/accounts/replenish',
+                data: {
+                    id: controller.model.id,
+                    amount: amount
+                },
+                success: function(response) {
+                    controller.model.fetch({
+                        success: function() {
+                            controller.view.render();
+                        }
+                    });
+                },
+                error: function(jqXHR) {
+                    // TODO: implementation needed
+                }
+            });
+        },
+
+        triggerWithdraw: function(amount) {
+            var controller = this;
+
+            mediator.user.get('provider').apiRequest({
+                url: 'admin/accounts/withdraw',
+                data: {
+                    id: controller.model.id,
+                    amount: amount
+                },
+                success: function(response) {
+                    controller.model.fetch({
+                        success: function() {
+                            controller.view.render();
+                        }
+                    });
+                },
+                error: function(jqXHR) {
+                    // TODO: implementation needed
                 }
             });
         }
