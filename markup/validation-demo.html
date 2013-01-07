@@ -69,7 +69,7 @@
                             <dt>Passport id</dt>
                                 <dd><input type="text" pattern="^([0-9]{7})([a-zA-Z])([a-zA-Z0-9]{3})([a-zA-Z]{2})([0-9])$" placeholder="username" required title="Latin letters and digits only" data-validate="passport" rel="popover" data-content="Checksumm doesn't match!" data-trigger="manual"></dd>
                             <dt>Amount</dt>
-                                <dd><input type="text" pattern="^[0-9]*\,?[0-9]+$" min="1" max="9999999999" step="any" placeholder="floating point allowed with ," required title="Digits only. 1-9999"></dd>
+                                <dd><input type="number" pattern="^[0-9]*\,?[0-9]+$" min="1" max="9999999999" step="any" placeholder="floating point allowed with ," required title="Digits only. 1-9999"></dd>
                             <dt>Account</dt>
                             <dd>
                                 <select name="" id="" required class="error">
