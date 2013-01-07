@@ -146,8 +146,6 @@ define([
 
             if (controller.canFreezeCards === false) return;
 
-            controller.canFreezeCards = false;
-
             if (cardsIdsToFreeze.length === 0) {
                 mediator.publish('!alert', {
                     title: 'Warning!',
@@ -159,6 +157,8 @@ define([
                 return;
             }
 
+            controller.canFreezeCards = false;
+
             mediator.user.get('provider').apiRequest({
                 url: 'admin/cards/freeze',
                 data: {
@@ -166,10 +166,12 @@ define([
                 },
                 success: function(response) {
                     if (controller.view.cards) {
-                        controller.view.cards.fetch();
+                        controller.view.cards.fetch({
+                            success: function() {
+                                controller.canFreezeCards = true;
+                            }
+                        });
                     }
-                    // TODO: should be inside success callback of fetch above
-                    controller.canFreezeCards = true;
                 },
                 error: function(jqXHR) {
                     controller.canFreezeCards = true;
@@ -183,8 +185,6 @@ define([
 
             if (controller.canFreezeCards === false) return;
 
-            controller.canFreezeCards = false;
-
             if (cardsIdsToUnfreeze.length === 0) {
                 mediator.publish('!alert', {
                     title: 'Warning!',
@@ -196,6 +196,8 @@ define([
                 return;
             }
 
+            controller.canFreezeCards = false;
+
             mediator.user.get('provider').apiRequest({
                 url: 'admin/cards/unfreeze',
                 data: {
@@ -203,10 +205,12 @@ define([
                 },
                 success: function(response) {
                     if (controller.view.cards) {
-                        controller.view.cards.fetch();
+                        controller.view.cards.fetch({
+                            success: function() {
+                                controller.canFreezeCards = true;
+                            }
+                        });
                     }
-                    // TODO: should be inside success callback of fetch above
-                    controller.canFreezeCards = true;
                 },
                 error: function(jqXHR) {
                     controller.canFreezeCards = true;

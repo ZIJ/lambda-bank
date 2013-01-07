@@ -21,6 +21,10 @@ define([
 
         title: 'Cards',
 
+        // TODO: for preventing multiple fast clicks
+        canSaveCard: true,
+        canFreezeCards: true,
+
         initialize: function(params) {
             var controller = this;
 
@@ -103,12 +107,16 @@ define([
         triggerSaveCard: function(options) {
             var controller = this;
 
+            controller.canSaveCard = false;
+
             controller.model.save({
                 attributesToSave: options.attributesToSave,
                 success: function() {
                     mediator.publish('!router:route', 'users/' + controller.model.get('holder').id);
+                    controller.canSaveCard = true;
                 },
                 error: function() {
+                    controller.canSaveCard = true;
                     // TODO: implementation needed
                 }
             });
@@ -116,6 +124,8 @@ define([
 
         triggerFreezeCards: function(cardsIdsToFreeze) {
             var controller = this;
+
+            if (controller.canFreezeCards === false) return;
 
             if (cardsIdsToFreeze.length === 0) {
                 mediator.publish('!alert', {
@@ -128,6 +138,8 @@ define([
                 return;
             }
 
+            controller.canFreezeCards = false;
+
             mediator.user.get('provider').apiRequest({
                 url: 'admin/cards/freeze',
                 data: {
@@ -135,10 +147,15 @@ define([
                 },
                 success: function(response) {
                     if (controller.collection) {
-                        controller.collection.fetch();
+                        controller.collection.fetch({
+                            success: function() {
+                                controller.canFreezeCards = true;
+                            }
+                        });
                     }
                 },
                 error: function(jqXHR) {
+                    controller.canFreezeCards = true;
                     // TODO: implementation needed
                 }
             });
@@ -146,6 +163,8 @@ define([
 
         triggerUnfreezeCards: function(cardsIdsToUnfreeze) {
             var controller = this;
+
+            if (controller.canFreezeCards === false) return;
 
             if (cardsIdsToUnfreeze.length === 0) {
                 mediator.publish('!alert', {
@@ -165,10 +184,15 @@ define([
                 },
                 success: function(response) {
                     if (controller.collection) {
-                        controller.collection.fetch();
+                        controller.collection.fetch({
+                            success: function() {
+                                controller.canFreezeCards = true;
+                            }
+                        });
                     }
                 },
                 error: function(jqXHR) {
+                    controller.canFreezeCards = true;
                     // TODO: implementation needed
                 }
             });
