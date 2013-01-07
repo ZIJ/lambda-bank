@@ -84,7 +84,12 @@ define([
         },
 
         triggerSaveUser: function(options) {
-            var controller = this;
+            var controller = this,
+                isCreate = false;
+
+            if (typeof controller.model.id === 'undefined' || controller.model.id === null) {
+                isCreate = true;
+            }
 
             controller.model.save({
                 attributesToSave: options.attributesToSave,

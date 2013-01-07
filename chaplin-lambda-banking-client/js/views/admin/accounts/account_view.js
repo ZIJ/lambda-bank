@@ -19,11 +19,24 @@ define([
         initialize: function(options) {
             var view = this;
 
-//            _.bindAll(view, 'onEditClick'); // 'onDeleteClick'
+            _.bindAll(view, 'onReplenishClick', 'onWithdrawClick');
 
             AccountView.__super__.initialize.apply(view, arguments);
 
-//            view.delegate('click', '.btn.edit', view.onEditClick);
+            view.delegate('click', '.btn.replenish', view.onReplenishClick);
+            view.delegate('click', '.btn.withdraw', view.onWithdrawClick);
+        },
+
+        onReplenishClick: function() {
+            var view = this;
+
+
+        },
+
+        onWithdrawClick: function() {
+            var view = this;
+
+
         }
     });
 
