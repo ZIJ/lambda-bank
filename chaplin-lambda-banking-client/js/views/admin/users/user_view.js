@@ -25,12 +25,13 @@ define([
         initialize: function(options) {
             var view = this;
 
-            _.bindAll(view, 'onEditClick'); // 'onDeleteClick'
+            _.bindAll(view, 'onEditClick', 'onGenerateCredentialsClick'); // 'onDeleteClick'
 
             UserView.__super__.initialize.apply(view, arguments);
 
             view.delegate('click', '.btn.edit', view.onEditClick);
 //            view.delegate('click', '.btn.delete', view.onDeleteClick);
+            view.delegate('click', '.btn.credentials', view.onGenerateCredentialsClick);
 
             //TODO: TEMP, shouldn't be created inside this view, maybe do it with the help of deferreds like in card_create_view
             view.cards = new CardsCollection([], {
@@ -87,7 +88,13 @@ define([
             var view = this;
 
             mediator.publish('!router:route', 'users/' + view.model.id + '/edit');
-        }//,
+        },
+
+        onGenerateCredentialsClick: function() {
+            var view = this;
+
+            mediator.publish('!generateCredentials');
+        }
 
 //        onDeleteClick: function() {
 //            var view = this;

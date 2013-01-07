@@ -176,9 +176,16 @@ define([
 
         triggerLoadUserAccounts: function() {
             var controller = this,
-                accounts = new AccountsCollection([], {
-                    user: controller.model.get('holder')
-                });
+                userId = controller.model.get('holder').id;
+
+            if (!userId && userId !== 0) {
+                mediator.publish('userAccountsLoaded', []);
+                return;
+            }
+
+            var accounts = new AccountsCollection([], {
+                userId: controller.model.get('holder').id
+            });
 
             accounts.fetch({
                 success: function() {

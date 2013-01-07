@@ -17,14 +17,21 @@ define([
 
         title: 'Users',
 
+        // TODO: for preventing multiple fast clicks
+        canSaveUser: true,
+        canGenerateCredentials: true,
+        canFreezeCards: true,
+
         initialize: function(params) {
             var controller = this;
 
-            _.bindAll(controller, 'triggerSaveUser', 'triggerFreezeCards', 'triggerUnfreezeCards');
+            _.bindAll(controller, 'triggerSaveUser', 'triggerGenerateCredentials', 'triggerFreezeCards', 'triggerUnfreezeCards');
 
             UsersController.__super__.initialize.apply(controller, arguments);
 
             controller.subscribeEvent('!saveUser', controller.triggerSaveUser);
+
+            controller.subscribeEvent('!generateCredentials', controller.triggerGenerateCredentials);
 
             // TODO: duplicated from cards_controller
             controller.subscribeEvent('!freezeCards', controller.triggerFreezeCards);
@@ -84,28 +91,62 @@ define([
         },
 
         triggerSaveUser: function(options) {
-            var controller = this,
-                isCreate = false;
+            var controller = this;
 
-            if (typeof controller.model.id === 'undefined' || controller.model.id === null) {
-                isCreate = true;
-            }
+            if (controller.canSaveUser === false) return;
+
+            controller.canSaveUser = false;
 
             controller.model.save({
                 attributesToSave: options.attributesToSave,
                 success: function() {
                     mediator.publish('!router:route', 'users/' + controller.model.id);
+                    controller.canSaveUser = true;
                 },
                 error: function() {
+                    controller.canSaveUser = true;
                     // TODO: implementation needed
                 }
             });
         },
 
+        triggerGenerateCredentials: function() {
+            var controller = this;
+
+            if (controller.canGenerateCredentials === false) return;
+
+            controller.canGenerateCredentials = false;
+
+            mediator.user.get('provider').apiRequest({
+                url: 'admin/users/addinternetbankingrole',
+                data: {
+                    id: controller.model.id
+                },
+                success: function(response) {
+                    mediator.publish('!alert', {
+                        title: 'New credentials!',
+                        type: 'info',
+                        text: 'login:' + response['Login'] +'\npassword:' + response['Password'],
+                        action: 'Ok',
+                        actionCallback: function() {},
+                        cancelCallback: function() {}
+                    });
+                    controller.canGenerateCredentials = true;
+                },
+                error: function(jqXHR) {
+                    controller.canGenerateCredentials = true;
+                    // TODO: implementation needed
+                }
+            });
+        },
 
         // TODO: duplicated from cards_controller, hard-coded to use controller.view.cards collections, rework it!
         triggerFreezeCards: function(cardsIdsToFreeze) {
             var controller = this;
+
+            if (controller.canFreezeCards === false) return;
+
+            controller.canFreezeCards = false;
 
             if (cardsIdsToFreeze.length === 0) {
                 mediator.publish('!alert', {
@@ -127,8 +168,11 @@ define([
                     if (controller.view.cards) {
                         controller.view.cards.fetch();
                     }
+                    // TODO: should be inside success callback of fetch above
+                    controller.canFreezeCards = true;
                 },
                 error: function(jqXHR) {
+                    controller.canFreezeCards = true;
                     // TODO: implementation needed
                 }
             });
@@ -136,6 +180,10 @@ define([
 
         triggerUnfreezeCards: function(cardsIdsToUnfreeze) {
             var controller = this;
+
+            if (controller.canFreezeCards === false) return;
+
+            controller.canFreezeCards = false;
 
             if (cardsIdsToUnfreeze.length === 0) {
                 mediator.publish('!alert', {
@@ -157,8 +205,11 @@ define([
                     if (controller.view.cards) {
                         controller.view.cards.fetch();
                     }
+                    // TODO: should be inside success callback of fetch above
+                    controller.canFreezeCards = true;
                 },
                 error: function(jqXHR) {
+                    controller.canFreezeCards = true;
                     // TODO: implementation needed
                 }
             });

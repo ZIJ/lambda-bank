@@ -52,12 +52,25 @@ define([
         },
 
         afterRender: function() {
-            var view = this;
+            var view = this,
+                accountsAvailable = false;
 
             CardCreateView.__super__.afterRender.apply(view);
 
             view.userAccountsDef.done(function(accounts) {
-                view.$('.card-new-accounts').html(view.$getUserAccounts(accounts));
+                if (accounts.length !== 0) {
+                    view.$('.card-new-accounts').html(view.$getUserAccounts(accounts));
+                    accountsAvailable = true;
+                }
+
+                // TODO: initial setup
+                if (accountsAvailable === true) {
+                    view.$('#type_existing').prop('checked', 'checked');
+                } else {
+                    view.$('#type_existing').prop('disabled', true);
+                    view.$('#type_single').prop('checked', 'checked');
+                }
+                view.$('.card-new-account-types').change();
             });
             view.currenciesDef.done(function(currencies) {
                 view.$('.card-new-currencies').html(view.$getCurrencies(currencies));
@@ -69,12 +82,10 @@ define([
             view.$('.datepicker').pikaday({
                 format: 'DD.MM.YYYY',
                 defaultDate: moment().add('years', 3).toDate(), // TODO: hard-coded to current + 3 years
-                setDefaultDate: true
+                setDefaultDate: true,
+                minDate: moment().add('years', 1).toDate(),
+                maxDate: moment().add('years', 5).toDate()
             });
-
-            // TODO: initial setup
-            view.$('#type_existing').prop('checked', 'checked');
-            view.$('.card-new-account-types').change();
         },
 
 
@@ -187,8 +198,13 @@ define([
         },
 
         onSaveClick: function() {
-            var view = this,
-                options = {
+            var view = this;
+
+            if (view.$('.error').length !== 0) {
+                return;
+            }
+
+            var options = {
                     attributesToSave: {
                         type: parseInt(view.$('.card-new-types').children('option:selected').val()),
                         expirationDate: moment(view.$('.datepicker').val(), 'DD.MM.YYYY')
