@@ -29,6 +29,7 @@ define([
 
         onLogoutClick: function() {
             var view = this;
+            $('.popover').remove();
 
             mediator.publish("!logout", "banking");
         }
