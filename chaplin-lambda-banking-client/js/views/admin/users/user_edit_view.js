@@ -24,7 +24,7 @@ define([
 
             UserEditView.__super__.initialize.apply(view, arguments);
 
-            view.delegate('click', '.btn.save', view.onSaveClick);
+            view.delegate('submit', '.btn.save', view.onSaveClick);
             view.delegate('click', '.btn.cancel', view.onCancelClick);
 
 //            view.delegate('click', '.btn.delete', view.onDeleteClick);
