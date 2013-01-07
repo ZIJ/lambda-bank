@@ -49,12 +49,10 @@
                 <ul class="well nav nav-list">
                     <li class="nav-header">Main</li>
                     <li class="active"><a href="#"><i class="icon-home icon-white"></i> Home</a></li>
-                    <li><a href="#"><i class="icon-user"></i> Users <span class="badge badge-info">4</span></a></li>
-                    <li><a href="#"><i class="glyphicon-credit-card"></i> Cards <span class="badge badge-info">4</span></a></li>
-                    <li><a href="#"><i class="icon-list"></i> Accounts <span class="badge badge-info">4</span></a></li>
-                    <li><a href="#"><i class="icon-wrench"></i> Settings <span class="badge badge-info">4</span></a></li>
-                    <li class="divider"></li>
-                    <li><a href="#"><i class="i"></i> Misc</a></li>
+                    <li><a href="#"><i class="glyphicon-credit-card"></i> Cards</a></li>
+                    <li><a href="#"><i class="icon-play"></i> Payments</a></li>
+                    <li><a href="#"><i class="icon-time"></i> Scheduled payments</a></li>
+                    <li><a href="#"><i class="icon-star"></i> Favourite payments</a></li>
                 </ul>
             </aside>
             <div class="span10">
@@ -66,36 +64,38 @@
                         <a class="close" data-dismiss="alert" href="#">×</a>One should select target first!
                     </div>
                            
-                    <div class="step well">   
-                        <dl class="data-fields clearfix">
-                            <dt>Account</dt>
-                            <dd class="card">
-                                <dl>
-                                    <dt>card #133513</dt>
-                                    <dd><input type="radio" name="account" id="1" checked><label for="1">account #123123124</label> <span class="balance">$100</span></dd>
-                                    <dd><input type="radio" name="account" id="2"><label for="2">account #513435454</label> <span class="balance">€200</span></dd>
-                                </dl>
-                            </dd>
-                            <dd class="card error" title="This card is expired and can't be used">
-                                <dl>
-                                    <dt>card #133513 <span class="label label-important">Expired!</span></dt>
-                                    <dd><input type="radio" name="account" id="3" disabled><label for="3">account #123123124</label></dd>
-                                    <dd><input type="radio" name="account" id="4" disabled><label for="4">account #513435454</label></dd>
-                                </dl>
-                            </dd>
-                            <dd class="card error" title="This card is frozen and can't be used">
-                                <dl>
-                                    <dt>card #133513 <span class="label label-important">Frozen!</span></dt>
-                                    <dd><input type="radio" name="account" id="5" disabled><label for="5">account #123123124</label></dd>
-                                    <dd><input type="radio" name="account" id="6" disabled><label for="6">account #513435454</label></dd>
-                                </dl>
-                            </dd>
-                        </dl>
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" class="btn cancel">Cancel</button>
-                        <button type="submit" class="btn btn-primary next">Next</button>
-                    </div>
+                    <form action="">
+                        <div class="step well">   
+                            <dl class="data-fields clearfix">
+                                <dt>Account</dt>
+                                <dd class="card">
+                                    <dl>
+                                        <dt>card #133513</dt>
+                                        <dd><input type="radio" name="account" id="1" checked><label for="1">account #123123124</label> <span class="balance">$100</span></dd>
+                                        <dd><input type="radio" name="account" id="2"><label for="2">account #513435454</label> <span class="balance">€200</span></dd>
+                                    </dl>
+                                </dd>
+                                <dd class="card error" title="This card is expired and can't be used">
+                                    <dl>
+                                        <dt>card #133513 <span class="label label-important">Expired!</span></dt>
+                                        <dd><input type="radio" name="account" id="3" disabled><label for="3">account #123123124</label></dd>
+                                        <dd><input type="radio" name="account" id="4" disabled><label for="4">account #513435454</label></dd>
+                                    </dl>
+                                </dd>
+                                <dd class="card error" title="This card is frozen and can't be used">
+                                    <dl>
+                                        <dt>card #133513 <span class="label label-important">Frozen!</span></dt>
+                                        <dd><input type="radio" name="account" id="5" disabled><label for="5">account #123123124</label></dd>
+                                        <dd><input type="radio" name="account" id="6" disabled><label for="6">account #513435454</label></dd>
+                                    </dl>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn cancel">Cancel</button>
+                            <button type="submit" class="btn btn-primary next">Next</button>
+                        </div>
+                    </form>
                     
                     <!-- DONT USE SUCH A METHOD IN PRODUCTION!!! -->
                     <br>
@@ -103,59 +103,68 @@
                     <br>
                     <!-- DONT USE SUCH A METHOD IN PRODUCTION!!! -->
                     
-                    <div class="step well">
-                        <dl class="data-fields clearfix">
-                            <dt>Target</dt>
-                            <dd>
-                                <ul class="treeview">
-                                    <li>
-                                        <input type="checkbox" id="cell"><label for="cell">Cellular network</label>
-                                        <ul>
-                                            <li><input type="radio" id="velcom" name="payment_target"><label for="velcom">Velcom</label></li>
-                                            <li><input type="radio" id="MTS" name="payment_target"><label for="MTS">MTS</label></li>
-                                            <li><input type="radio" id="life" name="payment_target"><label for="life">Life:)</label></li>
-                                            <li><input type="radio" id="diallog" name="payment_target"><label for="diallog">Diallog</label></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <input type="checkbox" id="mcpn"><label for="mcpn">MCPN</label>
-                                        <ul>
-                                            <li><input type="radio" id="btc" name="payment_target"><label for="btc">Beltelecom</label></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <input type="checkbox" id="util"><label for="util">Utilities</label>
-                                        <ul>
-                                            <li><input type="radio" id="electricity" name="payment_target"><label for="electricity">Electricity</label></li>
-                                            <li><input type="radio" id="aqua" name="payment_target"><label for="aqua">Aqua</label></li>
-                                            <li><input type="radio" id="gas" name="payment_target"><label for="gas">Gas</label></li>
-                                            <li><input type="radio" id="utilities" name="payment_target"><label for="utilities">Utilities</label></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <input type="checkbox" id="internet"><label for="internet">Internet providers</label>
-                                        <ul>
-                                            <li><input type="radio" id="bn" name="payment_target"><label for="bn">Business Network</label></li>
-                                            <li><input type="radio" id="at" name="payment_target"><label for="at">Atlant Telecom</label></li>
-                                            <li><input type="radio" id="adsl" name="payment_target"><label for="adsl">ADSL.BY</label></li>
-                                        </ul>
-                                    </li>
-                                    <li>
-                                        <input type="checkbox" id="tickets"><label for="tickets">Tickets</label>
-                                        <ul>
-                                            <li><input type="radio" id="plane" name="payment_target"><label for="plane">Plane tickets</label></li>
-                                            <li><input type="radio" id="railway" name="payment_target"><label for="railway">Railway tickets</label></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </dd>
-                        </dl>
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" class="btn cancel">Cancel</button>
-                        <button type="button" class="btn btn-primary back">Back</button>
-                        <button type="submit" class="btn btn-primary next">Next</button>
-                    </div>
+                    <form action="">
+                        <div class="step well">
+                            <dl class="data-fields clearfix">
+                                <dt>Target</dt>
+                                <dd>
+                                    <ul class="treeview">
+                                        <li>
+                                            <input type="checkbox" id="cell"><label for="cell">Cellular network</label>
+                                            <ul>
+                                                <li><input type="radio" id="0" name="payment_target"><label for="0">Velcom</label></li>
+                                                <li><input type="radio" id="1" name="payment_target"><label for="1">MTS</label></li>
+                                                <li><input type="radio" id="2" name="payment_target"><label for="2">Life:)</label></li>
+                                                <li><input type="radio" id="3" name="payment_target"><label for="3">Diallog</label></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" id="mcpn"><label for="mcpn">MCPN</label>
+                                            <ul>
+                                                <li><input type="radio" id="4" name="payment_target"><label for="4">Beltelecom</label></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" id="util"><label for="util">Utilities</label>
+                                            <ul>
+                                                <li><input type="radio" id="5" name="payment_target"><label for="5">Electricity</label></li>
+                                                <li><input type="radio" id="6" name="payment_target"><label for="6">Aqua</label></li>
+                                                <li><input type="radio" id="7" name="payment_target"><label for="7">Gas</label></li>
+                                                <li><input type="radio" id="8" name="payment_target"><label for="8">Utilities</label></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" id="internet"><label for="internet">Internet providers</label>
+                                            <ul>
+                                                <li><input type="radio" id="9" name="payment_target"><label for="9">Business Network</label></li>
+                                                <li><input type="radio" id="10" name="payment_target"><label for="10">Atlant Telecom</label></li>
+                                                <li><input type="radio" id="11" name="payment_target"><label for="11">ADSL.BY</label></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" id="tickets"><label for="tickets">Tickets</label>
+                                            <ul>
+                                                <li><input type="radio" id="12" name="payment_target"><label for="12">Plane tickets</label></li>
+                                                <li><input type="radio" id="13" name="payment_target"><label for="13">Railway tickets</label></li>
+                                            </ul>
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" id="other"><label for="other">Other</label>
+                                            <ul>
+                                                <li><input type="radio" id="14" name="payment_target"><label for="14">Police fine</label></li>
+                                                <li><input type="radio" id="15" name="payment_target"><label for="15">Cosmos TV</label></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn cancel">Cancel</button>
+                            <button type="button" class="btn btn-primary back">Back</button>
+                            <button type="submit" class="btn btn-primary next">Next</button>
+                        </div>
+                    </form>
                     
                     <!-- DONT USE SUCH A METHOD IN PRODUCTION!!! -->
                     <br>
@@ -163,54 +172,56 @@
                     <br>
                     <!-- DONT USE SUCH A METHOD IN PRODUCTION!!! -->
                     
-                    <div class="step well">
-                        <p>Please, enter 10-digits account number.</p>
-                        <dl class="data-fields clearfix">
-                            <dt>Account</dt>
-                            <dd>
-                                <input type="text" placeholder="3569874549" autofocus required>
-                            </dd>
-                        </dl>
-                        <p>Please, enter 10-digits order number.</p>
-                        <dl class="data-fields clearfix">
-                            <dt>Order</dt>
-                            <dd>
-                                <input type="text" placeholder="3569874549" autofocus required>
-                            </dd>
-                        </dl>
-                        <p>Please, enter 10-digits fine number.</p>
-                        <dl class="data-fields clearfix">
-                            <dt>Fine</dt>
-                            <dd>
-                                <input type="text" placeholder="3569874549" autofocus required>
-                            </dd>
-                        </dl>
-                        <p>Please, enter 7-digits phone number.</p>
-                        <dl class="data-fields clearfix">
-                            <dt>Phone</dt>
-                            <dd>+375 17
-                                <input type="text" placeholder="3987454" autofocus required>
-                            </dd>
-                        </dl>
-                        <p>Please, enter 7-digits phone number.</p>
-                        <dl class="data-fields clearfix">
-                            <dt>Phone</dt>
-                            <dd>+375
-                                <select name="" id="code" class="code">
-                                    <option value="29">29</option>
-                                    <option value="44">44</option>
-                                    <option value="33">33</option>
-                                    <option value="25">25</option>
-                                </select>
-                                <input type="text" placeholder="3569874" autofocus required>
-                            </dd>
-                        </dl>
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" class="btn cancel">Cancel</button>
-                        <button type="button" class="btn btn-primary back">Back</button>
-                        <button type="submit" class="btn btn-primary next">Next</button>
-                    </div>
+                    <form action="">
+                        <div class="step well">
+                            <p>Please, enter 10-digits account number.</p>
+                            <dl class="data-fields clearfix">
+                                <dt>Account</dt>
+                                <dd>
+                                    <input type="number" placeholder="3569874549" min="1000000000" max="9999999999" autofocus required>
+                                </dd>
+                            </dl>
+                            <p>Please, enter 10-digits order number.</p>
+                            <dl class="data-fields clearfix">
+                                <dt>Order</dt>
+                                <dd>
+                                    <input type="number" placeholder="3569874549" min="1000000000" max="9999999999" autofocus required>
+                                </dd>
+                            </dl>
+                            <p>Please, enter 10-digits fine number.</p>
+                            <dl class="data-fields clearfix">
+                                <dt>Fine</dt>
+                                <dd>
+                                    <input type="number" placeholder="3569874549" min="1000000000" max="9999999999" autofocus required>
+                                </dd>
+                            </dl>
+                            <p>Please, enter 7-digits phone number.</p>
+                            <dl class="data-fields clearfix">
+                                <dt>Phone</dt>
+                                <dd>+375 17
+                                    <input type="number" placeholder="3987454" au min="1000000" max="9999999"tofocus required>
+                                </dd>
+                            </dl>
+                            <p>Please, enter 7-digits phone number.</p>
+                            <dl class="data-fields clearfix">
+                                <dt>Phone</dt>
+                                <dd>+375
+                                    <select name="" id="code" class="code">
+                                        <option value="29">29</option>
+                                        <option value="44">44</option>
+                                        <option value="33">33</option>
+                                        <option value="25">25</option>
+                                    </select>
+                                    <input type="number" min="1000000" max="9999999" placeholder="3569874" autofocus required>
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn cancel">Cancel</button>
+                            <button type="button" class="btn btn-primary back">Back</button>
+                            <button type="submit" class="btn btn-primary next">Next</button>
+                        </div>
+                    </form>
                     
                     <!-- DONT USE SUCH A METHOD IN PRODUCTION!!! -->
                     <br>
@@ -218,26 +229,68 @@
                     <br>
                     <!-- DONT USE SUCH A METHOD IN PRODUCTION!!! -->
 
-                                                  
-                    <div class="step well">
-                        <dl class="data-fields clearfix">
-                            <dt>Account holder</dt>
-                            <dd>Pupkin Zade</dd>
-                            <dt>Adress</dt>
-                            <dd>12-29 Kozlova str.</dd>
-                            <dt>Previous value</dt>
-                            <dd>100500 m<sup>3</sup></dd>
-                            <dt>Current rate</dt>
-                            <dd>1256$ per m<sup>3</sup></dd>
-                            <dt>Amount</dt>
-                            <dd><input type="text" value="100" autofocus required></dd>
-                        </dl>
-                    </div>
-                    <div class="form-actions">
-                        <button type="button" class="btn cancel">Cancel</button>
-                        <button type="button" class="btn btn-primary back">Back</button>
-                        <button type="submit" class="btn btn-warning proceed">Proceed</button>
-                    </div>
+                    
+                    <form action="">                              
+                        <div class="step well">
+                            <dl class="data-fields clearfix">
+                                <dt>Account holder</dt>
+                                <dd>Pupkin Zade</dd>
+                                <dt>Adress</dt>
+                                <dd>12-29 Kozlova str.</dd>
+                                <dt>Previous value</dt>
+                                <dd>100500 m<sup>3</sup></dd>
+                                <dt>Current rate</dt>
+                                <dd>1256$ per m<sup>3</sup></dd>
+                                <dt>Amount</dt>
+                                <dd><input type="text" pattern="^[0-9]*[,.]?[0-9]+$" placeholder="floating point allowed" required="" title="Digits only. 1-9999"></dd>
+                            </dl>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn cancel">Cancel</button>
+                            <button type="button" class="btn btn-primary back">Back</button>
+                            <button type="submit" class="btn btn-primary next">Next</button>
+                        </div>
+                    </form>
+                    
+                    <!-- DONT USE SUCH A METHOD IN PRODUCTION!!! -->
+                    <br>
+                    <br>
+                    <br>
+                    <!-- DONT USE SUCH A METHOD IN PRODUCTION!!! -->
+
+                         
+                    <form action="">
+                        <h1>Please, verify information below before we proceed</h1>
+                        <div class="step well">
+                            <dl class="data-fields clearfix">
+                                <dt>Card</dt>
+                                <dd>#1231315135</dd>
+                                <dt>Account</dt>
+                                <dd>#1232156456</dd>
+                                <dt>Amount</dt>
+                                <dd>256</dd>
+                                <dt>Currency</dt>
+                                <dd>BYR</dd>
+                                <dt>Target</dt>
+                                <dd>Velcom</dd>
+                                <dt>Target account</dt>
+                                <dd>295426598</dd>
+                                <dt>Account holder</dt>
+                                <dd>Pupkin Zade</dd>
+                                <dt>Adress</dt>
+                                <dd>12-29 Kozlova str.</dd>
+                                <dt>Previous value</dt>
+                                <dd>100500 m<sup>3</sup></dd>
+                                <dt>Current rate</dt>
+                                <dd>1256$ per m<sup>3</sup></dd>
+                            </dl>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn cancel">Cancel</button>
+                            <button type="button" class="btn btn-primary back">Back</button>
+                            <button type="submit" class="btn btn-warning proceed">Proceed</button>
+                        </div>
+                    </form>
                 </section>
             </div>
         </div>

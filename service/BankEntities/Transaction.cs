@@ -26,7 +26,23 @@ namespace BankEntities
 
 		public decimal FromAccountDelta { get; set; }
 
-		public Currency FromAccountCurrency { get; set; }
+		public int DbStubFromAccountCurrency { get; set; }
+
+		public Currency FromAccountCurrency
+		{
+			get { return (Currency)DbStubFromAccountCurrency; }
+			set { DbStubFromAccountCurrency = (int)value; }
+		}
+
+		public int DbStubTransactionCurrency { get; set; }
+
+		public Currency TransactionCurrency
+		{
+			get { return (Currency)DbStubTransactionCurrency; }
+			set { DbStubTransactionCurrency = (int)value; }
+		}
+
+		public decimal TransactionAmount { get; set; }
 		
 		//To
 		public Guid ToBank { get; set; }
@@ -40,7 +56,13 @@ namespace BankEntities
 
 		public decimal ToAccountDelta { get; set; }
 
-		public Currency ToAccountCurrency { get; set; }
+		public int DbStubToAccountCurrency { get; set; }
+
+		public Currency ToAccountCurrency
+		{
+			get { return (Currency)DbStubToAccountCurrency; }
+			set { DbStubToAccountCurrency = (int)value; }
+		}
 		
 		public TransactionState State { get; set; }
 

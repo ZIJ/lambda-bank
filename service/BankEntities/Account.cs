@@ -24,8 +24,13 @@ namespace BankEntities
 				return string.Format("435983{0:0000000}", ID);
 			}
 		}
+		public int DbStubCurrency { get; set; }
 
-		public Currency Currency { get; set; }
+		public Currency Currency
+		{
+			get { return (Currency)DbStubCurrency; }
+			set { DbStubCurrency = (int)value; }
+		}
 
 		[Required]
 		public decimal Amount { get; set; }
@@ -33,6 +38,6 @@ namespace BankEntities
 		[IgnoreDataMember]
 		public virtual ICollection<Card> Cards { get; set; }
 
-		public BankUser Owner { get; set; }
+		public virtual BankUser Owner { get; set; }
 	}
 }

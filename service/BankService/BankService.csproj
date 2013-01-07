@@ -68,17 +68,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BankDaemon.cs" />
-    <Compile Include="LoginInfo.cs" />
     <Compile Include="WebService.svc.cs">
       <DependentUpon>WebService.svc</DependentUpon>
     </Compile>
     <Compile Include="IBankService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Web.Debug.config">
@@ -97,9 +93,6 @@
       <Project>{696718d5-c878-4065-9b8c-b6f1ba6213e3}</Project>
       <Name>BankSystem</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

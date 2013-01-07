@@ -7,6 +7,8 @@ namespace BankSystem
 {
 	public class PaymentRequisites
 	{
+		public int ID { get; set; }
+
 		public int AccountId { get; set; }
 
 		public decimal Amount { get; set; }

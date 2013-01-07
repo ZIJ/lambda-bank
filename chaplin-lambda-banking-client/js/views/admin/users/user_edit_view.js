@@ -7,11 +7,12 @@ define([
     'use strict';
 
     var mediator = Chaplin.mediator;
-
+    
+    var weight = [7,3,1];
     var digits = /^\d$/;
     var letters = /^[a-z]$/;
     function numerize(str) {
-      chars = str.toLowerCase().split('');
+      var chars = str.toLowerCase().split('');
       return chars.map(function(chr){
         if (letters.test(chr)) {
           return chr.charCodeAt(0) - 'a'.charCodeAt(0) + 10;
@@ -41,6 +42,9 @@ define([
 
             view.delegate('submit', 'form', view.onSaveClick);
             view.delegate('click', '.btn.cancel', view.onCancelClick);
+            view.modelBind('dispose', function(){
+                $('.popover').remove();
+            });
 
 //            view.delegate('click', '.btn.delete', view.onDeleteClick);
 
@@ -53,7 +57,8 @@ define([
 //            view.model.destroy();
 //        },
 
-        onSaveClick: function() {
+        onSaveClick: function(e) {
+            e.preventDefault();
             var view = this,
                 options = {
                     attributesToSave: {
@@ -65,37 +70,37 @@ define([
                 };
 
 
-        var passport_input = $('input[data-validate="passport"]');
-        console.log(passport_input);
-        passport_input.popover({title:function(){return '';}});
-        var val = passport_input.val();
-        var re = new RegExp(passport_input.prop('pattern'));
-        var result = re.exec(val);
-        if(passport_input.is(':valid'))
-        {
-            var checksumm = Number(result[5]);
-            var summ = 0;
-            var multiplyer = 1;
-            var numbers = numerize(val);
-            for (var i = 0; i < numbers.length - 1; i++) {
-                multiplyer = weight[i%weight.length];
-                summ += numbers[i] * multiplyer;
-            }
-            var result = summ%10;
-            if ( result !== checksumm )
+            var passport_input = $('input[data-validate="passport"]');
+            console.log(passport_input);
+            passport_input.popover({title:function(){return '';}});
+            var val = passport_input.val();
+            var re = new RegExp(passport_input.prop('pattern'));
+            var result = re.exec(val);
+            if(passport_input.is(':valid'))
             {
-                
-                passport_input.popover('show');
-                passport_input.on('input',function(){
-                    passport_input.popover('hide'); //test that shit
-                });
-                return;
+                var checksumm = Number(result[5]);
+                var summ = 0;
+                var multiplyer = 1;
+                var numbers = numerize(val);
+                for (var i = 0; i < numbers.length - 1; i++) {
+                    multiplyer = weight[i%weight.length];
+                    summ += numbers[i] * multiplyer;
+                }
+                var result = summ%10;
+                if ( result !== checksumm )
+                {
+                    
+                    passport_input.popover('show');
+                    passport_input.on('input',function(){
+                        passport_input.popover('hide'); //test that shit
+                    });
+                    return;
+                }
+                else 
+                {
+                    passport_input.popover('hide');
+                }
             }
-            else 
-            {
-                passport_input.popover('hide');
-            }
-        }
 
             mediator.publish('!saveUser', options);
         },

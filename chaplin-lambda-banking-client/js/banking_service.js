@@ -159,7 +159,7 @@
                     },
                     error: function(jqXHR) {
                         switch (jqXHR.status) {
-                            case 401:
+                            case 477:
                                 service.accessToken = '';
                                 service.stopLoginStatusDaemon();
                                 service.trigger('auth.logout');

@@ -1,4 +1,3 @@
-F:\Source Code\lambda-bank\service\ExRatesBy\obj\Debug\ExRatesBy.csprojResolveAssemblyReference.cache
 F:\Source Code\lambda-bank\service\ExRatesBy\bin\Debug\ExRatesBy.dll.config
 F:\Source Code\lambda-bank\service\ExRatesBy\bin\Debug\ExRatesBy.dll
 F:\Source Code\lambda-bank\service\ExRatesBy\bin\Debug\ExRatesBy.pdb
