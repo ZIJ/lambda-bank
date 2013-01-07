@@ -7,11 +7,12 @@ define([
     'use strict';
 
     var mediator = Chaplin.mediator;
-
+    
+    var weight = [7,3,1];
     var digits = /^\d$/;
     var letters = /^[a-z]$/;
     function numerize(str) {
-      chars = str.toLowerCase().split('');
+      var chars = str.toLowerCase().split('');
       return chars.map(function(chr){
         if (letters.test(chr)) {
           return chr.charCodeAt(0) - 'a'.charCodeAt(0) + 10;
@@ -41,6 +42,9 @@ define([
 
             view.delegate('submit', 'form', view.onSaveClick);
             view.delegate('click', '.btn.cancel', view.onCancelClick);
+            view.modelBind('dispose', function(){
+                $('.popover').remove();
+            });
 
 //            view.delegate('click', '.btn.delete', view.onDeleteClick);
 
