@@ -22,7 +22,7 @@ define([
                 id: response['ID'],
                 number: response['AccountNumber'],
                 currency: response['Currency'],
-                amount: response['Amount']
+                amount: parseFloat(response['Amount']).toFixed(2)
 //                accounts: response['Accounts']
                 // TODO: add fetchable attributes parsers here
             };
