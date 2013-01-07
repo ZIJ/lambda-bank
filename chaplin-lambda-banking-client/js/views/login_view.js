@@ -32,12 +32,11 @@ define([
         },
 
         initButtons: function(serviceProviders) {
-            var view = this,
-                buttonSelector = '.btn[type="submit"]';
+            var view = this;
 
             _.each(serviceProviders, function (serviceProvider, serviceProviderName) {
                 var loginHandler = _(view.loginWith).bind(view, serviceProviderName, serviceProvider);
-                view.delegate('click', buttonSelector, loginHandler);
+                view.delegate('submit', 'form', loginHandler);
 
 //                    // TODO: we possibly need to manually clear handlers from deferred on view disposal
 //                    var loaded = _(view.serviceProviderLoaded).bind(view, serviceProviderName, serviceProvider);
