@@ -52,7 +52,6 @@ define([
             // }
             if($expandable.is(":visible"))
             {
-                console.log('hiding');
                 $expandableDiv.stop(true).slideUp(function(){
                     $expandable.stop(true).hide();
                     $expander.prop('title', 'Expand');
