@@ -8,11 +8,12 @@
     </dl>
     <h2>Operate</h2>
     <form action="">
-    <dl class="data-fields clearfix">
-        <dt>Amount</dt>
-        <dd><input type="text" pattern="^[0-9]*[,.]?[0-9]+$" placeholder="floating point allowed" required title="Digits only. 1-9999"></dd>
-    </dl>
-    <button class="btn btn-warning replenish"><i class="icon-plus-sign icon-white"></i> Replenish</button>
-    <button class="btn btn-warning withdraw"><i class="icon-minus-sign icon-white"></i> Withdraw</button>
+        <dl class="data-fields clearfix">
+            <dt>Amount</dt>
+            <dd><input type="text" pattern="^[0-9]*[,.]?[0-9]+$" placeholder="floating point allowed" required title="Digits only. 1-9999"></dd>
+        </dl>
+        <input type="hidden" id="submitter">
+        <button type="submit" class="btn btn-warning replenish"><i class="icon-plus-sign icon-white"></i> Replenish</button>
+        <button type="submit" class="btn btn-warning withdraw"><i class="icon-minus-sign icon-white"></i> Withdraw</button>
     </form>
 </section>

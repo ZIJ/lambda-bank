@@ -25,20 +25,25 @@ define([
 
             view.delegate('click', '.btn.replenish', view.onReplenishClick);
             view.delegate('click', '.btn.withdraw', view.onWithdrawClick);
+            view.delegate('submit', 'form', view.onFormSubmit);
         },
 
         onReplenishClick: function() {
-            var view = this,
-                amount = parseFloat(view.$('input[type=number]').val());
-
-            mediator.publish('!replenish', amount);
+            $('#submitter').val('replenish');
         },
 
         onWithdrawClick: function() {
+            $('#submitter').val('withdraw');
+        },
+        onFormSubmit: function(e) {
+            e.preventDefault();
             var view = this,
-                amount = parseFloat(view.$('input[type=number]').val());
-
-            mediator.publish('!withdraw', amount);
+                action = $('#submitter').val();
+            if( action === '' ) {
+                return;
+            }
+            var amount = parseFloat(view.$('input[type=text]').val());
+            mediator.publish('!'+action, amount);
         }
     });
 
