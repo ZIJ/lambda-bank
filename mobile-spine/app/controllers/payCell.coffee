@@ -40,16 +40,36 @@ class PayCell extends Spine.Controller
         JsonPayment: JSON.stringify
           "privateNumber" : number
 
-    $.ajax(
-      type: 'POST'
-      url: @detailsUrl
-      data: JSON.stringify(data)
-      dataType: 'json'
-      cache: false
-      contentType: "application/json"
-      success: (response) =>
-        @preinfo(data)
-    )
+    errors = @validate()
+    message = ''
+    errors.forEach (msg) ->
+      message += msg + '\n'
+    if errors.length == 0
+      $.ajax(
+        type: 'POST'
+        url: @detailsUrl
+        data: JSON.stringify(data)
+        dataType: 'json'
+        cache: false
+        contentType: "application/json"
+        success: (response) =>
+          @preinfo(data)
+      )
+    else
+      alert(message)
+
+
+  validate: ->
+    errors = []
+    phone = /^\d{9}$/
+    number = Number(@numberInput.val())
+    amount = Number(@amountInput.val())
+    if not phone.test(number)
+      errors.push('Phone number should be 9 digits')
+    if amount <= 0
+      errors.push('Amount should be positive')
+    errors
+
 
   preinfo: (detailsData) ->
     requisite =
