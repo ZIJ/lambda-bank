@@ -263,11 +263,13 @@ select.error {
     -ms-transition: all ease-in-out .3s;
     -o-transition: all ease-in-out .3s;
     transition: all ease-in-out .3s;
+    -webkit-filter: blur(2px);
 }
 
 .welcome-actions a:hover img {
     border-radius: 3%;
     box-shadow: 0 0 0 2px #0B98B8;
+    -webkit-filter: blur(0);
 }
 
 .cards-n-accounts .nav-tabs {
