@@ -159,7 +159,22 @@ define([
             },
 
             publishSession: function(authResponse) {
-                var serviceProvider = this;
+                var serviceProvider = this,
+                    publishingData = {
+                        provider: this,
+                        userRole: authResponse.Role,
+                        accessToken: authResponse.AuthenticationToken
+                    };
+
+                if (authResponse.UserInfo) {
+                    _.extend(publishingData, {
+                        userInfo: {
+                            id: authResponse.UserInfo.Id,
+                            firstName: authResponse.UserInfo.FirstName,
+                            lastName: authResponse.UserInfo.LastName
+                        }
+                    });
+                }
 
                 if (serviceProvider.useSessionStorage === true) {
                     utils.sessionStorage('lambdaBankingAccessToken', lambdaBanking.accessToken);
@@ -167,12 +182,7 @@ define([
                     utils.sessionStorageRemove('lambdaBankingAccessToken');
                 }
 
-                mediator.publish('serviceProviderSession', {
-                    provider: this,
-                    userId: authResponse.userID,
-                    userRole: authResponse.Role,
-                    accessToken: authResponse.AuthenticationToken
-                });
+                mediator.publish('serviceProviderSession', publishingData);
             },
 
             bankingLogout: function() {

@@ -99,15 +99,18 @@ define([
 
             // Handler for the global serviceProviderSession event
             serviceProviderSession: function(session) {
-                var controller = this;
+                var controller = this,
+                    userAttributes = {
+                        provider: session.provider,
+                        role: session.userRole
+                    };
 
-//                serviceProvider = session.provider;
+                if (session.userInfo) {
+                    _.extend(userAttributes, session.userInfo);
+                }
+
                 controller.disposeLoginView();
-                session.id = session.userId;
-                session.role = session.userRole;
-                delete session.userId;
-                delete session.userRole;
-                controller.createUser(session);
+                controller.createUser(userAttributes);
                 controller.publishLogin();
             },
 

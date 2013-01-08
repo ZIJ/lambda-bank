@@ -19,7 +19,7 @@ define([
 
             _.bindAll(controller, 'matchRouteHandler');
 
-            controller.model = new Model({ userName: mediator.user });  //  TODO: mediator.user.name
+            controller.model = new Model({ userName: mediator.user.get('firstName') });
 
             controller.view = new HeaderView({
                 model: controller.model

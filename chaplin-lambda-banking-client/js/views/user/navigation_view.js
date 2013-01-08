@@ -35,12 +35,8 @@ define([
 
             if (pattern === '') {
                 targetSelector = '.icon-home';
-            } else if ((/^users/).test(pattern) === true) {
-                targetSelector = '.icon-user';
             } else if ((/^cards/).test(pattern) === true) {
                 targetSelector = '.glyphicon-credit-card';
-            } else if ((/^accounts/).test(pattern) === true) {
-                targetSelector = '.icon-list';
             } else if ((/^settings/).test(pattern) === true) {
                 targetSelector = '.icon-wrench';
             }
