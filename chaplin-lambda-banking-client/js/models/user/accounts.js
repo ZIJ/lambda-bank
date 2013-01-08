@@ -21,10 +21,10 @@ define([
 
             var collection = this;
 
-//            _.bindAll(collection, 'fetchHandler');
+            _.bindAll(collection, 'fetchHandler');
 
             Accounts.__super__.initialize.apply(collection, arguments);
-        }
+        },
 
 //        fetch: function(options) {
 //            options || (options = []);
@@ -50,11 +50,11 @@ define([
 //            );
 //        },
 //
-//        fetchHandler: function(response) {
-//            var collection = this;
-//
-//            collection.reset(response, { parse: true });
-//        }
+        fetchHandler: function(response) {
+            var collection = this;
+
+            collection.reset(response, { parse: true });
+        }
 
     });
 
