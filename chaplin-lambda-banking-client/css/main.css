@@ -434,6 +434,16 @@ table .expandable table .controls-container {
     width: 1%;
 }
 
+table.users>tbody>tr>td,
+table.accounts>tbody>tr>td {
+    cursor: pointer;
+}
+
+table.users>tbody>tr:hover>td,
+table.accounts>tbody>tr:hover>td {
+    background-color: #efe;
+}
+
 
 .user .form-actions {
     display: none;
