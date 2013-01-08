@@ -1,8 +1,11 @@
-<ul>
+<ul class="menuList">
     <li>
         <a href="#/cards">Cards</a>
     </li>
     <li>
         <a href="#/payments">Payments</a>
+    </li>
+    <li>
+        <a href="#/map">ATMs</a>
     </li>
 </ul>

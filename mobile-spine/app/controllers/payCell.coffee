@@ -1,5 +1,6 @@
 Spine = require('spine')
 Card = require('models/card')
+Confirmation = require('controllers/confirmation')
 
 class PayCell extends Spine.Controller
   constructor: ->
@@ -69,7 +70,11 @@ class PayCell extends Spine.Controller
       cache: false
       contentType: "application/json"
       success: (response) =>
-        @proceed(data, response)
+        info = require('views/paymentInfo')(amount: response.Response.AmountCharged)
+        confirmation = new Confirmation(info)
+        @append confirmation
+        confirmation.bind 'confirm', =>
+          @proceed(data, response)
     )
 
   proceed: (preinfo, response) ->

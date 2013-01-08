@@ -18,6 +18,7 @@ class Card extends Spine.Model
       contentType: "application/json"
       success: (response) =>
         console.log('cards loaded')
+        @deleteAll()
         @saveAll(response.Response)
 
   @saveAll: (cards) ->

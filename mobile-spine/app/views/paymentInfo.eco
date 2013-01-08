@@ -1,0 +1,1 @@
+<div>You will be charged <%= @amount %></div>

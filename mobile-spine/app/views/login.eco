@@ -1,5 +1,6 @@
+<h1>Lambda-bank</h1>
 <form>
     <input name="username" type="text" />
-    <input name="password" type="text" />
+    <input name="password" type="password" />
     <input type="submit" value="Enter"/>
 </form>

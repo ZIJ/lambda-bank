@@ -1,0 +1,3 @@
+<%- @content %>
+<button name="cancel">Cancel</button>
+<button name="confirm">Confirm</button>

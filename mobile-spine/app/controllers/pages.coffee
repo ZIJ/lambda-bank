@@ -5,6 +5,7 @@ Cards = require('controllers/cards')
 Details = require('controllers/cardDetails')
 Payments = require('controllers/payments')
 PayCell = require('controllers/payCell')
+Map = require('controllers/map')
 
 class Pages extends Spine.Stack
   controllers:
@@ -14,6 +15,7 @@ class Pages extends Spine.Stack
     details: Details
     payments: Payments
     payCell: PayCell
+    map: Map
 
   routes:
     '/login': 'login'
@@ -21,5 +23,6 @@ class Pages extends Spine.Stack
     '/cards': 'cards'
     '/payments': 'payments'
     '/pay/cell': 'payCell'
+    '/map': 'map'
 
 module.exports = Pages

@@ -6,7 +6,7 @@ class Cards extends Spine.Controller
   constructor: ->
     super
     console.log('cards controller created')
-    @html '<ul></ul>'
+    @html '<ul class="menuList"></ul>'
     Card.bind 'loaded', =>
       @render()
 
@@ -21,7 +21,7 @@ class Cards extends Spine.Controller
     cards = Card.all()
 
     for card in cards
-      @cardList.append require('views/card')(card)
+      @cardList.html require('views/card')(card)
 
 
 module.exports = Cards

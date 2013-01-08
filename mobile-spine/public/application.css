@@ -4,13 +4,20 @@ body {
 .stack > *:not(.active) {
   display: none;
 }
+.loginPage h1 {
+  margin: 20px auto;
+  font-size: 3em;
+  color: #000080;
+}
 .loginPage input {
+  font-size: 2em;
   display: block;
-  margin: 10px;
+  margin: 20px auto;
+  width: 70%;
 }
 .loginPage input[type=submit] {
+  font-size: 2em;
   padding: 10px;
-  height: 2em;
   background-color: #10609e;
   border: none;
   color: #fff;
@@ -27,21 +34,26 @@ body {
   border: none;
   color: #fff;
 }
-.menuPage ul {
+ul.menuList {
   list-style-type: none;
   padding: 0;
 }
-.menuPage ul li {
-  margin: 10px;
+ul.menuList li {
+  margin: 20px;
   background-color: #10609e;
 }
-.menuPage ul li a,
-.menuPage ul li a:hover,
-.menuPage ul li a:visited {
+ul.menuList li a,
+ul.menuList li a:hover,
+ul.menuList li a:visited {
+  font-size: 2em;
   display: block;
   width: 100%;
   height: 100%;
-  padding: 10px;
+  padding: 20px;
   text-decoration: none;
   color: #fff;
+}
+#map {
+  width: 500px;
+  height: 200px;
 }
