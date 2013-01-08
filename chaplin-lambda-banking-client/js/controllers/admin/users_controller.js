@@ -99,8 +99,18 @@ define([
 
             controller.model.save({
                 attributesToSave: options.attributesToSave,
-                success: function() {
-                    mediator.publish('!router:route', 'users/' + controller.model.id);
+                success: function(response) {
+                    if (response['Status'] === 'PassportAlreadyExist') {
+                        mediator.publish('!alert', {
+                            title: 'Saving a user failed!',
+                            text: 'Such passport number already exists',
+                            action: 'Ok',
+                            actionCallback: function() {},
+                            cancelCallback: function() {}
+                        });
+                    } else {
+                        mediator.publish('!router:route', 'users/' + controller.model.id);
+                    }
                     controller.canSaveUser = true;
                 },
                 error: function() {
