@@ -5,11 +5,10 @@ define([
     'controllers/base/controller',
     // TODO: load when needed
     'models/user/cards',
-    'views/user/cards/cards_view',
-    'models/user/card',
-    'models/currencies',
-    'models/card_types'
-], function($, _, Chaplin, Controller, CardsCollection, CardsView, CardModel, CurrenciesCollection, CardTypes) {
+    'views/user/payments/layout_view',
+    'views/user/payments/select_card_view',
+    'models/user/card'
+], function($, _, Chaplin, Controller, CardsCollection, PaymentLayoutView, SelectCardView, CardModel) {
     'use strict';
 
     var mediator = Chaplin.mediator;
@@ -28,6 +27,10 @@ define([
 
             CardsController.__super__.initialize.apply(controller, arguments);
 
+
+
+
+            //TODO: old part
             controller.subscribeEvent('!loadCurrencies', controller.triggerLoadCurrencies);
             controller.subscribeEvent('!loadCardTypes', controller.triggerLoadCardTypes);
         },
@@ -35,12 +38,26 @@ define([
         index: function() {
             var controller = this;
 
-            controller.collection = new CardsCollection();
+            var cards = new CardsCollection();
 
-            controller.view = new CardsView({
-                collection: controller.collection
+            controller.view = new PaymentLayoutView({});
+
+            var selectCardView = new SelectCardView({
+                collection: cards,
+                container: controller.view.$('section.content')
             });
+
+            controller.view.subview('selectCard', selectCardView);
+            controller.view.subview('selectCard').renderAllItems();
+
+
+
+
         },
+
+
+
+        //TODO: old part
 
         triggerLoadCurrencies: function() {
             var controller = this,

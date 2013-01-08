@@ -1,0 +1,9 @@
+<dl>
+    <dt>card #{{this.number}} </dt>
+    {{#each this.accounts}}
+        <dd>
+            <input type="radio" name="account" id="card-account-{{this.id}}">
+            <label for="card-account-{{this.id}}">account #{{this.number}}</label>
+        </dd>
+    {{/each}}
+</dl>

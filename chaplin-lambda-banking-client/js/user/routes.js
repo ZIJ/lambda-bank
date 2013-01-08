@@ -9,6 +9,8 @@ define(function() {
 
         match('cards', 'cards#index');
 
+        match('payments', 'payments#index');
+
 
         match('settings', 'settings#index');
 
