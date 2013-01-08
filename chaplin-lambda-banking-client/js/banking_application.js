@@ -102,8 +102,17 @@ define([
                     });
                     break;
                 case 'user':
-                    // TODO: implementation needed
+                    require(['user/routes', 'controllers/user/header_controller', 'controllers/user/navigation_controller'], function(routesUser, HeaderControllerUser, NavigationControllerUser) {
+                        app.headerController = new HeaderControllerUser();
 
+                        app.navigationController = new NavigationControllerUser();
+
+                        app.initDispatcher({
+                            controllerPath: 'controllers/user/'
+                        });
+
+                        app.initRouter(routesUser, { pushState: false , root: '/' });
+                    });
                     break;
             }
         },
@@ -185,16 +194,6 @@ define([
                 $fader.off('click');
             }
         }
-
-// Example:
-//        mediator.publish('!alert', {
-//            type: 'error',
-//            title: 'Error',
-//            text: 'Smth gone wrong',
-//            action: 'Ok',
-//            actionCallback: function() {},
-//            cancelCallback: function() {}
-//        });
         
     });
 
