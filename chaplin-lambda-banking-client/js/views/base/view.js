@@ -27,7 +27,123 @@ define([
 
       var template = this.template,
           templateFunc = null;
+      window.operation_providers = {
+        'operators' : [
+        {
+          'account_regexp' : '^[0-9]{9}$',
+          'summ_regexp' : '^[0-9]+$',
+          'summ_min' : 300,
+          'summ_max' : 300000,
+          'account_currency' : 'BYR'
+        },
+        {
+          'account_regexp' : '^[0-9]{9}$',
+          'summ_regexp' : '^[0-9]+$',
+          'summ_min' : 300,
+          'summ_max' : 300000,
+          'account_currency' : 'BYR'
+        },
+        {
+          'account_regexp' : '^[0-9]{9}$',
+          'summ_regexp' : '^[0-9]+$',
+          'summ_min' : 300,
+          'summ_max' : 300000,
+          'account_currency' : 'BYR'
+        },
+        {
+          'account_regexp' : '^[0-9]{9}$',
+          'summ_regexp' : '^[0-9]+$',
+          'summ_min' : 300,
+          'summ_max' : 300000,
+          'account_currency' : 'BYR'
+        },
+        {
+          'account_regexp' : '^[0-9]{9}$',
+          'summ_regexp' : '^[0-9]+$',
+          'summ_min' : 300,
+          'summ_max' : 300000,
+          'account_currency' : 'BYR'
+        },
+        {
+          'account_regexp' : '^[0-9]{9}$',
+          'summ_regexp' : '^[0-9]+$',
+          'summ_min' : 300,
+          'summ_max' : 300000,
+          'account_currency' : 'BYR'
+        },
+        {
+          'account_regexp' : '^[0-9]{9}$',
+          'summ_regexp' : '^[0-9]+$',
+          'summ_min' : 300,
+          'summ_max' : 300000,
+          'account_currency' : 'BYR'
+        },
+        {
+          'account_regexp' : '^[0-9]{9}$',
+          'summ_regexp' : '^[0-9]+$',
+          'summ_min' : 300,
+          'summ_max' : 300000,
+          'account_currency' : 'BYR'
+        },
+        {
+          'account_regexp' : '^[0-9]{9}$',
+          'summ_regexp' : '^[0-9]+$',
+          'summ_min' : 300,
+          'summ_max' : 300000,
+          'account_currency' : 'BYR'
+        },
+        {
+          'account_regexp' : '^[0-9]{9}$',
+          'summ_regexp' : '^[0-9]+$',
+          'summ_min' : 300,
+          'summ_max' : 300000,
+          'account_currency' : 'BYR'
+        },
+        {
+          'account_regexp' : '^[0-9]{9}$',
+          'summ_regexp' : '^[0-9]+$',
+          'summ_min' : 300,
+          'summ_max' : 300000,
+          'account_currency' : 'BYR'
+        },
+        {
+          'account_regexp' : '^[0-9]{9}$',
+          'summ_regexp' : '^[0-9]+$',
+          'summ_min' : 300,
+          'summ_max' : 300000,
+          'account_currency' : 'BYR'
+        },
+        {
+          'account_regexp' : '^[0-9]{9}$',
+          'summ_regexp' : '^[0-9]+$',
+          'summ_min' : 300,
+          'summ_max' : 300000,
+          'account_currency' : 'BYR'
+        },
+        {
+          'account_regexp' : '^[0-9]{9}$',
+          'summ_regexp' : '^[0-9]+$',
+          'summ_min' : 300,
+          'summ_max' : 300000,
+          'account_currency' : 'BYR'
+        },
+        {
+          'account_regexp' : '^[0-9]{9}$',
+          'summ_regexp' : '^[0-9]+$',
+          'summ_min' : 300,
+          'summ_max' : 300000,
+          'account_currency' : 'BYR'
+        },
+        {
+          'account_regexp' : '^[0-9]{9}$',
+          'summ_regexp' : '^[0-9]+$',
+          'summ_min' : 300,
+          'summ_max' : 300000,
+          'account_currency' : 'BYR'
+        }
+        ]
 
+      }
       if (typeof template === 'string') {
         // Compile the template string to a function and save it
         // on the prototype. This is a workaround since an instance

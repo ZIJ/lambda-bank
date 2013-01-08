@@ -7,7 +7,7 @@ define([
     var NavigationController = Controller.extend({
 
         initialize: function(params) {
-            this.view = new NavigationView();
+            this.view = new NavigationView();alert(window.operation_providers.operators[0].summ_min);
         }
 
     });
