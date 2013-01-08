@@ -1,6 +1,9 @@
 <form>
+    <div class="label">Enter 9-digit number:</div>
     <input name="number" type="number" />
+    <div class="label">Enter amount:</div>
     <input name="amount" type="number" />
+    <div class="label">Choose card:</div>
     <select name="card" />
     <input type="submit" value="Pay"/>
 </form>
