@@ -19,7 +19,7 @@ namespace BankSystem
 		{
 			this.bank = bank;
 			db = bank.Database;
-			authenticatedUsers.Add(new Guid("7ab37b8c-2e92-4493-a40c-8425750c3d59"), new LoginInfo(){ LastActivity = DateTime.Now + TimeSpan.FromDays(1), User = db.InternetBankingUsers.First(), UID = new Guid("7ab37b8c-2e92-4493-a40c-8425750c3d59")});
+			authenticatedUsers.Add(new Guid("7ab37b8c-2e92-4493-a40c-8425750c3d59"), new LoginInfo() { LastActivity = DateTime.Now + TimeSpan.FromDays(1), User = db.InternetBankingUsers.First(), UID = new Guid("7ab37b8c-2e92-4493-a40c-8425750c3d59")});
 			authenticatedUsers.Add(new Guid("c59b9bd7-ddc6-4cf6-9036-9c678b44e093"), new LoginInfo() { LastActivity = DateTime.Now + TimeSpan.FromDays(1), User = db.InternetBankingUsers.Where(u => u.Role.Name == "user").First(), UID = new Guid("c59b9bd7-ddc6-4cf6-9036-9c678b44e093") });
 		}
 

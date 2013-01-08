@@ -68,7 +68,14 @@ namespace BankService
 			{
 				Role = info.User.Role.Name,
 				SecondsLeft = secondsLeft,
-				AuthenticationToken = info.UID
+				AuthenticationToken = info.UID,
+				UserInfo = info.User.BankUser == null ? null :
+				new
+				{
+					Id = info.User.BankUser.ID,
+					FirstName = info.User.BankUser.FirstName,
+					LastName = info.User.BankUser.LastName
+				}
 			};
 
 			return Json(response);
@@ -295,6 +302,10 @@ namespace BankService
 
 		public Message CreateUser(Guid securityToken, BankUser user)
 		{
+			if (db.BankUsers.ToList().Any(u => u.PassportNumber.Equals(user.PassportNumber, StringComparison.InvariantCultureIgnoreCase)))
+			{
+				return Json(new { Status = "PassportAlreadyExist"});
+			}
 			db.BankUsers.Add(user);
 			db.SaveChanges();
 			return Json(new { Status = "OK", ID = user.ID });
@@ -479,6 +490,7 @@ namespace BankService
 				acc.AccountNumber,
 				Cards = acc.Cards.Select(c => c.ID),
 				Currency = acc.Currency.ToString(),
+				Description = acc.Description,
 				acc.Amount,
 			};
 			return response;
@@ -535,7 +547,7 @@ namespace BankService
 		{
 			BankUser user = GetUser(securityToken);
 			PaymentTemplate payment = user.SavedPayments.Where(p => p.ID == id).FirstOrDefault();
-			db.Payments.Remove(payment);
+			db.PaymentTemplates.Remove(payment);
 			db.SaveChanges();
 			return Json(new { Status = "OK" });
 		}

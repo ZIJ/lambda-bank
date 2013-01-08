@@ -18,6 +18,8 @@ define([
 
         title: 'Accounts',
 
+        canChangeAmount: true,
+
         initialize: function(params) {
             var controller = this;
 
@@ -61,6 +63,8 @@ define([
         triggerReplenish: function(amount) {
             var controller = this;
 
+            controller.canChangeAmount = false;
+
             mediator.user.get('provider').apiRequest({
                 url: 'admin/accounts/replenish',
                 data: {
@@ -71,10 +75,12 @@ define([
                     controller.model.fetch({
                         success: function() {
                             controller.view.render();
+                            controller.canChangeAmount = true;
                         }
                     });
                 },
                 error: function(jqXHR) {
+                    controller.canChangeAmount = true;
                     // TODO: implementation needed
                 }
             });
@@ -82,6 +88,8 @@ define([
 
         triggerWithdraw: function(amount) {
             var controller = this;
+
+            controller.canChangeAmount = false;
 
             mediator.user.get('provider').apiRequest({
                 url: 'admin/accounts/withdraw',
@@ -93,10 +101,12 @@ define([
                     controller.model.fetch({
                         success: function() {
                             controller.view.render();
+                            controller.canChangeAmount = true;
                         }
                     });
                 },
                 error: function(jqXHR) {
+                    controller.canChangeAmount = true;
                     // TODO: implementation needed
                 }
             });

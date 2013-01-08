@@ -7,7 +7,8 @@ define([
     'use strict';
 
     var mediator = Chaplin.mediator;
-    
+
+    //TODO: REFACTOR THIS
     var weight = [7,3,1];
     var digits = /^\d$/;
     var letters = /^[a-z]$/;
@@ -23,6 +24,7 @@ define([
         }
       });
     }
+    //TODO: END OF TODO
 
     var UserEditView = View.extend({
 
@@ -69,7 +71,7 @@ define([
                     }
                 };
 
-
+            //TODO: REFACTOR THIS
             var passport_input = $('input[data-validate="passport"]');
             console.log(passport_input);
             passport_input.popover({title:function(){return '';}});
@@ -101,6 +103,7 @@ define([
                     passport_input.popover('hide');
                 }
             }
+            //TODO: END OF TODO
 
             mediator.publish('!saveUser', options);
         },

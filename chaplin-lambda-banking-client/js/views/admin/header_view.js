@@ -29,6 +29,8 @@ define([
 
         onLogoutClick: function() {
             var view = this;
+
+            //TODO: TEMP, MOVE it from here
             $('.popover').remove();
 
             mediator.publish("!logout", "banking");
