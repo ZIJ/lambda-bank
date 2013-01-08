@@ -90,11 +90,14 @@ class PayCell extends Spine.Controller
       cache: false
       contentType: "application/json"
       success: (response) =>
-        info = require('views/paymentInfo')(amount: response.Response.AmountCharged)
-        confirmation = new Confirmation(info)
-        @append confirmation
-        confirmation.bind 'confirm', =>
-          @proceed(data, response)
+        if response.Response.EnoughMoney == false
+          alert('Not enough money')
+        else
+          info = require('views/paymentInfo')(amount: response.Response.AmountCharged)
+          confirmation = new Confirmation(info)
+          @append confirmation
+          confirmation.bind 'confirm', =>
+            @proceed(data, response)
     )
 
   proceed: (preinfo, response) ->
@@ -107,7 +110,8 @@ class PayCell extends Spine.Controller
       cache: false
       contentType: "application/json"
       success: (response) =>
-        console.log(response)
+        @navigate('/payments')
+        Card.loadAll()
     )
 
 

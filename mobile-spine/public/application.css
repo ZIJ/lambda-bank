@@ -62,3 +62,12 @@ ul.menuList li a:visited {
   margin-top: 30px;
   margin-left: 10px;
 }
+.confirmation {
+  position: absolute;
+  top: 0;
+  padding-top: 20%;
+  color: #fff;
+  width: 100%;
+  height: 100%;
+  background: #10609e;
+}

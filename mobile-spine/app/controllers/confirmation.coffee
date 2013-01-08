@@ -5,6 +5,8 @@ class Confirmation extends Spine.Controller
     super
     @html require('views/confirmation')(content: content)
 
+  className: 'confirmation'
+
   events:
     'click button[name=confirm]': 'confirm'
     'click button[name=cancel]': 'cancel'
