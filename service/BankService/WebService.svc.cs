@@ -68,7 +68,14 @@ namespace BankService
 			{
 				Role = info.User.Role.Name,
 				SecondsLeft = secondsLeft,
-				AuthenticationToken = info.UID
+				AuthenticationToken = info.UID,
+				UserInfo = info.User.BankUser == null ? null :
+				new
+				{
+					Id = info.User.BankUser.ID,
+					FirstName = info.User.BankUser.FirstName,
+					LastName = info.User.BankUser.LastName
+				}
 			};
 
 			return Json(response);

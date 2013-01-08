@@ -73,10 +73,10 @@ namespace BankSystem.EripImplementers
 			});
 
 
-			operators.Add(EripPaymentType.ElectroService, new DefaultSupplier()
+			operators.Add(EripPaymentType.ElectroService, new ServiceSupplier()
 			{
-				Type = SupplierType.CreditDebet,
-				MoneyBase = 500000,
+				Type = SupplierType.Debet,
+				MoneyBase = 250,
 				Requisite = new Prerequisite()
 				{
 					BankGuid = new Guid("{3EDDF226-9692-4EF6-8E46-C36373E455FA}"),
@@ -86,10 +86,10 @@ namespace BankSystem.EripImplementers
 				}
 			});
 
-			operators.Add(EripPaymentType.AquaService, new DefaultSupplier()
+			operators.Add(EripPaymentType.AquaService, new ServiceSupplier()
 			{
-				Type = SupplierType.CreditDebet,
-				MoneyBase = 500000,
+				Type = SupplierType.Debet,
+				MoneyBase = 20,
 				Requisite = new Prerequisite()
 				{
 					BankGuid = new Guid("{3EDDF226-9692-4EF6-8E46-C36373E455FA}"),
@@ -99,10 +99,10 @@ namespace BankSystem.EripImplementers
 				}
 			});
 
-			operators.Add(EripPaymentType.GasService, new DefaultSupplier()
+			operators.Add(EripPaymentType.GasService, new ServiceSupplier()
 			{
-				Type = SupplierType.CreditDebet,
-				MoneyBase = 500000,
+				Type = SupplierType.Debet,
+				MoneyBase = 5,
 				Requisite = new Prerequisite()
 				{
 					BankGuid = new Guid("{3EDDF226-9692-4EF6-8E46-C36373E455FA}"),

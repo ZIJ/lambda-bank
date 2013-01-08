@@ -99,7 +99,7 @@ namespace BankSystem
 			if (account != null)
 			{
 				Prerequisite requisite = ERIP.GetPrerequisites(type);
-				decimal amountCharged = BackConvertCurrency(account.Currency, requisite.Currency, amount);
+				decimal amountCharged = BackConvertCurrency(account.Currency, requisite.Currency, amount * requisite.Rate);
 
 				var info = new
 				{
@@ -129,14 +129,14 @@ namespace BankSystem
 				lock (this)
 				{
 					Prerequisite requisite = ERIP.GetPrerequisites(type);
-					decimal amountCharged = BackConvertCurrency(account.Currency, requisite.Currency, amount);
+					decimal amountCharged = BackConvertCurrency(account.Currency, requisite.Currency, amount * requisite.Rate);
 
 					if (changeId != null && changeId != UserService.PasswordDistortion(account.Amount.ToString(), "res"))
 					{
 						return new
 						{
 							Status = "AccountChanged",
-							AmountCharged = amount,
+							AmountCharged = amountCharged,
 							ChangeId = UserService.PasswordDistortion(account.Amount.ToString(), "res"),
 							EnoughMoney = true
 						};
@@ -146,7 +146,7 @@ namespace BankSystem
 						return new
 						{
 							Status = "NotEnoughMoney",
-							AmountCharged = amount,
+							AmountCharged = amountCharged,
 							ChangeId = UserService.PasswordDistortion(account.Amount.ToString(), "res"),
 							EnoughMoney = false
 						};
@@ -155,7 +155,7 @@ namespace BankSystem
 					return new
 					{
 						Status = "AccountCharged",
-						AmountCharged = amount,
+						AmountCharged = amountCharged,
 					};
 				}
 			}
@@ -333,11 +333,13 @@ namespace BankSystem
 			Prerequisite requisite = ERIP.GetPrerequisites(template.EripType);
 			Account receiver = db.FindAccount(requisite.AccountNumber);
 			Account sender = template.Account;
+
+			decimal amount = template.Amount * requisite.Rate;
 			try
 			{
 				t = new Transaction();
 
-				Transact(t, sender, receiver, requisite.Currency, template.Amount);
+				Transact(t, sender, receiver, requisite.Currency, amount);
 
 				t.Payment = entry;
 				db.Payments.Add(entry);

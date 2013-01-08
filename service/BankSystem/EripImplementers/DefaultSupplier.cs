@@ -7,7 +7,9 @@ namespace BankSystem.EripImplementers
 {
 	class DefaultSupplier : ISupplier
 	{
-		private static readonly Random rand = new Random();
+		protected static readonly Random rand = new Random();
+
+		protected Dictionary<string, SupplierClient> accounts = new Dictionary<string, SupplierClient>();
 
 		public int MoneyBase { get; set; }
 
@@ -17,9 +19,8 @@ namespace BankSystem.EripImplementers
 
 		public decimal Rate { get; set; }
 
-		Dictionary<string, SupplierClient> accounts = new Dictionary<string, SupplierClient>();
 
-		public object GetPaymentInfo(string jsonPayment)
+		public virtual object GetPaymentInfo(string jsonPayment)
 		{
 			string account = jsonPayment.GetJsonAttribute("privateNumber");
 
@@ -29,11 +30,11 @@ namespace BankSystem.EripImplementers
 				PrivateNumber = account,
 				Name = client.Name,
 				CurrentAmount = client.Amount,
-				Dept = client.Amount < 0 ? - client.Amount : 0
+				Debt = client.Amount < 0 ? - client.Amount : 0
 			};
 		}
 
-		public object SendPayment(string jsonPayment, decimal amount)
+		public virtual object SendPayment(string jsonPayment, decimal amount)
 		{
 			string account = jsonPayment.GetJsonAttribute("privateNumber");
 			SupplierClient client = Get(account);
@@ -44,7 +45,7 @@ namespace BankSystem.EripImplementers
 			};
 		}
 
-		private SupplierClient Get(string id)
+		protected SupplierClient Get(string id)
 		{
 			SupplierClient client = null;
 			if (!accounts.TryGetValue(id, out client))
@@ -71,6 +72,47 @@ namespace BankSystem.EripImplementers
 					return 0;
 			}
 				 
+		}
+	}
+
+	class ServiceSupplier : DefaultSupplier
+	{
+		public override object GetPaymentInfo(string jsonPayment)
+		{
+			string account = jsonPayment.GetJsonAttribute("privateNumber");
+
+			SupplierClient client = Get(account);
+			return new
+			{
+				PrivateNumber = account,
+				Name = client.Name,
+				LastAmount = client.Amount,
+				Rate = Requisite.Rate,
+				Debt = client.Amount < 0 ? -client.Amount : 0
+			};
+		}
+
+		public override object SendPayment(string jsonPayment, decimal amount)
+		{
+			string account = jsonPayment.GetJsonAttribute("privateNumber");
+			SupplierClient client = Get(account);
+			client.Amount = amount;
+			return new
+			{
+				Check = "check"
+			};
+		}
+
+		public override decimal GenerateAmount()
+		{
+			switch (Type)
+			{
+				case SupplierType.Debet:
+					return rand.Next(MoneyBase);
+				default:
+					return 0;
+			}
+
 		}
 	}
 
